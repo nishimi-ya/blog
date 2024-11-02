@@ -9,8 +9,9 @@ tags:
     - yapping
     - hugo
     - website
-weight: 1
+author: Nishimiya
 ---
+
 {{< youtube M_DPRIoaqyI >}}
 
 As of Saturday, 2 November 2024. I am embracing Hugo as my static website generator. It's all started with Cyan Nyan
