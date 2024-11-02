@@ -24,6 +24,14 @@ url = "https://bsky.nishimiya.my.id"
 icon = "brand-bluesky"
 
 [[social]]
+identifier = "mastodon"
+name = "Mastodon"
+url = "https://mastodon.social/@Nishimiya"
+
+[social.params]
+icon = "brand-mastodon"
+
+[[social]]
 identifier = "linktree"
 name = "Linktree"
 url = "https://linktr.ee/nishi.miya"
