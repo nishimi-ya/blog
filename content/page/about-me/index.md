@@ -1,8 +1,10 @@
 ---
 title: About me
 links:
-  - title: Nishimiya's
-    description: A hobbyist in electronic and part time weeb.
+  - title: Nishimiya's Social Media
+    description: Nishimiya's BlueSky Page
+    website: https://bsky.nishimiya.my.id
+        
 menu:
     main: 
         weight: 4
@@ -12,6 +14,11 @@ menu:
 comments: false
 
 ---
+<h1 class="center-title">
+  <marquee>
+    <span style="color:#F08484">M</span><span style="color:#F0AD84">e</span><span style="color:#F0D584">e</span><span style="color:#E2F084">t</span> <span style="color:#BAF084">t</span><span style="color:#92F084">h</span><span style="color:#84F09F">e</span> <span style="color:#84F0C8">w</span><span style="color:#84F0F0">e</span><span style="color:#84C8F0">e</span><span style="color:#849FF0">b</span>
+  </marquee>
+</h1>
 
 <div class="profiles">
   <div class="profile">
