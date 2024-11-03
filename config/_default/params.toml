@@ -80,8 +80,8 @@ enabled = true
 
 ## Comments
 [comments]
-enabled = false
-provider = "disqus"
+enabled = true
+provider = "cactus"
 
 [comments.disqusjs]
 shortname = ""
@@ -129,7 +129,7 @@ lang = ""
 [comments.cactus]
 defaultHomeserverUrl = "https://matrix.cactus.chat:8448"
 serverName = "cactus.chat"
-siteName = ""
+siteName = "nishimiya.my.id"
 
 [comments.giscus]
 repo = ""
