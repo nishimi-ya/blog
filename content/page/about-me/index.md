@@ -1,10 +1,5 @@
 ---
 title: About me
-links:
-  - title: Nishimiya's Social Media
-    description: Nishimiya's BlueSky Page
-    website: https://bsky.nishimiya.my.id
-        
 menu:
     main: 
         weight: 4
