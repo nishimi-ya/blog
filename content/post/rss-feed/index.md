@@ -38,5 +38,3 @@ for Linux, or [Fluent Reader](https://github.com/yang991178/fluent-reader) that 
 https://nishimiya.my.id/index.xml into the "Add Feed" or "Subscribe" section of your reader (May vary).
 3. Drink Coffee and Enjoy: Sit back and enjoy the convenience of having my latest blog posts delivered
 directly to your RSS reader.
-
-{{ < chat talk > }}
