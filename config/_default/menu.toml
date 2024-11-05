@@ -32,14 +32,6 @@ url = "https://mastodon.social/@Nishimiya"
 icon = "brand-mastodon"
 
 [[social]]
-identifier = "linktree"
-name = "Linktree"
-url = "https://linktr.ee/nishi.miya"
-
-[social.params]
-icon = "brand-linktree"
-
-[[social]]
 identifier = "youtube"
 name = "YouTube"
 url = "https://www.youtube.com/@nishimiya6540"
