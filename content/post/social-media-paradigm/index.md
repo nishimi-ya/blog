@@ -4,10 +4,11 @@ description: Why Twitter Can't Be Replaced By Decentralized Alternatives Like Bl
 date: 2024-11-07 01:40:00+0700
 slug: social-media-paradigm
 categories:
+    - Opinion
     - Tech
 tags:
     - yapping
-    - tech
+    - social media
 author: Nishimiya
 ---
 
