@@ -2,10 +2,10 @@
 mainSections = ["post"]
 # Output page's full content in RSS.
 rssFullContent = true
-favicon = "/favicon.png"
+favicon = "/favicon.ico"
 
 [footer]
-since = 2020
+since = 2018
 customText = ""
 
 [dateFormat]
@@ -14,7 +14,7 @@ lastUpdated = "Jan 02, 2006 15:04 MST"
 
 [sidebar]
 emoji = "🍥"
-subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+subtitle = "A Computer Engineer and an IoT Tinker."
 
 [sidebar.avatar]
 enabled = true
@@ -27,7 +27,7 @@ math = false
 readingTime = true
 
 [article.license]
-enabled = true
+enabled = false
 default = "Licensed under CC BY-NC-SA 4.0"
 
 ## Widgets
@@ -51,6 +51,9 @@ type = "tag-cloud"
 
 [widgets.homepage.params]
 limit = 10
+
+[[widgets.homepage]]
+type = "about-me"
 
 [[widgets.page]]
 type = "toc"
@@ -76,7 +79,7 @@ enabled = true
 
 ## Comments
 [comments]
-enabled = true
+enabled = false
 provider = "disqus"
 
 [comments.disqusjs]
