@@ -3,6 +3,7 @@ title: Changing the Social Media Paradigm
 description: Why Twitter Can't Be Replaced By Decentralized Alternatives Like Bluesky and Fediverse.
 date: 2024-11-07 01:40:00+0700
 slug: social-media-paradigm
+image: hero-image.webp
 categories:
     - Opinion
     - Tech

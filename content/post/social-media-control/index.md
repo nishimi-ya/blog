@@ -3,6 +3,7 @@ title: Social Media as a Tool of Social Control
 description: A New Perspective on Digital Control Schemes
 date: 2024-11-07 02:20:00+0700
 slug: social-media-control
+image: hero-image.jpg
 categories:
     - Opinion
 tags:

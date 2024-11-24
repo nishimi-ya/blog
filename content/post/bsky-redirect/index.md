@@ -3,6 +3,7 @@ title: Bsky Redirect Trick Using Cloudflare
 date: 2024-11-20 2:55:00+0700
 slug: bsky-redirect
 description: Sharing a post made it cleaner but also tedious.
+image: hero-image.webp
 categories:
     - Tech
 tags:
