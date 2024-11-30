@@ -30,3 +30,19 @@ url = "https://layer8.space/@nishimiya"
 
 [social.params]
 icon = "brand-mastodon"
+
+[[social]]
+identifier = "rss"
+name = "RSS"
+url = "https://blog.nishimiya.my.id/index.xml"
+
+[social.params]
+icon = "rss"
+
+[[social]]
+identifier = "lastfm"
+name = "LastFM"
+url = "https://last.fm/user/nishi-miya"
+
+[social.params]
+icon = "brand-lastfm"
