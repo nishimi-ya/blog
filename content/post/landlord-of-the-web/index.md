@@ -73,11 +73,10 @@ So, here’s what I do:
      generate a feed (using a token if needed).  
 4. Use **Newsboat**, a command-line RSS reader, to manage subscriptions.  
 
-![Fetching bsky ost for RSS bridge](bsky-rss-bridge.png)
+![Fetching bsky post for RSS bridge](bsky-rss-bridge.png)
 
 Here’s the cool part: I don’t even need a browser to watch YouTube. My
 **Newsboat** config file lets me use **MPV** to play videos:  
-
 
 ```plaintext
 browser qutebrowser
@@ -87,7 +86,6 @@ macro v set browser "setsid -f mpv --really-quiet --no-terminal"; open-in-browse
 
 Now I just press `,v` in Newsboat, and the video plays in MPV, bypassing
 YouTube’s bloated interface entirely.  
-
 
 ## Social Media? No Thanks  
 
