@@ -46,3 +46,11 @@ url = "https://last.fm/user/nishi-miya"
 
 [social.params]
 icon = "brand-lastfm"
+
+[[social]]
+identifier = "matrix"
+name = "Matrix"
+url = "https://matrix.to/#/#nishimiya:matrix.org"
+
+[social.params]
+icon = "brand-matrix"
