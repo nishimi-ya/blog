@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on Nishimiya</title><link>https://blog.nishimiya.my.id/tags/hugo/</link><description>Recent content in Hugo on Nishimiya</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 24 Nov 2024 06:47:37 +0700</lastBuildDate><atom:link href="https://blog.nishimiya.my.id/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>Switching To Hugo!</title><link>https://blog.nishimiya.my.id/post/switch-hugo/</link><pubDate>Sat, 02 Nov 2024 05:00:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/switch-hugo/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/switch-hugo/1.jpg" alt="Featured image of post Switching To Hugo!" />&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/M_DPRIoaqyI"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;p>As of Saturday, November 2, 2024, I have officially embraced Hugo as my
+go-to static website generator. My journey with Hugo all started after
+catching one of Cyan Nyan&amp;rsquo;s streams, where they introduced this powerful
+tool in such a way that I knew I had to try it myself.&lt;/p>
+&lt;p>Previously, I built my websites by hand, using vanilla HTML and CSS. It
+was a rewarding process, but it often became tedious when trying to add
+new content or make updates consistently. Hugo simplifies this with
+a streamlined setup that includes templating, modular design, and built-in
+site management tools, making it an ideal choice for a faster, more
+scalable website-building process.&lt;/p>
+&lt;p>One of the game-changers for me was discovering the &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack-starter" target="_blank" rel="noopener"
+>CaiJimmy Hugo Theme
+Starter&lt;/a>. This theme
+provides a well-structured, customizable foundation that not only speeds
+up the setup process but also allows me to personalize the site with SCSS
+and shortcodes. Shortcodes are especially useful—they allow you to embed
+interactive content like YouTube videos effortlessly (like the one above),
+as well as easily create more complex layouts within Markdown files. This
+feature alone takes a lot of the heavy lifting off the development side,
+making Hugo an enjoyable tool to work with.&lt;/p>
+&lt;h2 id="why-hugo">Why Hugo?
+&lt;/h2>&lt;p>After working with HTML/CSS directly, transitioning to Hugo felt like
+a leap forward in productivity. Here’s what stood out about Hugo that made
+it a perfect fit for my needs:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Speed&lt;/strong>: Hugo is known for being incredibly fast at generating static
+sites. Its speed is particularly helpful for managing multiple pages
+without the lag you’d experience with other generators.&lt;/li>
+&lt;li>&lt;strong>Flexibility&lt;/strong>: The support for SCSS and custom themes means I can
+tweak every detail to fit my style and functional needs. The CaiJimmy
+starter theme, in particular, includes various customization options,
+so I can still enjoy designing without reinventing the wheel.&lt;/li>
+&lt;li>&lt;strong>Content Management&lt;/strong>: Hugo organizes content through a structured
+file system, making it easier to add, update, and organize posts and
+pages. Unlike raw HTML/CSS, Hugo’s templating system and front matter
+allow me to focus on content creation without duplicating the structure
+of every new page.&lt;/li>
+&lt;li>&lt;strong>Shortcodes and Markdown Integration&lt;/strong>: Writing in Markdown allows for
+faster content production, while Hugo’s shortcodes let me add rich
+media, like videos and images, with a single line of code. It’s the
+best of both worlds: simplicity for content creation and versatility
+for interactivity.&lt;/li>
+&lt;/ol>
+&lt;h2 id="moving-forward-with-hugo">Moving Forward with Hugo
+&lt;/h2>&lt;p>Using Hugo has not only simplified my workflow but also introduced me to
+new design possibilities. The Hugo community is vibrant and full of
+resources, making it easy to find additional themes, tips, and tricks. I’m
+excited to see how this tool can continue to support and evolve my
+projects. Plus, now that I have this foundation, scaling the site will be
+simpler, whether I want to add new sections, experiment with layouts, or
+incorporate more interactive elements.&lt;/p>
+&lt;p>For anyone on the fence about static site generators, especially if you’re
+used to coding each element by hand, I can’t recommend Hugo enough. It
+gives you all the customization of a hand-coded site without the
+repetitive work. With the power of themes like CaiJimmy’s Hugo Theme
+Starter, building and maintaining a website becomes less of a chore and
+more of an enjoyable, creative process.&lt;/p></description></item></channel></rss>
