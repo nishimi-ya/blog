@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tech on Nishimiya</title><link>https://blog.nishimiya.my.id/tags/tech/</link><description>Recent content in Tech on Nishimiya</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 24 Nov 2024 06:47:37 +0700</lastBuildDate><atom:link href="https://blog.nishimiya.my.id/tags/tech/index.xml" rel="self" type="application/rss+xml"/><item><title>Now Support RSS Feed!</title><link>https://blog.nishimiya.my.id/post/rss-support/</link><pubDate>Sun, 03 Nov 2024 20:50:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/rss-support/</guid><description>&lt;p>I am thrilled to announce that this blog has taken a small step forward in enhancing
+your reading experience. Introducing RSS (Really Simple Syndication) feeds. This feature
+allows you stay updated with the latest post from my blog effortlessly.&lt;/p>
+&lt;h2 id="what-is-rss">What is RSS?
+&lt;/h2>&lt;p>For those who may not be familiar with RSS or not knowing at all, it stands for Really Simple
+Syndication. It is a web feed that allows users to easily access updates to online content in a
+standardized, computer-readable format. You can receive new update whenever new content is published
+on a website, without having to visit the site directly.&lt;/p>
+&lt;h2 id="how-to-access-my-rss-feed">How to Access My RSS Feed
+&lt;/h2>&lt;p>Accessing RSS feed is incredibly simple. All you need to do is add the following URL to your
+RSS reader:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://nishimiya.my.id/index.xml" target="_blank" rel="noopener"
+>https://nishimiya.my.id/index.xml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h1 id="how-to-use-an-rss-reader">How to Use an RSS Reader
+&lt;/h1>&lt;p>If you are new to RSS, here&amp;rsquo;s a quick guide on how to get started:&lt;/p>
+&lt;ol>
+&lt;li>Choose an RSS Reader: There are many RSS reader available, both free and paid.
+Some popular options include Feedly for Android app, newsboat the CLI-based RSS reader
+for Linux, or &lt;a class="link" href="https://github.com/yang991178/fluent-reader" target="_blank" rel="noopener"
+>Fluent Reader&lt;/a> that support Android, Linux, Windows.&lt;/li>
+&lt;li>Add Feed: Once you have your RSS reader set up, simply copy paste the URL
+&lt;a class="link" href="https://nishimiya.my.id/index.xml" target="_blank" rel="noopener"
+>https://nishimiya.my.id/index.xml&lt;/a> into the &amp;ldquo;Add Feed&amp;rdquo; or &amp;ldquo;Subscribe&amp;rdquo; section of your reader (May vary).&lt;/li>
+&lt;li>Drink Coffee and Enjoy: Sit back and enjoy the convenience of having my latest blog posts delivered
+directly to your RSS reader.&lt;/li>
+&lt;/ol></description></item></channel></rss>
