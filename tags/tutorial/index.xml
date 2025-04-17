@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tutorial on Nishimiya</title><link>https://blog.nishimiya.my.id/tags/tutorial/</link><description>Recent content in Tutorial on Nishimiya</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 18 Apr 2025 02:21:25 +0700</lastBuildDate><atom:link href="https://blog.nishimiya.my.id/tags/tutorial/index.xml" rel="self" type="application/rss+xml"/><item><title>Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)</title><link>https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/</link><pubDate>Fri, 18 Apr 2025 02:05:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/nihongo.png" alt="Featured image of post Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)" />&lt;hr>
+&lt;p>This guide specifically covers installation on Arch Linux (and derivatives like Manjaro) using pacman. If you&amp;rsquo;re using a different distribution (Ubuntu, Fedora, etc.), the package names and installation commands will vary. For example:&lt;/p>
+&lt;ul>
+&lt;li>Debian/Ubuntu: &lt;code>apt install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;li>Fedora: &lt;code>dnf install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;li>OpenSUSE: &lt;code>zypper install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Always check your distro&amp;rsquo;s documentation for the correct packages and setup steps. The Fcitx5 configuration (environment variables, themes, etc.) will remain similar across Linux systems.&lt;/p>
+&lt;h1 id="1-install-packages">&lt;strong>1. Install Packages&lt;/strong>
+&lt;/h1>&lt;p>Run the following command to install Fcitx5 and Mozc:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo pacman -S fcitx5 fcitx5-configtool fcitx5-qt fcitx5-mozc-ut
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;h1 id="2-set-environment-variables">&lt;strong>2. Set Environment Variables&lt;/strong>
+&lt;/h1>&lt;p>Add these lines to your shell config file (&lt;code>~/.bashrc&lt;/code>, &lt;code>~/.zshrc&lt;/code>, or &lt;code>~/.profile&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GTK_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fcitx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">QT_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fcitx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XMODIFIERS&lt;/span>&lt;span class="o">=&lt;/span>@im&lt;span class="o">=&lt;/span>fcitx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Apply the changes&lt;/strong>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> ~/.zshrc &lt;span class="c1"># or source ~/.bashrc/etc &lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Log out and back in for the variables to take effect.&lt;/p>
+&lt;hr>
+&lt;h1 id="3-configure-fcitx5">&lt;strong>3. Configure Fcitx5&lt;/strong>
+&lt;/h1>&lt;ol>
+&lt;li>Open &lt;code>fcitx5-configtool&lt;/code> from your app menu or terminal.&lt;/li>
+&lt;li>Click &lt;strong>+&lt;/strong> → Uncheck &lt;em>&amp;ldquo;Only Show Current Language&amp;rdquo;&lt;/em> → Search &lt;strong>&amp;ldquo;mozc&amp;rdquo;&lt;/strong> → Add it.&lt;/li>
+&lt;li>Remove unnecessary input methods (e.g., &amp;ldquo;Keyboard - English&amp;rdquo;) if desired.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h1 id="4-enable-japanese-input">&lt;strong>4. Enable Japanese Input&lt;/strong>
+&lt;/h1>&lt;p>Press &lt;strong>Ctrl + Space&lt;/strong> to toggle between English and Japanese (Hiragana). Test by typing &lt;code>nihongo&lt;/code> → &lt;code>にほんご&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;h1 id="5-install-themes-optional">&lt;strong>5. Install Themes (Optional)&lt;/strong>
+&lt;/h1>&lt;p>With &lt;code>yay&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Dark theme &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-skin-fluentdark-git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Light theme &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-skin-fluentlight-git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Material Color &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-material-color
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Apply themes&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Right-click the Fcitx5 tray icon → &lt;strong>Configure&lt;/strong> → &lt;strong>Addons&lt;/strong> → &lt;strong>Classic UI&lt;/strong> → Select a skin.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="6-customize-mozc">&lt;strong>6. Customize Mozc&lt;/strong>
+&lt;/h1>&lt;p>Right-click the Fcitx5 tray icon → &lt;strong>Mozc Settings&lt;/strong> to adjust:&lt;/p>
+&lt;ul>
+&lt;li>Input mode (Romaji/Kana).&lt;/li>
+&lt;li>Dictionaries.&lt;/li>
+&lt;li>Keyboard shortcuts.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="troubleshooting">&lt;strong>Troubleshooting&lt;/strong>
+&lt;/h1>&lt;ul>
+&lt;li>&lt;strong>Fcitx5 not starting?&lt;/strong> Add it to your desktop environment’s autostart.&lt;/li>
+&lt;li>&lt;strong>Input not working in apps?&lt;/strong> For Electron apps (e.g., VS Code), add these flags to their &lt;code>.desktop&lt;/code> file:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">--enable-features=UseOzonePlatform --ozone-platform=wayland
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;p>Done! You now have a functional Japanese input setup. For advanced options, refer to the &lt;a class="link" href="https://wiki.archlinux.org/title/Fcitx5" target="_blank" rel="noopener"
+>Fcitx5 Wiki&lt;/a>.&lt;/p></description></item></channel></rss>

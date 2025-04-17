@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tech on Nishimiya</title><link>https://blog.nishimiya.my.id/categories/tech/</link><description>Recent content in Tech on Nishimiya</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://blog.nishimiya.my.id/categories/tech/index.xml" rel="self" type="application/rss+xml"/><item><title>Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)</title><link>https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/</link><pubDate>Fri, 18 Apr 2025 02:05:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/nihongo.png" alt="Featured image of post Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)" />&lt;hr>
+&lt;p>This guide specifically covers installation on Arch Linux (and derivatives like Manjaro) using pacman. If you&amp;rsquo;re using a different distribution (Ubuntu, Fedora, etc.), the package names and installation commands will vary. For example:&lt;/p>
+&lt;ul>
+&lt;li>Debian/Ubuntu: &lt;code>apt install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;li>Fedora: &lt;code>dnf install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;li>OpenSUSE: &lt;code>zypper install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Always check your distro&amp;rsquo;s documentation for the correct packages and setup steps. The Fcitx5 configuration (environment variables, themes, etc.) will remain similar across Linux systems.&lt;/p>
+&lt;h1 id="1-install-packages">&lt;strong>1. Install Packages&lt;/strong>
+&lt;/h1>&lt;p>Run the following command to install Fcitx5 and Mozc:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo pacman -S fcitx5 fcitx5-configtool fcitx5-qt fcitx5-mozc-ut
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;h1 id="2-set-environment-variables">&lt;strong>2. Set Environment Variables&lt;/strong>
+&lt;/h1>&lt;p>Add these lines to your shell config file (&lt;code>~/.bashrc&lt;/code>, &lt;code>~/.zshrc&lt;/code>, or &lt;code>~/.profile&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GTK_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fcitx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">QT_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fcitx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XMODIFIERS&lt;/span>&lt;span class="o">=&lt;/span>@im&lt;span class="o">=&lt;/span>fcitx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Apply the changes&lt;/strong>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> ~/.zshrc &lt;span class="c1"># or source ~/.bashrc/etc &lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Log out and back in for the variables to take effect.&lt;/p>
+&lt;hr>
+&lt;h1 id="3-configure-fcitx5">&lt;strong>3. Configure Fcitx5&lt;/strong>
+&lt;/h1>&lt;ol>
+&lt;li>Open &lt;code>fcitx5-configtool&lt;/code> from your app menu or terminal.&lt;/li>
+&lt;li>Click &lt;strong>+&lt;/strong> → Uncheck &lt;em>&amp;ldquo;Only Show Current Language&amp;rdquo;&lt;/em> → Search &lt;strong>&amp;ldquo;mozc&amp;rdquo;&lt;/strong> → Add it.&lt;/li>
+&lt;li>Remove unnecessary input methods (e.g., &amp;ldquo;Keyboard - English&amp;rdquo;) if desired.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h1 id="4-enable-japanese-input">&lt;strong>4. Enable Japanese Input&lt;/strong>
+&lt;/h1>&lt;p>Press &lt;strong>Ctrl + Space&lt;/strong> to toggle between English and Japanese (Hiragana). Test by typing &lt;code>nihongo&lt;/code> → &lt;code>にほんご&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;h1 id="5-install-themes-optional">&lt;strong>5. Install Themes (Optional)&lt;/strong>
+&lt;/h1>&lt;p>With &lt;code>yay&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Dark theme &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-skin-fluentdark-git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Light theme &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-skin-fluentlight-git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Material Color &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-material-color
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Apply themes&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Right-click the Fcitx5 tray icon → &lt;strong>Configure&lt;/strong> → &lt;strong>Addons&lt;/strong> → &lt;strong>Classic UI&lt;/strong> → Select a skin.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="6-customize-mozc">&lt;strong>6. Customize Mozc&lt;/strong>
+&lt;/h1>&lt;p>Right-click the Fcitx5 tray icon → &lt;strong>Mozc Settings&lt;/strong> to adjust:&lt;/p>
+&lt;ul>
+&lt;li>Input mode (Romaji/Kana).&lt;/li>
+&lt;li>Dictionaries.&lt;/li>
+&lt;li>Keyboard shortcuts.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="troubleshooting">&lt;strong>Troubleshooting&lt;/strong>
+&lt;/h1>&lt;ul>
+&lt;li>&lt;strong>Fcitx5 not starting?&lt;/strong> Add it to your desktop environment’s autostart.&lt;/li>
+&lt;li>&lt;strong>Input not working in apps?&lt;/strong> For Electron apps (e.g., VS Code), add these flags to their &lt;code>.desktop&lt;/code> file:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">--enable-features=UseOzonePlatform --ozone-platform=wayland
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;p>Done! You now have a functional Japanese input setup. For advanced options, refer to the &lt;a class="link" href="https://wiki.archlinux.org/title/Fcitx5" target="_blank" rel="noopener"
+>Fcitx5 Wiki&lt;/a>.&lt;/p></description></item><item><title>PANDI Announces Price Adjustments for .my.id and .biz.id Domains</title><link>https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/</link><pubDate>Fri, 27 Dec 2024 16:37:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi.jpeg" alt="Featured image of post PANDI Announces Price Adjustments for .my.id and .biz.id Domains" />&lt;p>Recently, I received an email from my domain provider notifying me that PANDI
+will increase the prices for .my.id and .biz.id domains starting January 1,
+2025. However, this isn’t exactly breaking news. According to &lt;a class="link" href="https://ufal.my.id/2024/03/23/domain-myid-naik/" target="_blank" rel="noopener"
+>Ufal Salman’s
+blog post&lt;/a>, PANDI actually
+made the official announcement on Friday, March 15, 2024. What’s interesting is
+that the price adjustment will be rolled out in two phases. The first phase
+begins on July 1, 2024, followed by the second phase on January 1, 2025.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi1.png"
+width="985"
+height="1154"
+srcset="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi1_hu_ffa14ed598ee2469.png 480w, https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi1_hu_2733a0ae244905ae.png 1024w"
+loading="lazy"
+alt="PANDI Announcement"
+class="gallery-image"
+data-flex-grow="85"
+data-flex-basis="204px"
+>&lt;/p>
+&lt;p>Starting July 1, 2024, the renewal price for .my.id domains will rise to
+Rp50,000, while .biz.id domains will cost Rp100,000. Then, on January 1, 2025,
+both registration and renewal fees will align with these new prices. This is
+a significant jump from the previous rates, which ranged between Rp10,000 and
+Rp12,000.&lt;/p>
+&lt;p>These domains have long been a favorite for many due to their affordability and
+availability through numerous local registrars. Whether for personal blogs or
+business websites, .my.id and .biz.id have been reliable and cost-effective
+choices. However, with the upcoming price increases, some may start exploring
+other options.&lt;/p>
+&lt;p>When compared to other domains, the new price of .my.id will be similar to
+.ac.id, .sch.id, .or.id, and .web.id, which are priced around Rp50,000.
+Meanwhile, .id domains remain at Rp220,000, and .co.id at Rp300,000. Despite
+the hike, .my.id and .biz.id are still relatively budget-friendly compared to
+some premium domains.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/tax.png"
+width="638"
+height="706"
+srcset="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/tax_hu_7fee19752fe3bd39.png 480w, https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/tax_hu_e2df080d025949cd.png 1024w"
+loading="lazy"
+alt="Tax (VAT) rate will increase by 12% starting January 1st 2025"
+class="gallery-image"
+data-flex-grow="90"
+data-flex-basis="216px"
+>&lt;/p>
+&lt;p>Adding to the recent polemic about tax increases starting January 1, 2025,
+my domain provider also shared an email regarding the upcoming changes.
+Based on Law No. 7 of 2021 on the Harmonization of Tax Regulations,
+specifically Chapter IV Article 7 Paragraph (1), the Value Added Tax (VAT)
+rate will increase to 12% starting January 1, 2025. This means that all
+transactions, including new purchases and service renewals, will be
+subject to the new VAT rate.&lt;/p>
+&lt;p>However, the provider clarified that there will be no increase in the base
+price of new services or renewals, except for the specific services
+previously communicated via email.&lt;/p>
+&lt;p>If you’re looking to avoid the higher costs, here’s a tip: consider renewing
+your domain now for multiple years, depending on what your registrar offers.
+This allows you to lock in the current rate of Rp12,000, even after the price
+increase. While it requires a larger upfront payment, it’s a smart way to save
+money in the long run. Think of it as an investment in your domain’s future!&lt;/p></description></item><item><title>Be the Landlord of the Web, Not a Peasant</title><link>https://blog.nishimiya.my.id/post/landlord-of-the-web/</link><pubDate>Sun, 01 Dec 2024 00:30:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/landlord-of-the-web/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/pepe.jpeg" alt="Featured image of post Be the Landlord of the Web, Not a Peasant" />&lt;p>The web isn’t what it used to be. Once a place for creativity,
+exploration, and discovery, it’s now a minefield of ads, trackers, and
+bloated interfaces designed to keep you scrolling instead of getting
+things done. But here’s the thing: you don’t have to be a passive consumer
+in this digital kingdom. You can take control. You can own your
+experience. You can be the landlord of the web instead of just another
+peasant.&lt;/p>
+&lt;p>This is my setup for browsing the web—not just through a browser but
+beyond it. It’s not perfect, but it works for me. And maybe it’ll get you
+thinking about how to reclaim the web for yourself.&lt;/p>
+&lt;h2 id="my-browser-setup">My Browser Setup
+&lt;/h2>&lt;p>Let’s start with the browser. I use &lt;strong>Brave&lt;/strong> now, but I was a Firefox
+user before. Why did I switch? That’s a story for another time. What
+matters here is that Brave supports &lt;strong>Manifest V2&lt;/strong>, something Google is
+actively trying to kill.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/manifest-v2.png"
+width="676"
+height="408"
+srcset="https://blog.nishimiya.my.id/post/landlord-of-the-web/manifest-v2_hu_655c3ebbe9e1ae61.png 480w, https://blog.nishimiya.my.id/post/landlord-of-the-web/manifest-v2_hu_920b7927700110c4.png 1024w"
+loading="lazy"
+alt="Brave support for Manivest V2 Extension"
+class="gallery-image"
+data-flex-grow="165"
+data-flex-basis="397px"
+>&lt;/p>
+&lt;p>Now, I’m not one for conspiracy theories, but it’s hard to ignore how
+convenient it is for Google that &lt;strong>Manifest V3&lt;/strong> cripples ad blockers.
+uBlock Origin? Gone from the Chrome Web Store. Why? Because blocking ads
+doesn’t exactly line up with Google’s business model. But Brave? Brave
+still lets you use those powerful extensions.&lt;/p>
+&lt;p>Here’s what I’ve got installed:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>uBlock Origin&lt;/strong> to block ads and trackers.&lt;/li>
+&lt;li>&lt;strong>SponsorBlock&lt;/strong> to skip sponsored segments on YouTube.&lt;/li>
+&lt;li>&lt;strong>Dark Reader&lt;/strong> because light mode is an assault on my eyes.&lt;/li>
+&lt;li>&lt;strong>Vimium&lt;/strong> for fast, keyboard-driven browsing.&lt;/li>
+&lt;li>&lt;strong>Proton Pass and VPN&lt;/strong> for security and password management.&lt;/li>
+&lt;/ul>
+&lt;p>To enable Manifest V2 extensions in Brave:&lt;/p>
+&lt;ol>
+&lt;li>Open Brave settings&lt;/li>
+&lt;li>Search for Manifest V2 extensions&lt;/li>
+&lt;li>Enable the extensions, such as uBlock Origin, NoScript, uMatrix, and AdGuard&lt;/li>
+&lt;/ol>
+&lt;p>With this setup, I don’t have to deal with ads, pop-ups, or other
+nonsense. If your browser isn’t giving you that level of control, you’re
+doing it wrong.&lt;/p>
+&lt;h2 id="youtube-without-the-junk">YouTube Without the Junk
+&lt;/h2>&lt;p>Let’s talk about YouTube. It’s a mess—ads everywhere, autoplaying
+recommendations, and more distractions than a toddler in a toy store.
+Watching a single video shouldn’t feel like navigating a minefield.&lt;/p>
+&lt;p>So, here’s what I do:&lt;/p>
+&lt;ol>
+&lt;li>I use &lt;strong>Invidious&lt;/strong>, an ad-free front-end for YouTube. This instance works
+for me: &lt;a class="link" href="https://inv.nadeko.net/" target="_blank" rel="noopener"
+>inv.nadeko.net&lt;/a>.&lt;/li>
+&lt;li>Export your subscriptions from YouTube.
+&lt;ul>
+&lt;li>Go to &lt;a class="link" href="https://takeout.google.com/" target="_blank" rel="noopener"
+>Google Takeout&lt;/a>, request your YouTube
+data, and download it.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Import those subscriptions into Invidious.
+&lt;ul>
+&lt;li>Once imported, click the &lt;strong>RSS icon&lt;/strong> in your subscriptions tab to
+generate a feed (using a token if needed).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Use &lt;strong>Newsboat&lt;/strong>, a command-line RSS reader, to manage subscriptions.&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/bsky-rss-bridge.png"
+width="553"
+height="344"
+srcset="https://blog.nishimiya.my.id/post/landlord-of-the-web/bsky-rss-bridge_hu_b7e8a15bf066e901.png 480w, https://blog.nishimiya.my.id/post/landlord-of-the-web/bsky-rss-bridge_hu_dcc61dcc0be84f26.png 1024w"
+loading="lazy"
+alt="Fetching bsky post for RSS bridge"
+class="gallery-image"
+data-flex-grow="160"
+data-flex-basis="385px"
+>&lt;/p>
+&lt;p>Here’s the cool part: I don’t even need a browser to watch YouTube. My
+&lt;strong>Newsboat&lt;/strong> config file lets me use &lt;strong>MPV&lt;/strong> to play videos:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">browser qutebrowser
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">macro , open-in-browser
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">macro v set browser &amp;#34;setsid -f mpv --really-quiet --no-terminal&amp;#34;; open-in-browser; set browser browser
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Now I just press &lt;code>,v&lt;/code> in Newsboat, and the video plays in MPV, bypassing
+YouTube’s bloated interface entirely.&lt;/p>
+&lt;h2 id="social-media-no-thanks">Social Media? No Thanks
+&lt;/h2>&lt;p>Social media platforms are time sinks. Endless scrolls, algorithm-driven
+feeds, and constant distractions. But you don’t have to quit entirely. You
+can still get updates from accounts or topics you care about without
+logging into the platforms.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/newsboat-rss.png"
+width="1041"
+height="609"
+srcset="https://blog.nishimiya.my.id/post/landlord-of-the-web/newsboat-rss_hu_53d476d0172107c1.png 480w, https://blog.nishimiya.my.id/post/landlord-of-the-web/newsboat-rss_hu_c3d0680bb63d7fe3.png 1024w"
+loading="lazy"
+alt="My bsky feed transformed into RSS feed"
+class="gallery-image"
+data-flex-grow="170"
+data-flex-basis="410px"
+>&lt;/p>
+&lt;p>I use &lt;strong>RSS-Bridge&lt;/strong>, a tool that turns social media accounts into RSS
+feeds. Here’s how:&lt;/p>
+&lt;ol>
+&lt;li>Visit a public RSS-Bridge instance, like &lt;a class="link" href="https://rss-bridge.org/" target="_blank" rel="noopener"
+>RSS-Bridge&lt;/a>.&lt;/li>
+&lt;li>Search for a service, such as Bluesky, and enter the user’s handle.&lt;/li>
+&lt;li>Customize filters if needed and generate the feed.&lt;/li>
+&lt;li>Copy the &lt;strong>MRSS&lt;/strong> or &lt;strong>Atom&lt;/strong> link and add it to your RSS reader.&lt;/li>
+&lt;/ol>
+&lt;p>For example, you can follow Bluesky accounts without ever opening Bluesky.
+Not all bridges are perfect, but they work well enough to cut the noise
+and give you only what you need.&lt;/p>
+&lt;hr>
+&lt;h2 id="so-whats-the-point">So What’s the Point?
+&lt;/h2>&lt;p>The big players of the internet—Google, Meta, YouTube—they’re not looking
+out for you. They want your data, your clicks, your time. They’ve turned
+the web into a space designed to exploit, distract, and monetize.&lt;/p>
+&lt;p>But you don’t have to play along. You can carve out a web experience that
+works for you. Use tools like Brave, Invidious, RSS-Bridge, and Newsboat
+to reclaim control. Cut the bloat, skip the noise, and focus on what
+matters to you.&lt;/p>
+&lt;p>It’s not about being perfect or even radically different. It’s about
+realizing you have a choice. You don’t have to be a passive consumer in
+someone else’s digital kingdom. You can be the landlord. You just have to
+take the first step.&lt;/p></description></item><item><title>Computers were faster when they were slower!</title><link>https://blog.nishimiya.my.id/post/computer-were-faster-when-they-were-slower/</link><pubDate>Sat, 30 Nov 2024 10:25:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/computer-were-faster-when-they-were-slower/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/computer-were-faster-when-they-were-slower/moore.jpeg" alt="Featured image of post Computers were faster when they were slower!" />&lt;p>There’s a paradox in modern computing: computers today are faster, more
+powerful, and sleeker than ever before, yet they often &lt;em>feel&lt;/em> slower when doing
+everyday tasks. How can this be true? The answer lies in a growing mismatch
+between hardware advancements and software development practices.&lt;/p>
+&lt;h2 id="the-promise-of-moores-law">The Promise of Moore&amp;rsquo;s Law
+&lt;/h2>&lt;p>You’ve probably heard of &lt;strong>Moore&amp;rsquo;s Law&lt;/strong>, the observation made by Gordon Moore
+in 1965 that the number of transistors in an integrated circuit doubles
+approximately every two years. This doubling translates to exponential growth in
+computing power. For decades, this trend held true, allowing computers to become
+faster and more capable at an astonishing rate.&lt;/p>
+&lt;p>But while hardware performance has skyrocketed, the way we write software has
+changed dramatically, and not always for the better.&lt;/p>
+&lt;h2 id="the-reality-of-modern-software">The Reality of Modern Software
+&lt;/h2>&lt;p>In the early days of computing, resources were scarce. Developers had to be
+highly efficient, squeezing every ounce of performance out of limited hardware.
+Programs were carefully written to minimize memory use and maximize speed. But
+today, those constraints are less pressing. Why? Because hardware is &amp;ldquo;fast
+enough&amp;rdquo; to accommodate less efficient software. Or at least, that’s the
+assumption.&lt;/p>
+&lt;p>Take modern applications: instead of being optimized for speed and efficiency,
+they’re often bloated with unnecessary features, redundant processes, and layers
+of abstraction. Think of a simple text editor. In the past, it might have been
+a few kilobytes in size, designed to launch instantly and use minimal system
+resources. Today’s equivalent might consume hundreds of megabytes, taking
+seconds to load, even though it fundamentally performs the same function.&lt;/p>
+&lt;h2 id="the-bandwidth-vs-processing-paradox">The Bandwidth vs. Processing Paradox
+&lt;/h2>&lt;p>While internet bandwidth and storage capacities have dramatically increased, the
+responsiveness of software hasn’t kept pace. Consider web applications. Are they
+twice as fast as they were two years ago? Probably not. The complexity of modern
+web technologies—frameworks, plugins, and bloated libraries—often offsets the
+benefits of faster internet and improved hardware.&lt;/p>
+&lt;h2 id="an-embarrassing-anecdote">An Embarrassing Anecdote
+&lt;/h2>&lt;p>Here’s a real-life example of the inefficiency problem. A developer needed to
+number the lines of a text file. Instead of using a built-in Unix utility like
+&lt;code>nl&lt;/code>, which does this instantly, they wrote a Python script that looped through
+the file line by line. The script was not only redundant but far slower than the
+existing tool.&lt;/p>
+&lt;p>Why did this happen? Likely because the developer wasn’t familiar with the
+utilities already available on their system. This lack of awareness is
+increasingly common. Instead of learning to use efficient, purpose-built tools,
+many programmers default to reinventing the wheel, often less effectively.&lt;/p>
+&lt;h2 id="the-layers-of-abstraction">The Layers of Abstraction
+&lt;/h2>&lt;p>Another culprit is the growing reliance on layers of abstraction. Modern
+software often sits atop frameworks, libraries, and APIs that insulate
+developers from the underlying hardware. While abstraction makes development
+faster and more accessible, it can also lead to inefficiencies. For example,
+a web application might load dozens of unnecessary libraries to perform a single
+task, consuming memory and processing power needlessly.&lt;/p>
+&lt;h2 id="the-snowball-effect-of-inefficiency">The Snowball Effect of Inefficiency
+&lt;/h2>&lt;p>When everyone writes inefficient code, the inefficiencies accumulate. The result? Computers that are orders of magnitude more powerful than their predecessors often feel just as slow—or slower—because they’re bogged down by bloated software.&lt;/p>
+&lt;p>This trend is particularly noticeable in areas like:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Web browsers&lt;/strong>, which consume gigabytes of RAM to load basic websites.&lt;/li>
+&lt;li>&lt;strong>Operating systems&lt;/strong>, which include countless background processes and telemetry features.&lt;/li>
+&lt;li>&lt;strong>Games&lt;/strong>, which rely on technologies like DLSS or FSR to compensate for inefficient rendering pipelines.&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-path-forward">The Path Forward
+&lt;/h2>&lt;p>The solution isn’t to stop using modern tools or frameworks—they’ve made
+incredible advancements possible. But we do need to strike a balance. Developers
+should:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Learn the Basics&lt;/strong>: Familiarize themselves with existing tools and
+utilities. Why write a script when a built-in command will do?&lt;/li>
+&lt;li>&lt;strong>Focus on Efficiency&lt;/strong>: Write code that’s not just functional but also
+optimized for performance.&lt;/li>
+&lt;li>&lt;strong>Avoid Unnecessary Complexity&lt;/strong>: Use only the features and libraries truly
+needed for the task at hand.&lt;/li>
+&lt;li>&lt;strong>Adopt a Minimalist Mindset&lt;/strong>: Sometimes, less is more.&lt;/li>
+&lt;/ol>
+&lt;h2 id="conclusion">Conclusion
+&lt;/h2>&lt;p>As computers continue to grow more powerful, it’s crucial that we don’t take
+this progress for granted. Moore’s Law may keep advancing hardware capabilities,
+but it’s up to us to ensure that software development keeps pace. Otherwise,
+we’ll be stuck in a world where faster computers only mean slower programs.&lt;/p></description></item><item><title>Bsky Redirect Trick Using Cloudflare</title><link>https://blog.nishimiya.my.id/post/bsky-redirect/</link><pubDate>Wed, 20 Nov 2024 02:55:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/bsky-redirect/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/bsky-redirect/hero-image.webp" alt="Featured image of post Bsky Redirect Trick Using Cloudflare" />&lt;p>Recently, I came across an interesting and creative trick shared by
+&lt;a class="link" href="https://bsky.app/profile/flamesoulis.com/post/3lb7br5kezc2y" target="_blank" rel="noopener"
+>flamesoulis&lt;/a>.
+The trick involves using Cloudflare to create a seamless and branded
+redirection for Bluesky profiles or posts. It&amp;rsquo;s a clever approach that can
+make your links look cleaner and more professional, and I thought it would
+be exciting to share how you can implement it yourself. Whether you’re
+looking to personalize your profile link or simplify sharing specific
+posts, this method is both practical and easy to set up.&lt;/p>
+&lt;h2 id="step-1-create-a-cname-record">Step 1: Create a CNAME Record
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/bsky-redirect/1.png"
+width="1249"
+height="375"
+srcset="https://blog.nishimiya.my.id/post/bsky-redirect/1_hu_96edfc6fdf4f3b7c.png 480w, https://blog.nishimiya.my.id/post/bsky-redirect/1_hu_ba3c1268994e2952.png 1024w"
+loading="lazy"
+alt="CNAME"
+class="gallery-image"
+data-flex-grow="333"
+data-flex-basis="799px"
+>&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Log in to your Cloudflare Dashboard.&lt;/strong>&lt;/li>
+&lt;li>Go to the &lt;strong>DNS&lt;/strong> section and add a new record:
+&lt;ul>
+&lt;li>&lt;strong>Type:&lt;/strong> CNAME&lt;/li>
+&lt;li>&lt;strong>Name:&lt;/strong> &lt;code>bsky&lt;/code>&lt;/li>
+&lt;li>&lt;strong>Target:&lt;/strong> &lt;code>bsky.app/profile/nishimiya.my.id&lt;/code>&lt;br>
+Replace &lt;code>nishimiya.my.id&lt;/code> with your Bluesky username.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Save the changes.&lt;/li>
+&lt;/ol>
+&lt;h2 id="step-2-set-up-a-redirect-rule">Step 2: Set Up a Redirect Rule
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/bsky-redirect/2.png"
+width="1126"
+height="775"
+srcset="https://blog.nishimiya.my.id/post/bsky-redirect/2_hu_1ac7fce671fb0656.png 480w, https://blog.nishimiya.my.id/post/bsky-redirect/2_hu_8a4625996f389cb5.png 1024w"
+loading="lazy"
+alt="Redirect Rule"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="348px"
+>&lt;/p>
+&lt;ol>
+&lt;li>Navigate to the &lt;strong>Rules&lt;/strong> section from the sidebar.&lt;/li>
+&lt;li>In the dropdown menu, select &lt;strong>Redirect Rules&lt;/strong> and click &lt;strong>Create Rule&lt;/strong>.&lt;/li>
+&lt;/ol>
+&lt;h3 id="rule-configuration">Rule Configuration:
+&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Name:&lt;/strong> &amp;ldquo;Redirect to Different Domain [bsky]&amp;rdquo;&lt;/li>
+&lt;li>&lt;strong>Filter Expression:&lt;/strong>
+&lt;ul>
+&lt;li>Choose &lt;strong>Custom filter expression&lt;/strong>.&lt;/li>
+&lt;li>Set &lt;strong>Hostname&lt;/strong> to &lt;code>equals&lt;/code>.&lt;/li>
+&lt;li>Value: &lt;code>bsky.nishimiya.my.id&lt;/code> (replace &lt;code>nishimiya.my.id&lt;/code> with your username).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="url-redirect">URL Redirect:
+&lt;/h3>&lt;ul>
+&lt;li>Under &lt;strong>Type&lt;/strong>, choose &lt;strong>Dynamic&lt;/strong>.&lt;/li>
+&lt;li>Use the following expression in the field:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">concat(&amp;#34;https://bsky.app/profile/nishimiya.my.id&amp;#34;, http.request.uri.path)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>Replace &lt;code>nishimiya.my.id&lt;/code> with your username.&lt;/li>
+&lt;li>Set the &lt;strong>Status Code&lt;/strong> to &lt;strong>301&lt;/strong>.&lt;/li>
+&lt;li>Choose &lt;strong>Place At: First&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;ol start="3">
+&lt;li>Hit &lt;strong>Save&lt;/strong>.&lt;/li>
+&lt;/ol>
+&lt;h2 id="step-3-test-your-redirection">Step 3: Test Your Redirection
+&lt;/h2>&lt;p>Now that everything is set up, you can test your custom URL. Open your browser and try:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>https://bsky.nishimiya.my.id&lt;/code> — Redirects to your Bluesky profile.&lt;/li>
+&lt;li>&lt;code>https://bsky.nishimiya.my.id/post/3lbcmwvuyyg2v&lt;/code> — Redirects to a specific post on Bluesky.&lt;/li>
+&lt;/ul>
+&lt;p>This setup uses a &lt;strong>dynamic redirect&lt;/strong>, so the path after your custom
+subdomain is appended to the Bluesky URL. While Bluesky’s share feature
+provides direct links, this trick is a great way to create cleaner,
+branded URLs for your profile and posts.&lt;/p></description></item><item><title>Bridging MPD Server-client to Libre.fm Using Mpdas</title><link>https://blog.nishimiya.my.id/post/mpd-bridge-librefm/</link><pubDate>Thu, 14 Nov 2024 18:05:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/mpd-bridge-librefm/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/Libre.fm_logo.svg" alt="Featured image of post Bridging MPD Server-client to Libre.fm Using Mpdas" />&lt;h2 id="why-use-mpdas-with-librefm">Why Use Mpdas with Libre.fm?
+&lt;/h2>&lt;p>&lt;strong>Mpdas&lt;/strong> (MPD Audio Scrobbler) is a lightweight, efficient tool that acts
+as a bridge between MPD servers and scrobbling platforms like Libre.fm.
+For anyone unfamiliar, MPD is a versatile, open-source music server
+popular among audiophiles and Linux users. It plays music from a local
+library, internet radio, or streaming services, and it integrates well
+with various lightweight clients like &lt;strong>ncmpcpp&lt;/strong>.&lt;/p>
+&lt;p>Libre.fm, meanwhile, offers a refreshing alternative to Last.fm by
+prioritizing user control and open-source principles. It’s
+a community-oriented service that allows users to &amp;ldquo;scrobble&amp;rdquo; (log) their
+played tracks without sacrificing their data privacy. With Mpdas and
+Libre.fm, you can track what you’re listening to, explore your listening
+history, and discover music—all without corporate oversight.&lt;/p>
+&lt;h2 id="my-take-on-security-configuration-it-uses-plain-text-passwords">My take on Security Configuration: It Uses Plain Text Passwords
+&lt;/h2>&lt;p>As of &lt;strong>Mpdas version 0.4.3&lt;/strong>, &lt;strong>Last.fm deprecated MD5 password
+hashing&lt;/strong>, requiring Mpdas to switch to plain-text passwords. In this
+version, passwords for scrobbling services must be stored as plaintext in
+the configuration file. Although this might raise a security concern, you
+can protect your data by restricting access to the configuration file.
+Placing it in a restricted-access directory or managing permissions can
+help ensure that your password is secure on your machine.&lt;/p>
+&lt;h2 id="step-by-step-guide-to-setting-up-mpdas">Step-by-Step Guide to Setting Up Mpdas
+&lt;/h2>&lt;p>Ready to connect your MPD server to Libre.fm? Follow these steps, and
+you’ll be scrobbling in no time.&lt;/p>
+&lt;h3 id="step-1-install-mpdas">Step 1: Install Mpdas
+&lt;/h3>&lt;p>Installing Mpdas is straightforward, thanks to its availability in most
+Linux distribution repositories. Here’s a quick installation guide for
+some popular Linux distros:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Arch Linux&lt;/strong>: Install Mpdas using the &lt;code>yay&lt;/code> package manager.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yay -S mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Debian/Ubuntu&lt;/strong>: Install via &lt;code>apt&lt;/code> if Mpdas is available in the repositories.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt install mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Fedora&lt;/strong>: Use &lt;code>dnf&lt;/code> to install Mpdas, if it’s available in your repositories.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo dnf install mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;p>If Mpdas isn’t available through your package manager, you may need to
+compile it from source. The &lt;a class="link" href="https://github.com/hrkfdn/mpdas" target="_blank" rel="noopener"
+>official Mpdas GitHub
+repository&lt;/a> has detailed instructions on
+how to do this.&lt;/p>
+&lt;h3 id="step-2-configure-mpdas">Step 2: Configure Mpdas
+&lt;/h3>&lt;p>Once installed, you’ll need to configure Mpdas so it can log into your
+Libre.fm account and scrobble your plays.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Open the Mpdas configuration file, typically found at &lt;code>/etc/mpdasrc&lt;/code>.
+Use your preferred text editor with root permissions: &lt;code>sudo vim /etc/mpdasrc &lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In this file, add the following configuration, replacing &lt;code>&amp;lt;username&amp;gt;&lt;/code>
+and &lt;code>&amp;lt;plain-text-password&amp;gt;&lt;/code> with your actual Libre.fm credentials:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">username = &amp;lt;username&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">password = &amp;lt;plain-text-password&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = 6600
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">runas = mpd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service = librefm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">debug = 1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>Type &lt;code>ZZ&lt;/code> to write then quit.&lt;/p>
+&lt;p>Here’s what each setting does:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>username&lt;/strong> and &lt;strong>password&lt;/strong>: Your Libre.fm login credentials.&lt;/li>
+&lt;li>&lt;strong>port&lt;/strong>: Sets the MPD server connection port. Default is &lt;code>6600&lt;/code>, so if
+you haven’t customized your MPD setup, this should work fine.&lt;/li>
+&lt;li>&lt;strong>runas&lt;/strong>: Defines the user under which Mpdas should run. Here, it’s set
+to &lt;code>mpd&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>service&lt;/strong>: Specifies the scrobbling service. Set this to &lt;code>librefm&lt;/code> to
+scrobble with Libre.fm. (Default last.fm)&lt;/li>
+&lt;li>&lt;strong>debug&lt;/strong>: Enables debugging if set to &lt;code>1&lt;/code>, which can help with
+troubleshooting if needed.&lt;/li>
+&lt;/ul>
+&lt;ol start="3">
+&lt;li>Save and close the configuration file.&lt;/li>
+&lt;/ol>
+&lt;h3 id="step-3-enable-and-start-mpdas-as-a-user-service">Step 3: Enable and Start Mpdas as a User Service
+&lt;/h3>&lt;p>After configuring Mpdas, start it as a user service to keep it running in
+the background. By enabling it as a user service, Mpdas will run each time
+you log in, making the setup hassle-free.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Run the following command to enable and start Mpdas as a user service:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now --user mpdas.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This command does two things: it starts Mpdas immediately and ensures
+that it will start automatically each time you log in.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Open your MPD music client (e.g., &lt;code>ncmpcpp&lt;/code>) and start playing some
+music. This step will let you confirm that the setup is working
+properly.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Go to your Libre.fm profile and check the &amp;ldquo;Now Playing&amp;rdquo; section. If
+everything is set up correctly, you’ll see the current track being
+scrobbled in real-time, reflecting the music playing in your MPD
+client.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="step-4-loving-and-unloving-tracks-on-librefm">Step 4: Loving and Unloving Tracks on Libre.fm
+&lt;/h3>&lt;p>With Mpdas, you can also mark your favorite tracks by “Loving” them, just
+like on Last.fm. This feature allows you to mark songs you particularly
+enjoy for easier recall later.&lt;/p>
+&lt;p>To love a track, use the following command:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpc sendmessage mpdas love
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>If you want to unlove (or revert) a track, simply use:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpc sendmessage mpdas unlove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="wrapping-up-enjoy-real-time-music-tracking-with-librefm">Wrapping Up: Enjoy Real-Time Music Tracking with Libre.fm
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm.png"
+width="784"
+height="893"
+srcset="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm_hu_fd55960d155dacfe.png 480w, https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm_hu_6bc0a22acc86d005.png 1024w"
+loading="lazy"
+alt="Nishimiya’s Profile on Libre.fm"
+class="gallery-image"
+data-flex-grow="87"
+data-flex-basis="210px"
+>&lt;/p>
+&lt;p>Congratulations! With Mpdas up and running, you now have a powerful,
+privacy-focused way to track your listening habits. This setup combines the
+flexibility of MPD, the simplicity of Mpdas, and the openness of Libre.fm,
+giving you a complete music experience that respects your data and privacy.&lt;/p>
+&lt;p>Now, your plays are seamlessly logged on Libre.fm. Whether you’re using
+&lt;strong>ncmpcpp&lt;/strong>, &lt;strong>Cantata&lt;/strong>, or any other MPD client, you’ll be able to track and
+analyze your music tastes effortlessly. So sit back, press play, and enjoy your
+music journey!&lt;/p></description></item><item><title>Building a BlueSky Bot that Shares Your Current Song with MPD</title><link>https://blog.nishimiya.my.id/post/bsky-music-bot/</link><pubDate>Sun, 10 Nov 2024 18:55:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/bsky-music-bot/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/bsky-music-bot/github.jpg" alt="Featured image of post Building a BlueSky Bot that Shares Your Current Song with MPD" />&lt;p>My journey with Bluesky started with a spark of curiosity. After exploring
+the platform, I found myself diving deeper into how their system works,
+eventually leading me to a fun and practical project: building a bot that
+shares your current song with Bluesky using MPD (Music Player Daemon).
+This project has been a great opportunity to get hands-on experience with
+Bluesky’s API and automate something useful for myself.&lt;/p>
+&lt;p>While the initial goal was simply to create a basic bot template that
+posts something to Bluesky, I decided to focus specifically on building
+a bot that automatically shares your current song—if you’re using Linux
+and MPD. But I don’t want to stop here. I plan to further improve it with
+Last.fm scrobbling, and maybe even integrate with YouTube music streaming.
+However, those ideas are still a work in progress, and I need to figure
+out how best to implement them.&lt;/p>
+&lt;p>In this post, I&amp;rsquo;ll break down what this bot does, step by step, and
+provide code snippets along the way to show how each piece works.&lt;/p>
+&lt;h2 id="breaking-down-the-bot-from-concept-to-execution">Breaking Down the Bot: From Concept to Execution
+&lt;/h2>&lt;h3 id="1-getting-started-with-bluesky">1. Getting Started with Bluesky
+&lt;/h3>&lt;p>Before diving into the code, we need to interact with the Bluesky
+platform. Bluesky offers a simple API, which we can use to post updates.
+To do this, I used the &lt;code>@atproto/api&lt;/code> package to interact with the Bluesky
+API.&lt;/p>
+&lt;p>&lt;strong>What we’re doing&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Logging into Bluesky&lt;/strong> using your username and password (stored
+securely with &lt;code>dotenv&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Posting a text update&lt;/strong> to Bluesky, which will be our song info.&lt;/li>
+&lt;/ul>
+&lt;p>Here&amp;rsquo;s how we log in and post to Bluesky:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">api&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;@atproto/api&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">dotenv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;dotenv&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">dotenv&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">agent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BskyAgent&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">service&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;https://bsky.social&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Login to Bluesky with credentials stored in the environment variables
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">login&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">identifier&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_USERNAME&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">password&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_PASSWORD&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// The bot will post this text (current song info)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">songText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Post the song info as a status update on Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">post&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">text&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">songText&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Successfully posted to Bluesky:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;Error posting to Bluesky:&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="2-getting-current-song-information-from-mpd">2. Getting Current Song Information from MPD
+&lt;/h3>&lt;p>Next, we need to interact with MPD (Music Player Daemon), which is
+a server-side application that controls music playback. We’ll use the
+&lt;code>mpd-api&lt;/code> library to fetch the currently playing song from MPD.&lt;/p>
+&lt;p>Here’s a simple function to retrieve the current song&amp;rsquo;s title, artist, and
+album:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">mpdapi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;mpd-api&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">config&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">host&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;127.0.0.1&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">port&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">6600&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Default MPD port
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Connect to MPD and get the status
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">client&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">mpdapi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">status&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">get&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">currentSong&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">currentsong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// If a song is playing, return its info; otherwise, return a default message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">state&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s1">&amp;#39;play&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sb">`Now playing: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">title&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> by &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">artist&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> from the album &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">album&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;No song currently playing.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;Error fetching song info:&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Error retrieving song info.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>In this code:&lt;/p>
+&lt;ul>
+&lt;li>We connect to MPD (running locally on &lt;code>127.0.0.1&lt;/code> at port &lt;code>6600&lt;/code>).&lt;/li>
+&lt;li>We fetch the current song details if MPD is playing, and we return
+a string with the song title, artist, and album.&lt;/li>
+&lt;li>If no song is playing, we return a message saying so.&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-putting-it-all-together">3. Putting It All Together
+&lt;/h3>&lt;p>Now that we have the logic to retrieve the song info from MPD and post to
+Bluesky, it’s time to combine them into a full working bot.&lt;/p>
+&lt;p>Here’s what happens:&lt;/p>
+&lt;ul>
+&lt;li>The bot first logs in to Bluesky using your credentials.&lt;/li>
+&lt;li>It then gets the current song from MPD.&lt;/li>
+&lt;li>Finally, it posts the song details to Bluesky as a status update.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Here’s the full code for the bot&lt;/strong>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;span class="lnt">79
+&lt;/span>&lt;span class="lnt">80
+&lt;/span>&lt;span class="lnt">81
+&lt;/span>&lt;span class="lnt">82
+&lt;/span>&lt;span class="lnt">83
+&lt;/span>&lt;span class="lnt">84
+&lt;/span>&lt;span class="lnt">85
+&lt;/span>&lt;span class="lnt">86
+&lt;/span>&lt;span class="lnt">87
+&lt;/span>&lt;span class="lnt">88
+&lt;/span>&lt;span class="lnt">89
+&lt;/span>&lt;span class="lnt">90
+&lt;/span>&lt;span class="lnt">91
+&lt;/span>&lt;span class="lnt">92
+&lt;/span>&lt;span class="lnt">93
+&lt;/span>&lt;span class="lnt">94
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="s2">&amp;#34;use strict&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">var&lt;/span> &lt;span class="nx">__createBinding&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__createBinding&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">create&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">k2&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="kc">undefined&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nx">k2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">var&lt;/span> &lt;span class="nx">desc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">getOwnPropertyDescriptor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nx">desc&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;get&amp;#34;&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="nx">desc&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="o">!&lt;/span>&lt;span class="nx">m&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__esModule&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="nx">desc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">writable&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="nx">desc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">configurable&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">desc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">enumerable&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">get&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kd">function&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">k&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">defineProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">desc&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">})&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">k2&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="kc">undefined&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nx">k2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">o&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">k2&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">k&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">var&lt;/span> &lt;span class="nx">__setModuleDefault&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__setModuleDefault&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">create&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">defineProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">enumerable&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">value&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">v&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">})&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">o&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">v&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">var&lt;/span> &lt;span class="nx">__importStar&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__importStar&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__esModule&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">var&lt;/span> &lt;span class="nx">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">var&lt;/span> &lt;span class="nx">k&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">k&lt;/span> &lt;span class="o">!==&lt;/span> &lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">prototype&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">hasOwnProperty&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">call&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="nx">__createBinding&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">result&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">__setModuleDefault&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">result&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">defineProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">exports&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;__esModule&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">value&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">api_1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;@atproto/api&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">dotenv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">__importStar&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;dotenv&amp;#34;&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">mpdapi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">__importStar&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;mpd-api&amp;#34;&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Load environment variables
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nx">dotenv&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Create a Bluesky Agent
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">agent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">api_1&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BskyAgent&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">service&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;https://bsky.social&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Function to connect to MPD and log the current song
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Define connection configuration
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">config&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">host&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;127.0.0.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// MPD server host
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">port&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">6600&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// MPD server port
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// password: &amp;#39;yourpassword&amp;#39;, // Uncomment if MPD requires a password
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Connect to MPD using the config object
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">client&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">mpdapi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Connected to MPD&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Get the playback state and currently playing song
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">status&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">get&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">currentSong&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">currentsong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Check if MPD is currently playing something
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">state&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s2">&amp;#34;play&amp;#34;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">songInfo&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">title&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">title&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;Unknown Title&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">artist&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">artist&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;Unknown Artist&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">album&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">album&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;Unknown Album&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">songText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sb">`Now playing: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">songInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">title&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> by &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">songInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">artist&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> from the album &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">songInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">album&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">songText&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">songText&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;No song currently playing.&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;No song currently playing.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Disconnect from MPD
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">disconnect&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Error connecting to MPD or retrieving song information:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Error retrieving song info.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Function to post current song info to Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Login to Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">login&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">identifier&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_USERNAME&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Explicitly cast to string
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">password&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_PASSWORD&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Explicitly cast to string
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Get the current song info
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">currentSongText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Post the current song info to Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">post&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">text&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSongText&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Successfully posted to Bluesky:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Error posting to Bluesky:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Run the Bluesky post function
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="running-the-bot-locally">&lt;strong>Running the Bot Locally&lt;/strong>
+&lt;/h2>&lt;p>To run the bot locally:&lt;/p>
+&lt;ol>
+&lt;li>Install the necessary dependencies with &lt;code>npm install&lt;/code>.&lt;/li>
+&lt;li>Create a &lt;code>.env&lt;/code> file to store your Bluesky credentials:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">BLUESKY_USERNAME=your_username
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BLUESKY_PASSWORD=your_password
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>Run the bot using &lt;code>node index.js&lt;/code>.&lt;/li>
+&lt;/ol>
+&lt;p>When you run the bot, it will:&lt;/p>
+&lt;ul>
+&lt;li>Log into Bluesky.&lt;/li>
+&lt;li>Retrieve the current song from MPD.&lt;/li>
+&lt;li>Post the song info to Bluesky as a status update.&lt;/li>
+&lt;/ul>
+&lt;p>You should see the current song in your Bluesky feed!&lt;/p>
+&lt;h2 id="next-steps-expanding-the-bot">Next Steps: Expanding the Bot
+&lt;/h2>&lt;p>This bot is a great starting point, but there’s a lot of room for improvement:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Last.fm Scrobbling&lt;/strong>: Integrate Last.fm API to scrobble the songs you listen to.&lt;/li>
+&lt;li>&lt;strong>YouTube Integration&lt;/strong>: If you want to share music from YouTube, you’ll need to figure out how to extract the currently playing video or song.&lt;/li>
+&lt;li>&lt;strong>Scheduled Posts&lt;/strong>: You could set up a scheduled task to post updates periodically instead of only when triggered manually.&lt;/li>
+&lt;/ul>
+&lt;h3 id="check-out-the-full-code-on-github">Check Out the Full Code on GitHub
+&lt;/h3>&lt;p>If you want to explore the full project, check out the repository on GitHub:
+&lt;a class="link" href="https://github.com/nishimi-ya/mpd-bsky-bot" target="_blank" rel="noopener"
+>https://github.com/nishimi-ya/mpd-bsky-bot&lt;/a>&lt;/p></description></item><item><title>Changing the Social Media Paradigm</title><link>https://blog.nishimiya.my.id/post/social-media-paradigm/</link><pubDate>Thu, 07 Nov 2024 01:40:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/social-media-paradigm/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/social-media-paradigm/hero-image.webp" alt="Featured image of post Changing the Social Media Paradigm" />&lt;p>Social media has revolutionized how we communicate, but the dynamics of major
+platforms like Twitter have grown increasingly problematic. Despite its mass
+appeal, Twitter’s model centers on engagement maximization, frequently elevating
+divisive or controversial content that keeps users hooked and engaged for
+profit. However, a wave of decentralized platforms, such as Mastodon, Bluesky,
+and others on the Fediverse, offer an alternative approach that challenges
+Twitter&amp;rsquo;s engagement-driven model. Understanding the differences between these
+platforms reveals why a shift in our approach to social media could benefit
+society as a whole.&lt;/p>
+&lt;h2 id="the-twitter-model-engagement-at-all-costs">The Twitter Model: Engagement at All Costs
+&lt;/h2>&lt;p>Twitter&amp;rsquo;s design has always prioritized engagement. Upon logging in, users are
+bombarded with tweets that the platform’s algorithm considers likely to elicit
+strong reactions. It’s no secret that highly engaging content often means
+divisive, controversial, or sensational material. Posts from political extremes
+or inflammatory &amp;ldquo;hot takes&amp;rdquo; are algorithmically favored because they drive
+comments, shares, and responses, ultimately resulting in more time spent on the
+platform.&lt;/p>
+&lt;p>Under Elon Musk&amp;rsquo;s leadership, Twitter added a new revenue-driven dimension to
+this engagement model. The introduction of subscription-based blue and gold
+checkmarks exemplifies this shift, allowing users to boost their visibility for
+a fee. The model incentivizes “pay-to-play” dynamics that reinforce Twitter’s
+corporate-driven focus: maximizing attention and profit at the expense of
+balanced, organic user engagement.&lt;/p>
+&lt;p>Additionally, Twitter’s centralized structure means that a single corporate
+entity controls the algorithms, user data, and rules of engagement, shaping
+content visibility according to business interests. In contrast, the rise of
+decentralized social networks like Bluesky and the Fediverse offers a fresh
+perspective on how social media could function more equitably.&lt;/p>
+&lt;h2 id="decentralized-platforms-a-new-social-media-paradigm">Decentralized Platforms: A New Social Media Paradigm
+&lt;/h2>&lt;p>Unlike Twitter, platforms like Mastodon, Bluesky, and other Fediverse-based
+networks operate on decentralized principles. This shift fundamentally changes
+how users interact, curate content, and govern their social media experience.&lt;/p>
+&lt;p>Bluesky, for instance, resembles Twitter’s interface, but it breaks away from
+the engagement-first approach by using the “AT Protocol,” which decentralizes
+social media hosting and management. Instead of an algorithmically driven feed
+that maximizes engagement, Bluesky puts content control in users’ hands,
+offering options like &amp;ldquo;More Posts Like This&amp;rdquo; or &amp;ldquo;Less Posts Like This.&amp;rdquo; This
+simple preference mechanism gives users greater agency in tailoring their feeds
+without relying on corporate algorithms.&lt;/p>
+&lt;p>The AT Protocol also introduces a decentralized identity structure, often
+abbreviated as DID (Decentralized Identifier). This protocol empowers users to
+manage their online identity across different platforms without being tied to
+a single corporate entity. A DID is a unique identifier that’s authenticated via
+blockchain-like protocols, allowing users to move across compatible networks
+while retaining their identity and data.&lt;/p>
+&lt;p>Moreover, Bluesky’s system allows users to register domain names as
+usernames—something that costs as little as $1. This affordable, user-centric
+identity structure contrasts with Twitter&amp;rsquo;s blue-checkmark model, which offers
+verification and engagement boosts at a premium. In essence, Bluesky values
+accessibility and user autonomy over profit, opening a door for more equitable
+social media practices.&lt;/p>
+&lt;h2 id="the-fediverse-a-decentralized-network-of-social-platforms">The Fediverse: A Decentralized Network of Social Platforms
+&lt;/h2>&lt;p>In addition to Bluesky, the Fediverse is a collection of decentralized social
+networks, each hosting independent communities while allowing cross-platform
+interaction. Platforms like Mastodon operate on open-source protocols that
+anyone can use to create their own social space, making it inherently
+community-driven. Unlike Twitter’s top-down approach, the Fediverse enables
+a bottom-up structure where individual servers (or “instances”) are
+independently managed, giving power to the community rather than to a corporate
+overseer.&lt;/p>
+&lt;p>This decentralized structure means that each community has its own moderation
+rules and culture, reducing the influence of profit-driven algorithms and
+allowing users to escape the echo chambers often exacerbated by mainstream
+social media. The Fediverse encourages organic, interest-based networking, free
+from engagement-manipulating algorithms, ultimately offering a healthier, more
+intentional social media experience.&lt;/p>
+&lt;h2 id="why-this-shift-matters">Why This Shift Matters
+&lt;/h2>&lt;p>As digital citizens, we must consider the impact of algorithm-driven engagement
+on our online behavior and mental health. Twitter&amp;rsquo;s centralized and
+profit-oriented model fosters divisiveness and “doomscrolling,” but
+decentralized platforms encourage users to make more intentional choices.
+Decentralized social networks like Bluesky, Mastodon, and others in the
+Fediverse are designed to prioritize user control, community governance, and
+genuine interaction over sensationalism and profit.&lt;/p>
+&lt;p>This shift requires a collective change in mindset. Embracing decentralized
+platforms means choosing a more user-centered approach to social media, one that
+values authentic interaction over the “likes” and “shares” race. It’s a paradigm
+shift that prioritizes our well-being and fosters healthier online communities.&lt;/p>
+&lt;p>While Twitter may still hold a prominent place in the social media landscape,
+its centralized, profit-driven model doesn’t have to be the default.
+Decentralized networks like Bluesky and the Fediverse offer a new way forward,
+one that we should seriously consider as we continue to navigate the complex
+world of online communication.&lt;/p></description></item></channel></rss>

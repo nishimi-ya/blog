@@ -1,0 +1,347 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="Learn how to create a bot that posts your current song to BlueSky with this step-by-step guide."><title>Building a BlueSky Bot that Shares Your Current Song with MPD</title>
+<link rel=canonical href=https://blog.nishimiya.my.id/post/bsky-music-bot/><link rel=stylesheet href=/scss/style.min.c23d76586e34a09bc8424bf6541dd2d3178926f7976b240a9bd8ea5346d93e6d.css><meta property='og:title' content="Building a BlueSky Bot that Shares Your Current Song with MPD"><meta property='og:description' content="Learn how to create a bot that posts your current song to BlueSky with this step-by-step guide."><meta property='og:url' content='https://blog.nishimiya.my.id/post/bsky-music-bot/'><meta property='og:site_name' content='Nishimiya'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='BlueSky'><meta property='article:tag' content='social media'><meta property='article:tag' content='code'><meta property='article:published_time' content='2024-11-10T18:55:00+07:00'><meta property='article:modified_time' content='2024-11-24T06:47:37+07:00'><meta property='og:image' content='https://blog.nishimiya.my.id/post/bsky-music-bot/github.jpg'><meta name=twitter:title content="Building a BlueSky Bot that Shares Your Current Song with MPD"><meta name=twitter:description content="Learn how to create a bot that posts your current song to BlueSky with this step-by-step guide."><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://blog.nishimiya.my.id/post/bsky-music-bot/github.jpg'><link rel="shortcut icon" href=/favicon.ico></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_44625d81d226a90.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍣</span></figure><div class=site-meta><h1 class=site-name><a href=/>Nishimiya</a></h1><h2 class=site-description>Hello I'm Nishimiya! In here you'll come across about my philosophies regarding current tech, computers, decentralisation, fediverse, and anything!</h2></div></header><ol class=menu-social><li><a href=https://bsky.app/profile/nishimiya.my.id target=_blank title=Bluesky rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.335 5.144C4.681 3.945 2 3.017 2 5.97c0 .59.35 4.953.556 5.661C3.269 14.094 5.686 14.381 8 14c-4.045.665-4.889 3.208-2.667 5.41C6.363 20.428 7.246 21 8 21c2 0 3.134-2.769 3.5-3.5.333-.667.5-1.167.5-1.5.0.333.167.833.5 1.5.366.731 1.5 3.5 3.5 3.5.754.0 1.637-.571 2.667-1.59C20.889 17.207 20.045 14.664 16 14c2.314.38 4.73.094 5.444-2.369.206-.708.556-5.072.556-5.661.0-2.953-2.68-2.025-4.335-.826C15.372 6.806 12.905 10.192 12 12c-.905-1.808-3.372-5.194-5.665-6.856z"/></svg></a></li><li><a href=https://github.com/nishimi-ya/ target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://last.fm/user/nishi-miya target=_blank title=LastFM rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-lastfm"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 8c-.83-1-1.388-1-2-1-.612.0-2 .271-2 2s1.384 2.233 3 3 2.125 1.812 2 3-1 2-3 2-3-1-3.5-2-1.585-4.78-2.497-6a5 5 0 10-1 7"/></svg></a></li><li><a href=https://layer8.space/@nishimiya target=_blank title=Mastodon rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.648 15.254C16.832 17.017 12 16.88 12 16.88a18.262 18.262.0 01-3.288-.256c1.127 1.985 4.12 2.81 8.982 2.475-1.945 2.013-13.598 5.257-13.668-7.636L4 10.309c0-3.036.023-4.115 1.352-5.633C7.023 2.766 12 3.01 12 3.01s4.977-.243 6.648 1.667C19.977 6.195 20 7.274 20 10.31s-.456 4.074-1.352 4.944z"/><path d="M12 11.204V8.278C12 7.02 11.105 6 10 6S8 7.02 8 8.278V13m4-4.722C12 7.02 12.895 6 14 6s2 1.02 2 2.278V13"/></svg></a></li><li><a href=https://blog.nishimiya.my.id/index.xml target=_blank title=RSS rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19m-1 0a1 1 0 102 0 1 1 0 10-2 0"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/about-me/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6A6 6 0 019 6a6 6 0 01-6 6 6 6 0 016 6z"/></svg>
+<span>About me</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#breaking-down-the-bot-from-concept-to-execution>Breaking Down the Bot: From Concept to Execution</a><ol><li><a href=#1-getting-started-with-bluesky>1. Getting Started with Bluesky</a></li><li><a href=#2-getting-current-song-information-from-mpd>2. Getting Current Song Information from MPD</a></li><li><a href=#3-putting-it-all-together>3. Putting It All Together</a></li></ol></li><li><a href=#running-the-bot-locally><strong>Running the Bot Locally</strong></a></li><li><a href=#next-steps-expanding-the-bot>Next Steps: Expanding the Bot</a><ol><li><a href=#check-out-the-full-code-on-github>Check Out the Full Code on GitHub</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/post/bsky-music-bot/><img src=/post/bsky-music-bot/github_hu_8b7a8f6acd1d309.jpg srcset="/post/bsky-music-bot/github_hu_8b7a8f6acd1d309.jpg 800w, /post/bsky-music-bot/github_hu_c326b6bd3465f40e.jpg 1600w" width=800 height=523 loading=lazy alt="Featured image of post Building a BlueSky Bot that Shares Your Current Song with MPD"></a></div><div class=article-details><header class=article-category><a href=/categories/tech/ style=background-color:#454e9e;color:#fff>Tech</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/post/bsky-music-bot/>Building a BlueSky Bot that Shares Your Current Song with MPD</a></h2><h3 class=article-subtitle>Learn how to create a bot that posts your current song to BlueSky with this step-by-step guide.</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Nov 10, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>7 minute read</time></div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6A6 6 0 019 6a6 6 0 01-6 6 6 6 0 016 6z"/></svg>
+By Nishimiya</div></footer></div></header><section class=article-content><p>My journey with Bluesky started with a spark of curiosity. After exploring
+the platform, I found myself diving deeper into how their system works,
+eventually leading me to a fun and practical project: building a bot that
+shares your current song with Bluesky using MPD (Music Player Daemon).
+This project has been a great opportunity to get hands-on experience with
+Bluesky’s API and automate something useful for myself.</p><p>While the initial goal was simply to create a basic bot template that
+posts something to Bluesky, I decided to focus specifically on building
+a bot that automatically shares your current song—if you’re using Linux
+and MPD. But I don’t want to stop here. I plan to further improve it with
+Last.fm scrobbling, and maybe even integrate with YouTube music streaming.
+However, those ideas are still a work in progress, and I need to figure
+out how best to implement them.</p><p>In this post, I&rsquo;ll break down what this bot does, step by step, and
+provide code snippets along the way to show how each piece works.</p><h2 id=breaking-down-the-bot-from-concept-to-execution>Breaking Down the Bot: From Concept to Execution</h2><h3 id=1-getting-started-with-bluesky>1. Getting Started with Bluesky</h3><p>Before diving into the code, we need to interact with the Bluesky
+platform. Bluesky offers a simple API, which we can use to post updates.
+To do this, I used the <code>@atproto/api</code> package to interact with the Bluesky
+API.</p><p><strong>What we’re doing</strong>:</p><ul><li><strong>Logging into Bluesky</strong> using your username and password (stored
+securely with <code>dotenv</code>).</li><li><strong>Posting a text update</strong> to Bluesky, which will be our song info.</li></ul><p>Here&rsquo;s how we log in and post to Bluesky:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>api</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;@atproto/api&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>dotenv</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;dotenv&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>dotenv</span><span class=p>.</span><span class=nx>config</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>agent</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>api</span><span class=p>.</span><span class=nx>BskyAgent</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=nx>service</span><span class=o>:</span> <span class=s1>&#39;https://bsky.social&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>async</span> <span class=kd>function</span> <span class=nx>postToBluesky</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Login to Bluesky with credentials stored in the environment variables
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>await</span> <span class=nx>agent</span><span class=p>.</span><span class=nx>login</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>identifier</span><span class=o>:</span> <span class=nx>process</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>BLUESKY_USERNAME</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>password</span><span class=o>:</span> <span class=nx>process</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>BLUESKY_PASSWORD</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// The bot will post this text (current song info)
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>songText</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>logCurrentSong</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// Post the song info as a status update on Bluesky
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>response</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>agent</span><span class=p>.</span><span class=nx>post</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>text</span><span class=o>:</span> <span class=nx>songText</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Successfully posted to Bluesky:&#34;</span><span class=p>,</span> <span class=nx>response</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>catch</span> <span class=p>(</span><span class=nx>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s1>&#39;Error posting to Bluesky:&#39;</span><span class=p>,</span> <span class=nx>error</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>postToBluesky</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-getting-current-song-information-from-mpd>2. Getting Current Song Information from MPD</h3><p>Next, we need to interact with MPD (Music Player Daemon), which is
+a server-side application that controls music playback. We’ll use the
+<code>mpd-api</code> library to fetch the currently playing song from MPD.</p><p>Here’s a simple function to retrieve the current song&rsquo;s title, artist, and
+album:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>mpdapi</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;mpd-api&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>async</span> <span class=kd>function</span> <span class=nx>logCurrentSong</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>config</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>host</span><span class=o>:</span> <span class=s1>&#39;127.0.0.1&#39;</span><span class=p>,</span> <span class=c1>// Localhost
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nx>port</span><span class=o>:</span> <span class=mi>6600</span><span class=p>,</span>         <span class=c1>// Default MPD port
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// Connect to MPD and get the status
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>client</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>mpdapi</span><span class=p>.</span><span class=nx>connect</span><span class=p>(</span><span class=nx>config</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>status</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>api</span><span class=p>.</span><span class=nx>status</span><span class=p>.</span><span class=nx>get</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>currentSong</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>api</span><span class=p>.</span><span class=nx>status</span><span class=p>.</span><span class=nx>currentsong</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// If a song is playing, return its info; otherwise, return a default message
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=nx>status</span><span class=p>.</span><span class=nx>state</span> <span class=o>===</span> <span class=s1>&#39;play&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>currentSong</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=sb>`Now playing: </span><span class=si>${</span><span class=nx>currentSong</span><span class=p>.</span><span class=nx>title</span><span class=si>}</span><span class=sb> by </span><span class=si>${</span><span class=nx>currentSong</span><span class=p>.</span><span class=nx>artist</span><span class=si>}</span><span class=sb> from the album </span><span class=si>${</span><span class=nx>currentSong</span><span class=p>.</span><span class=nx>album</span><span class=si>}</span><span class=sb>`</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=s2>&#34;No song currently playing.&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>catch</span> <span class=p>(</span><span class=nx>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s1>&#39;Error fetching song info:&#39;</span><span class=p>,</span> <span class=nx>error</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=s2>&#34;Error retrieving song info.&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>In this code:</p><ul><li>We connect to MPD (running locally on <code>127.0.0.1</code> at port <code>6600</code>).</li><li>We fetch the current song details if MPD is playing, and we return
+a string with the song title, artist, and album.</li><li>If no song is playing, we return a message saying so.</li></ul><h3 id=3-putting-it-all-together>3. Putting It All Together</h3><p>Now that we have the logic to retrieve the song info from MPD and post to
+Bluesky, it’s time to combine them into a full working bot.</p><p>Here’s what happens:</p><ul><li>The bot first logs in to Bluesky using your credentials.</li><li>It then gets the current song from MPD.</li><li>Finally, it posts the song details to Bluesky as a status update.</li></ul><p><strong>Here’s the full code for the bot</strong>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span><span class=lnt>93
+</span><span class=lnt>94
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=s2>&#34;use strict&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>__createBinding</span> <span class=o>=</span> <span class=p>(</span><span class=k>this</span> <span class=o>&amp;&amp;</span> <span class=k>this</span><span class=p>.</span><span class=nx>__createBinding</span><span class=p>)</span> <span class=o>||</span> <span class=p>(</span><span class=nb>Object</span><span class=p>.</span><span class=nx>create</span> <span class=o>?</span> <span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>o</span><span class=p>,</span> <span class=nx>m</span><span class=p>,</span> <span class=nx>k</span><span class=p>,</span> <span class=nx>k2</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>k2</span> <span class=o>===</span> <span class=kc>undefined</span><span class=p>)</span> <span class=nx>k2</span> <span class=o>=</span> <span class=nx>k</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>desc</span> <span class=o>=</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>getOwnPropertyDescriptor</span><span class=p>(</span><span class=nx>m</span><span class=p>,</span> <span class=nx>k</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=nx>desc</span> <span class=o>||</span> <span class=p>(</span><span class=s2>&#34;get&#34;</span> <span class=k>in</span> <span class=nx>desc</span> <span class=o>?</span> <span class=o>!</span><span class=nx>m</span><span class=p>.</span><span class=nx>__esModule</span> <span class=o>:</span> <span class=nx>desc</span><span class=p>.</span><span class=nx>writable</span> <span class=o>||</span> <span class=nx>desc</span><span class=p>.</span><span class=nx>configurable</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>desc</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>enumerable</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span> <span class=nx>get</span><span class=o>:</span> <span class=kd>function</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=nx>m</span><span class=p>[</span><span class=nx>k</span><span class=p>];</span> <span class=p>}</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=nb>Object</span><span class=p>.</span><span class=nx>defineProperty</span><span class=p>(</span><span class=nx>o</span><span class=p>,</span> <span class=nx>k2</span><span class=p>,</span> <span class=nx>desc</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>})</span> <span class=o>:</span> <span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>o</span><span class=p>,</span> <span class=nx>m</span><span class=p>,</span> <span class=nx>k</span><span class=p>,</span> <span class=nx>k2</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>k2</span> <span class=o>===</span> <span class=kc>undefined</span><span class=p>)</span> <span class=nx>k2</span> <span class=o>=</span> <span class=nx>k</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>o</span><span class=p>[</span><span class=nx>k2</span><span class=p>]</span> <span class=o>=</span> <span class=nx>m</span><span class=p>[</span><span class=nx>k</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>}));</span>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>__setModuleDefault</span> <span class=o>=</span> <span class=p>(</span><span class=k>this</span> <span class=o>&amp;&amp;</span> <span class=k>this</span><span class=p>.</span><span class=nx>__setModuleDefault</span><span class=p>)</span> <span class=o>||</span> <span class=p>(</span><span class=nb>Object</span><span class=p>.</span><span class=nx>create</span> <span class=o>?</span> <span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>o</span><span class=p>,</span> <span class=nx>v</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>Object</span><span class=p>.</span><span class=nx>defineProperty</span><span class=p>(</span><span class=nx>o</span><span class=p>,</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span> <span class=p>{</span> <span class=nx>enumerable</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span> <span class=nx>value</span><span class=o>:</span> <span class=nx>v</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>})</span> <span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>o</span><span class=p>,</span> <span class=nx>v</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>o</span><span class=p>[</span><span class=s2>&#34;default&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=nx>v</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>__importStar</span> <span class=o>=</span> <span class=p>(</span><span class=k>this</span> <span class=o>&amp;&amp;</span> <span class=k>this</span><span class=p>.</span><span class=nx>__importStar</span><span class=p>)</span> <span class=o>||</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>mod</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>mod</span> <span class=o>&amp;&amp;</span> <span class=nx>mod</span><span class=p>.</span><span class=nx>__esModule</span><span class=p>)</span> <span class=k>return</span> <span class=nx>mod</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>result</span> <span class=o>=</span> <span class=p>{};</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>mod</span> <span class=o>!=</span> <span class=kc>null</span><span class=p>)</span> <span class=k>for</span> <span class=p>(</span><span class=kd>var</span> <span class=nx>k</span> <span class=k>in</span> <span class=nx>mod</span><span class=p>)</span> <span class=k>if</span> <span class=p>(</span><span class=nx>k</span> <span class=o>!==</span> <span class=s2>&#34;default&#34;</span> <span class=o>&amp;&amp;</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>hasOwnProperty</span><span class=p>.</span><span class=nx>call</span><span class=p>(</span><span class=nx>mod</span><span class=p>,</span> <span class=nx>k</span><span class=p>))</span> <span class=nx>__createBinding</span><span class=p>(</span><span class=nx>result</span><span class=p>,</span> <span class=nx>mod</span><span class=p>,</span> <span class=nx>k</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nx>__setModuleDefault</span><span class=p>(</span><span class=nx>result</span><span class=p>,</span> <span class=nx>mod</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=nb>Object</span><span class=p>.</span><span class=nx>defineProperty</span><span class=p>(</span><span class=nx>exports</span><span class=p>,</span> <span class=s2>&#34;__esModule&#34;</span><span class=p>,</span> <span class=p>{</span> <span class=nx>value</span><span class=o>:</span> <span class=kc>true</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>api_1</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;@atproto/api&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>dotenv</span> <span class=o>=</span> <span class=nx>__importStar</span><span class=p>(</span><span class=nx>require</span><span class=p>(</span><span class=s2>&#34;dotenv&#34;</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>mpdapi</span> <span class=o>=</span> <span class=nx>__importStar</span><span class=p>(</span><span class=nx>require</span><span class=p>(</span><span class=s2>&#34;mpd-api&#34;</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=c1>// Load environment variables
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>dotenv</span><span class=p>.</span><span class=nx>config</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=c1>// Create a Bluesky Agent
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>agent</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>api_1</span><span class=p>.</span><span class=nx>BskyAgent</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=nx>service</span><span class=o>:</span> <span class=s1>&#39;https://bsky.social&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=c1>// Function to connect to MPD and log the current song
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>async</span> <span class=kd>function</span> <span class=nx>logCurrentSong</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Define connection configuration
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>config</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>host</span><span class=o>:</span> <span class=s2>&#34;127.0.0.1&#34;</span><span class=p>,</span> <span class=c1>// MPD server host
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nx>port</span><span class=o>:</span> <span class=mi>6600</span><span class=p>,</span> <span class=c1>// MPD server port
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=c1>// password: &#39;yourpassword&#39;,  // Uncomment if MPD requires a password
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>};</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Connect to MPD using the config object
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>client</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>mpdapi</span><span class=p>.</span><span class=nx>connect</span><span class=p>(</span><span class=nx>config</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Connected to MPD&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Get the playback state and currently playing song
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>status</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>api</span><span class=p>.</span><span class=nx>status</span><span class=p>.</span><span class=nx>get</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=kr>const</span> <span class=nx>currentSong</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>api</span><span class=p>.</span><span class=nx>status</span><span class=p>.</span><span class=nx>currentsong</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Check if MPD is currently playing something
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=nx>status</span><span class=p>.</span><span class=nx>state</span> <span class=o>===</span> <span class=s2>&#34;play&#34;</span> <span class=o>&amp;&amp;</span> <span class=nx>currentSong</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>songInfo</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>title</span><span class=o>:</span> <span class=nx>currentSong</span><span class=p>.</span><span class=nx>title</span> <span class=o>||</span> <span class=s2>&#34;Unknown Title&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nx>artist</span><span class=o>:</span> <span class=nx>currentSong</span><span class=p>.</span><span class=nx>artist</span> <span class=o>||</span> <span class=s2>&#34;Unknown Artist&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nx>album</span><span class=o>:</span> <span class=nx>currentSong</span><span class=p>.</span><span class=nx>album</span> <span class=o>||</span> <span class=s2>&#34;Unknown Album&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=p>};</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>songText</span> <span class=o>=</span> <span class=sb>`Now playing: </span><span class=si>${</span><span class=nx>songInfo</span><span class=p>.</span><span class=nx>title</span><span class=si>}</span><span class=sb> by </span><span class=si>${</span><span class=nx>songInfo</span><span class=p>.</span><span class=nx>artist</span><span class=si>}</span><span class=sb> from the album </span><span class=si>${</span><span class=nx>songInfo</span><span class=p>.</span><span class=nx>album</span><span class=si>}</span><span class=sb>`</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>songText</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>songText</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;No song currently playing.&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=s2>&#34;No song currently playing.&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Disconnect from MPD
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>await</span> <span class=nx>client</span><span class=p>.</span><span class=nx>disconnect</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>catch</span> <span class=p>(</span><span class=nx>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s2>&#34;Error connecting to MPD or retrieving song information:&#34;</span><span class=p>,</span> <span class=nx>error</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=s2>&#34;Error retrieving song info.&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// Function to post current song info to Bluesky
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>async</span> <span class=kd>function</span> <span class=nx>postToBluesky</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Login to Bluesky
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>await</span> <span class=nx>agent</span><span class=p>.</span><span class=nx>login</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>identifier</span><span class=o>:</span> <span class=nx>process</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>BLUESKY_USERNAME</span><span class=p>,</span> <span class=c1>// Explicitly cast to string
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nx>password</span><span class=o>:</span> <span class=nx>process</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>BLUESKY_PASSWORD</span><span class=p>,</span> <span class=c1>// Explicitly cast to string
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Get the current song info
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>currentSongText</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>logCurrentSong</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Post the current song info to Bluesky
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kr>const</span> <span class=nx>response</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>agent</span><span class=p>.</span><span class=nx>post</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>text</span><span class=o>:</span> <span class=nx>currentSongText</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Successfully posted to Bluesky:&#34;</span><span class=p>,</span> <span class=nx>response</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>catch</span> <span class=p>(</span><span class=nx>error</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s2>&#34;Error posting to Bluesky:&#34;</span><span class=p>,</span> <span class=nx>error</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// Run the Bluesky post function
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>postToBluesky</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=running-the-bot-locally><strong>Running the Bot Locally</strong></h2><p>To run the bot locally:</p><ol><li>Install the necessary dependencies with <code>npm install</code>.</li><li>Create a <code>.env</code> file to store your Bluesky credentials:<div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>BLUESKY_USERNAME=your_username
+</span></span><span class=line><span class=cl>BLUESKY_PASSWORD=your_password
+</span></span></code></pre></td></tr></table></div></div></li><li>Run the bot using <code>node index.js</code>.</li></ol><p>When you run the bot, it will:</p><ul><li>Log into Bluesky.</li><li>Retrieve the current song from MPD.</li><li>Post the song info to Bluesky as a status update.</li></ul><p>You should see the current song in your Bluesky feed!</p><h2 id=next-steps-expanding-the-bot>Next Steps: Expanding the Bot</h2><p>This bot is a great starting point, but there’s a lot of room for improvement:</p><ul><li><strong>Last.fm Scrobbling</strong>: Integrate Last.fm API to scrobble the songs you listen to.</li><li><strong>YouTube Integration</strong>: If you want to share music from YouTube, you’ll need to figure out how to extract the currently playing video or song.</li><li><strong>Scheduled Posts</strong>: You could set up a scheduled task to post updates periodically instead of only when triggered manually.</li></ul><h3 id=check-out-the-full-code-on-github>Check Out the Full Code on GitHub</h3><p>If you want to explore the full project, check out the repository on GitHub:
+<a class=link href=https://github.com/nishimi-ya/mpd-bsky-bot target=_blank rel=noopener>https://github.com/nishimi-ya/mpd-bsky-bot</a></p></section><footer class=article-footer><section class=article-tags><a href=/tags/bluesky/>BlueSky</a>
+<a href=/tags/social-media/>Social Media</a>
+<a href=/tags/code/>Code</a></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Last updated on Nov 24, 2024 06:47 +0700</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/post/bsky-redirect/><div class=article-image><img src=/post/bsky-redirect/hero-image.0592ec586054ae07ad761d2b294efef4_hu_4bfd2907ba345778.webp width=250 height=150 loading=lazy alt="Featured image of post Bsky Redirect Trick Using Cloudflare" data-key=bsky-redirect data-hash="md5-BZLsWGBUrgetdh0rKU7+9A=="></div><div class=article-details><h2 class=article-title>Bsky Redirect Trick Using Cloudflare</h2></div></a></article><article class=has-image><a href=/post/social-media-paradigm/><div class=article-image><img src=/post/social-media-paradigm/hero-image.8e5db65aefe02a05d5cf5e0f4eb2e837_hu_9728b607958a825b.webp width=250 height=150 loading=lazy alt="Featured image of post Changing the Social Media Paradigm" data-key=social-media-paradigm data-hash="md5-jl22Wu/gKgXVz14PTrLoNw=="></div><div class=article-details><h2 class=article-title>Changing the Social Media Paradigm</h2></div></a></article><article class=has-image><a href=/post/japanese-input-with-fcitx5-and-mozc/><div class=article-image><img src=/post/japanese-input-with-fcitx5-and-mozc/nihongo.2a344b2ef69800ed93069d23e526aa4d_hu_95e07485cc72e49c.png width=250 height=150 loading=lazy alt="Featured image of post Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)" data-key=japanese-input-with-fcitx5-and-mozc data-hash="md5-KjRLLvaYAO2TBp0j5SaqTQ=="></div><div class=article-details><h2 class=article-title>Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)</h2></div></a></article><article class=has-image><a href=/post/pandi-announces-price-adjustment-for-domain-name/><div class=article-image><img src=/post/pandi-announces-price-adjustment-for-domain-name/pandi.ee5b3bd6e05b33c17db77c41f1ab3969_hu_8cb2d7ce1ab645ea.jpeg width=250 height=150 loading=lazy alt="Featured image of post PANDI Announces Price Adjustments for .my.id and .biz.id Domains" data-key=pandi-announces-price-adjustment-for-domain-name data-hash="md5-7ls71uBbM8F9t3xB8as5aQ=="></div><div class=article-details><h2 class=article-title>PANDI Announces Price Adjustments for .my.id and .biz.id Domains</h2></div></a></article><article class=has-image><a href=/post/landlord-of-the-web/><div class=article-image><img src=/post/landlord-of-the-web/pepe.8236bd67eb7457f747b5e005916ac730_hu_754b28836566d6d6.jpeg width=250 height=150 loading=lazy alt="Featured image of post Be the Landlord of the Web, Not a Peasant" data-key=landlord-of-the-web data-hash="md5-gja9Z+t0V/dHteAFkWrHMA=="></div><div class=article-details><h2 class=article-title>Be the Landlord of the Web, Not a Peasant</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2018 -
+2025 Nishimiya</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

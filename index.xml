@@ -1,0 +1,1752 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nishimiya</title><link>https://blog.nishimiya.my.id/</link><description>Recent content on Nishimiya</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://blog.nishimiya.my.id/index.xml" rel="self" type="application/rss+xml"/><item><title>Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)</title><link>https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/</link><pubDate>Fri, 18 Apr 2025 02:05:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/japanese-input-with-fcitx5-and-mozc/nihongo.png" alt="Featured image of post Japanese Input with Mozc + Fcitx5 on Arch Linux (Wayland + Hyprland)" />&lt;hr>
+&lt;p>This guide specifically covers installation on Arch Linux (and derivatives like Manjaro) using pacman. If you&amp;rsquo;re using a different distribution (Ubuntu, Fedora, etc.), the package names and installation commands will vary. For example:&lt;/p>
+&lt;ul>
+&lt;li>Debian/Ubuntu: &lt;code>apt install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;li>Fedora: &lt;code>dnf install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;li>OpenSUSE: &lt;code>zypper install fcitx5-mozc&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Always check your distro&amp;rsquo;s documentation for the correct packages and setup steps. The Fcitx5 configuration (environment variables, themes, etc.) will remain similar across Linux systems.&lt;/p>
+&lt;h1 id="1-install-packages">&lt;strong>1. Install Packages&lt;/strong>
+&lt;/h1>&lt;p>Run the following command to install Fcitx5 and Mozc:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo pacman -S fcitx5 fcitx5-configtool fcitx5-qt fcitx5-mozc-ut
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;h1 id="2-set-environment-variables">&lt;strong>2. Set Environment Variables&lt;/strong>
+&lt;/h1>&lt;p>Add these lines to your shell config file (&lt;code>~/.bashrc&lt;/code>, &lt;code>~/.zshrc&lt;/code>, or &lt;code>~/.profile&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">GTK_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fcitx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">QT_IM_MODULE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fcitx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">XMODIFIERS&lt;/span>&lt;span class="o">=&lt;/span>@im&lt;span class="o">=&lt;/span>fcitx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Apply the changes&lt;/strong>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">source&lt;/span> ~/.zshrc &lt;span class="c1"># or source ~/.bashrc/etc &lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Log out and back in for the variables to take effect.&lt;/p>
+&lt;hr>
+&lt;h1 id="3-configure-fcitx5">&lt;strong>3. Configure Fcitx5&lt;/strong>
+&lt;/h1>&lt;ol>
+&lt;li>Open &lt;code>fcitx5-configtool&lt;/code> from your app menu or terminal.&lt;/li>
+&lt;li>Click &lt;strong>+&lt;/strong> → Uncheck &lt;em>&amp;ldquo;Only Show Current Language&amp;rdquo;&lt;/em> → Search &lt;strong>&amp;ldquo;mozc&amp;rdquo;&lt;/strong> → Add it.&lt;/li>
+&lt;li>Remove unnecessary input methods (e.g., &amp;ldquo;Keyboard - English&amp;rdquo;) if desired.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h1 id="4-enable-japanese-input">&lt;strong>4. Enable Japanese Input&lt;/strong>
+&lt;/h1>&lt;p>Press &lt;strong>Ctrl + Space&lt;/strong> to toggle between English and Japanese (Hiragana). Test by typing &lt;code>nihongo&lt;/code> → &lt;code>にほんご&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;h1 id="5-install-themes-optional">&lt;strong>5. Install Themes (Optional)&lt;/strong>
+&lt;/h1>&lt;p>With &lt;code>yay&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Dark theme &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-skin-fluentdark-git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Light theme &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-skin-fluentlight-git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Material Color &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yay -S fcitx5-material-color
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Apply themes&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Right-click the Fcitx5 tray icon → &lt;strong>Configure&lt;/strong> → &lt;strong>Addons&lt;/strong> → &lt;strong>Classic UI&lt;/strong> → Select a skin.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="6-customize-mozc">&lt;strong>6. Customize Mozc&lt;/strong>
+&lt;/h1>&lt;p>Right-click the Fcitx5 tray icon → &lt;strong>Mozc Settings&lt;/strong> to adjust:&lt;/p>
+&lt;ul>
+&lt;li>Input mode (Romaji/Kana).&lt;/li>
+&lt;li>Dictionaries.&lt;/li>
+&lt;li>Keyboard shortcuts.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="troubleshooting">&lt;strong>Troubleshooting&lt;/strong>
+&lt;/h1>&lt;ul>
+&lt;li>&lt;strong>Fcitx5 not starting?&lt;/strong> Add it to your desktop environment’s autostart.&lt;/li>
+&lt;li>&lt;strong>Input not working in apps?&lt;/strong> For Electron apps (e.g., VS Code), add these flags to their &lt;code>.desktop&lt;/code> file:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">--enable-features=UseOzonePlatform --ozone-platform=wayland
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;p>Done! You now have a functional Japanese input setup. For advanced options, refer to the &lt;a class="link" href="https://wiki.archlinux.org/title/Fcitx5" target="_blank" rel="noopener"
+>Fcitx5 Wiki&lt;/a>.&lt;/p></description></item><item><title>Beneath the Masks An In-Depth Dissection of Ave Mujica’s Gothic Symphony of Shattered Selves.</title><link>https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/</link><pubDate>Tue, 15 Apr 2025 03:25:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/thumbnail.jpeg" alt="Featured image of post Beneath the Masks An In-Depth Dissection of Ave Mujica’s Gothic Symphony of Shattered Selves." />&lt;h1 id="in-depth-analysis-of-ave-mujica--the-die-is-cast">In-Depth Analysis of &lt;em>Ave Mujica – The Die is Cast&lt;/em>
+&lt;/h1>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/hachibousei_dance.jpg"
+width="915"
+height="562"
+srcset="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/hachibousei_dance_hu_a336b610c1f31bd0.jpg 480w, https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/hachibousei_dance_hu_10a88d24966fbaee.jpg 1024w"
+loading="lazy"
+alt="Welcome to the house of pain"
+class="gallery-image"
+data-flex-grow="162"
+data-flex-basis="390px"
+>&lt;/p>
+&lt;hr>
+&lt;h2 id="episodes-13-foundations-of-fractured-identities">&lt;strong>Episodes 1–3: Foundations of Fractured Identities&lt;/strong>
+&lt;/h2>&lt;p>&lt;strong>In-Depth Analysis of &lt;em>Ave Mujica – The Die is Cast&lt;/em>: Episodes 1–3&lt;/strong>
+&lt;em>A Gothic Symphony of Control, Identity, and Psychological Unraveling&lt;/em>&lt;/p>
+&lt;hr>
+&lt;h3 id="1-premise-and-thematic-foundations">&lt;strong>1. Premise and Thematic Foundations&lt;/strong>
+&lt;/h3>&lt;p>&lt;em>Ave Mujica – The Die is Cast&lt;/em> thrusts viewers into the shadowy world of a masked symphonic metal band, Ave Mujica, whose members grapple with fractured identities, ambition, and the weight of past traumas. The series, a spin-off of &lt;em>BanG Dream! It’s MyGO!!!!!&lt;/em>, adopts a darker, more mature tone, trading typical idol anime tropes for psychological drama and gothic theatrics. The first three episodes establish a narrative steeped in duality—between artifice and authenticity, control and chaos, and the haunting echoes of disbanded predecessor CRYCHIC.&lt;/p>
+&lt;hr>
+&lt;h3 id="2-character-dynamics-and-conflicts">&lt;strong>2. Character Dynamics and Conflicts&lt;/strong>
+&lt;/h3>&lt;h4 id="sakiko-togawa-oblivionis-the-architect-of-delusion">&lt;strong>Sakiko Togawa (Oblivionis): The Architect of Delusion&lt;/strong>
+&lt;/h4>&lt;p>&lt;strong>Role&lt;/strong>: Founder, Keyboardist&lt;br>
+&lt;strong>Theatrical Name&lt;/strong>: &lt;em>Oblivionis&lt;/em> (Latin: &amp;ldquo;Of Oblivion&amp;rdquo;)&lt;br>
+Sakiko, the tortured mastermind of Ave Mujica, is driven by a desperate need to control her crumbling reality. Her backstory—revealed through cryptic details like labeling police contacts (for her alcoholic father, Kiyotsugu Togawa)—paints a portrait of a girl clinging to order amid familial ruin. Her creation of Ave Mujica is both an escape from her disgraced family (her father’s embezzlement scandal destroyed their reputation) and a compulsive attempt to rewrite the failure of CRYCHIC, which she impulsively disbanded. Her theatrical persona, &lt;em>Oblivionis&lt;/em>, embodies her desire to erase the past, symbolized by her mask’s shattered-glass motif.&lt;/p>
+&lt;h4 id="nyamu-yūtenji-amoris-the-provocateur">&lt;strong>Nyamu Yūtenji (Amoris): The Provocateur&lt;/strong>
+&lt;/h4>&lt;p>&lt;strong>Role&lt;/strong>: Drummer&lt;br>
+&lt;strong>Theatrical Name&lt;/strong>: &lt;em>Amoris&lt;/em> (Latin: &amp;ldquo;Of Love&amp;rdquo;)&lt;br>
+Nyamu, the Insta-famous drummer, thrives on chaos and spectacle. Her decision to unmask the band during their Budokan debut forces Ave Mujica into the public eye as “human” rather than “dolls,” directly opposing Sakiko’s curated artifice. Her theatrical name &lt;em>Amoris&lt;/em> reflects her performative obsession with love and validation, though her motivations are pragmatic: viral fame and financial survival. Her neon-lit livestreams and provocative persona clash with Sakiko’s Victorian gothic aesthetic, symbolizing the tension between modernity and tradition.&lt;/p>
+&lt;h4 id="mutsumi-wakaba-mortis-the-fractured-prodigy">&lt;strong>Mutsumi Wakaba (Mortis): The Fractured Prodigy&lt;/strong>
+&lt;/h4>&lt;p>&lt;strong>Role&lt;/strong>: Guitarist&lt;br>
+&lt;strong>Theatrical Name&lt;/strong>: &lt;em>Mortis&lt;/em> (Latin: &amp;ldquo;Of Death&amp;rdquo;)&lt;br>
+Mutsumi, the band’s guitarist, is haunted by the collapse of CRYCHIC and the weight of her celebrity parents’ legacy (her mother is a renowned filmmaker). Her dissociative identity disorder manifests in &lt;em>Mortis&lt;/em>, an alter ego who emerges to “protect” her from guilt and external pressures. Theatrical visuals—burning chickens, puppet strings—externalize her psychological fractures. Critics debate whether her portrayal romanticizes DID, but her arc underscores the series’ theme of &lt;strong>identity as performance&lt;/strong>.&lt;/p>
+&lt;h4 id="uika-hatsune-doloris-lead-guitarist--vocalist">&lt;strong>Uika Hatsune (Doloris): Lead Guitarist &amp;amp; Vocalist&lt;/strong>
+&lt;/h4>&lt;p>&lt;strong>Role&lt;/strong>: Lead Guitarist, Vocalist&lt;br>
+&lt;strong>Theatrical Name&lt;/strong>: &lt;em>Doloris&lt;/em> (Latin: &amp;ldquo;Of Pain&amp;rdquo;)&lt;br>
+Uika, the band’s lead guitarist and vocalist, harbors a devastating secret: she is not the “real” Uika. Born &lt;strong>Hatsune&lt;/strong>, she is Sakiko’s illegitimate aunt, the daughter of Sakiko’s grandfather and a housekeeper. Forbidden from interacting with Sakiko as children, she stole her half-sister Uika’s identity after the latter’s mysterious disappearance. Her theatrical name &lt;em>Doloris&lt;/em> reflects her masochistic loyalty to Sakiko, whom she loves obsessively. Her crescent moon pendant symbolizes her incomplete identity, while her coffee rituals (contrasting Sakiko’s tea) force confrontations with harsh truths.&lt;/p>
+&lt;h4 id="umiri-misato-timoris-the-bassist">&lt;strong>Umiri Misato (Timoris): The Bassist&lt;/strong>
+&lt;/h4>&lt;p>&lt;strong>Role&lt;/strong>: Bassist&lt;br>
+&lt;strong>Theatrical Name&lt;/strong>: &lt;em>Timoris&lt;/em> (Latin: &amp;ldquo;Of Fear&amp;rdquo;)&lt;br>
+Umiri, the bassist, is a perfectionist battling Orthorexia—a fixation on “pure” eating symbolized by her protein shakes and sterile kitchen. Her theatrical name &lt;em>Timoris&lt;/em> mirrors her fear of vulnerability and imperfection. She regulates chaos through rigid routines (symmetrically arranged accessories) and emotional detachment (“&lt;em>I’m here to play, not to babysit&lt;/em>”). Her backstory reveals a fear of inheriting her mother’s “weakness” (her mother’s obesity), driving her obsession with control.&lt;/p>
+&lt;hr>
+&lt;h3 id="3-visual-and-narrative-craftsmanship">&lt;strong>3. Visual and Narrative Craftsmanship&lt;/strong>
+&lt;/h3>&lt;h4 id="gothic-aesthetics-and-symbolism">&lt;strong>Gothic Aesthetics and Symbolism&lt;/strong>
+&lt;/h4>&lt;p>The series’ Victorian-inspired stage designs and masked performances evoke a macabre dollhouse, mirroring the characters’ trapped existences. Visual motifs like shattered glass and carousels in the OP 「KiLLKiSS」 reinforce themes of cyclical despair and fragile identities. Episode 3’s hallucinatory sequences—where Mutsumi envisions herself as a puppet controlled by Sakiko—masterfully blend 3D CGI with 2D grotesquerie, though the inconsistent animation quality (notably jarring CGI in casual scenes) remains divisive.&lt;/p>
+&lt;h4 id="subtextual-storytelling">&lt;strong>Subtextual Storytelling&lt;/strong>
+&lt;/h4>&lt;p>Director Kōdai Kakimoto and writer Yuniko Ayana employ &lt;em>tiny details&lt;/em> to build tension:&lt;/p>
+&lt;ul>
+&lt;li>Mutsumi’s worn basement chair, contradicting her mother’s claim that the room is unused, hints at her isolation.&lt;/li>
+&lt;li>Sakiko’s rigid posture during rehearsals contrasts with Nyamu’s fluid, attention-seeking movements, symbolizing their ideological clash.&lt;/li>
+&lt;li>The recurring Latin episode titles (e.g., &lt;em>Sub Rosa&lt;/em>, &lt;em>Exitus Acta Probat&lt;/em>) foreshadow the band’s fatalistic trajectory.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="4-themes-and-social-commentary">&lt;strong>4. Themes and Social Commentary&lt;/strong>
+&lt;/h3>&lt;h4 id="the-masks-we-wear">&lt;strong>The Masks We Wear&lt;/strong>
+&lt;/h4>&lt;p>Ave Mujica literalizes the concept of masking through its stage personas, interrogating how performance obscures vulnerability. Sakiko’s insistence on maintaining the band’s “doll” image reflects her fear of exposure, while Nyamu’s unmasking rebellion challenges societal expectations of authenticity in art.&lt;/p>
+&lt;h4 id="generational-trauma-and-parental-shadows">&lt;strong>Generational Trauma and Parental Shadows&lt;/strong>
+&lt;/h4>&lt;p>Mutsumi’s struggle to escape her parents’ legacy and Sakiko’s fraught relationship with her alcoholic father underscore the series’ exploration of inherited pain. Mutsumi’s mother, a filmmaker who co-opts her daughter’s musical talent, epitomizes the toxic overlap of parental ambition and artistic identity.&lt;/p>
+&lt;h4 id="the-price-of-ambition">&lt;strong>The Price of Ambition&lt;/strong>
+&lt;/h4>&lt;p>The band’s rapid rise to Budokan fame becomes a metaphor for unsustainable success. Ave Mujica’s members—each battling insecurities—mirror real-world artists torn between creative fulfillment and industry pressures.&lt;/p>
+&lt;hr>
+&lt;h3 id="5-reception-and-critique">&lt;strong>5. Reception and Critique&lt;/strong>
+&lt;/h3>&lt;p>The first three episodes polarized audiences:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Praise&lt;/strong> focused on the series’ emotional depth, voice acting (notably Mutsumi’s raw breakdowns), and daring narrative choices.&lt;/li>
+&lt;li>&lt;strong>Criticism&lt;/strong> targeted the convoluted lore (reliant on &lt;em>MyGO!!!!!&lt;/em> knowledge), uneven CGI, and concerns about romanticizing mental health struggles.&lt;/li>
+&lt;li>The OP 「KiLLKiSS」 and insert songs like &lt;em>Ave Mujica&lt;/em> were universally lauded for blending symphonic metal with haunting melodies.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="6-looking-ahead-a-house-of-cards-on-the-brink">&lt;strong>6. Looking Ahead: A House of Cards on the Brink&lt;/strong>
+&lt;/h3>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/sakiko1.jpg"
+width="850"
+height="478"
+srcset="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/sakiko1_hu_5db75aa441738483.jpg 480w, https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/sakiko1_hu_2b2e16c553ac07a5.jpg 1024w"
+loading="lazy"
+alt="Crescendo of chaos"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>By Episode 3, the band’s fragile equilibrium shatters: Mutsumi’s fracture into Mortis, Sakiko’s eroding control, and Nyamu’s manipulative charisma foreshadow an inevitable collapse. The series’ strength lies in its willingness to delve into psychological horror, asking: &lt;em>Can art born from pain ever heal its creators?&lt;/em>&lt;/p>
+&lt;p>With its rich symbolism, flawed yet compelling characters, and unflinching exploration of darkness, &lt;em>Ave Mujica&lt;/em> promises a crescendo of chaos—and perhaps catharsis—in its remaining episodes. As the Latin adage goes: &lt;em>Acta est fabula&lt;/em>—the play is only beginning.&lt;/p>
+&lt;hr>
+&lt;h2 id="episodes-46-the-unraveling-of-artifice">&lt;strong>Episodes 4–6: The Unraveling of Artifice&lt;/strong>
+&lt;/h2>&lt;p>&lt;strong>In-Depth Analysis of Ave Mujica – The Die is Cast: Episodes 4–6&lt;/strong>
+&lt;em>The Collapse of Masks and the Birth of New Selves&lt;/em>&lt;/p>
+&lt;hr>
+&lt;h3 id="episode-4">&lt;strong>Episode 4: &lt;em>Acta est Fabula&lt;/em> – The Play is Over&lt;/strong>
+&lt;/h3>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/mutsumi.jpg"
+width="1063"
+height="1080"
+srcset="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/mutsumi_hu_70e80e6aa64d01c1.jpg 480w, https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/mutsumi_hu_62eb20ee61e49f0f.jpg 1024w"
+loading="lazy"
+alt="Mutsumi.. or rather.. Mortis?"
+class="gallery-image"
+data-flex-grow="98"
+data-flex-basis="236px"
+>&lt;/p>
+&lt;p>Mortis’ emergence as a dominant persona is not merely a psychological breakdown but a &lt;strong>metaphor for artistic exploitation&lt;/strong>. The burning chickens hallucinated by Mutsumi symbolize her creative energy being consumed by external pressures—Sakiko’s demands, parental expectations, and the band’s unsustainable perfectionism. Puppet imagery, recurring in the background (e.g., strings attached to Mutsumi’s guitar), reflects the broader theme of &lt;strong>control in the idol industry&lt;/strong>, where artists are often reduced to marionettes for corporate or fan gratification.&lt;/p>
+&lt;p>The disbandment announcement, staged as a grotesque theater performance, critiques performative vulnerability. By framing the breakup as a public spectacle, the series questions whether audiences crave &lt;em>authenticity&lt;/em> or merely a curated version of pain. Sakiko’s insistence on scripting the disbandment (“We will exit as dolls”) contrasts with Nyamu’s chaotic unmasking, symbolizing the clash between &lt;strong>art as a controlled narrative&lt;/strong> versus &lt;strong>art as lived chaos&lt;/strong>.&lt;/p>
+&lt;p>&lt;strong>Twitter Insights&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Fans noted parallels to &lt;em>Perfect Blue&lt;/em>, where performance and reality blur dangerously. One user highlighted Mortis’ line, &lt;em>“The stage eats us alive,”&lt;/em> as a direct nod to the exploitative nature of fame .&lt;/li>
+&lt;li>Critics debated whether Mutsumi’s DID portrayal leans into stigmatization, though others argued it critiques how society commodifies mental health struggles for drama .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="episode-5-disbandments-aftermath--fractured-souls">&lt;strong>Episode 5: Disbandment’s Aftermath – Fractured Souls&lt;/strong>
+&lt;/h3>&lt;p>&lt;strong>Expanded Analysis&lt;/strong>:&lt;br>
+Uika’s role as the “moon” evolves here. Her incomplete crescent pendant, introduced in Episode 1, now flickers in dim lighting during her solo scenes, symbolizing her fading hope. Her attempts to mediate the band’s reconciliation mirror the moon’s gravitational pull—subtle yet persistent. However, her failure to reunite the group underscores the &lt;strong>futility of forced unity&lt;/strong> in a world that thrives on individualism.&lt;/p>
+&lt;p>Sakiko’s self-isolation in her mansion, surrounded by CRYCHIC memorabilia, visualizes her entrapment in the past. The recurring shot of her father’s empty whiskey glass (a callback to Episode 1) becomes a metaphor for &lt;strong>inherited cycles of dysfunction&lt;/strong>. Meanwhile, Nyamu’s viral livestreams—filmed in her neon-lit bedroom—contrast with Sakiko’s gothic mansion, symbolizing the generational divide: tradition (Sakiko) vs. digital modernity (Nyamu).&lt;/p>
+&lt;p>&lt;strong>Twitter Insights&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>A viral thread dissected Uika’s wardrobe: her shift from monochrome outfits to a pink hoodie when meeting MyGO!!!!! signals her subconscious desire for warmth and connection.&lt;/li>
+&lt;li>Sakiko’s mansion layout, modeled after M.C. Escher’s &lt;em>Relativity&lt;/em>, subtly implies her distorted perception of reality .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="episode-6">&lt;strong>Episode 6: &lt;em>Animum reges.&lt;/em> – You Rule the Mind&lt;/strong>
+&lt;/h3>&lt;p>&lt;strong>Expanded Analysis&lt;/strong>:&lt;br>
+Mutsumi’s mind palace, depicted as a dilapidated theater, is layered with meaning. The cracked stage mirrors Ave Mujica’s disbanded state, while the audience seats filled with shadowy figures represent societal expectations haunting her. Mortis’ plea to Soyo—&lt;em>“Wake her up before she forgets how to cry”&lt;/em>—reframes DID not as a disorder but as a &lt;strong>survival mechanism&lt;/strong>, a persona crafted to endure emotional erasure.&lt;/p>
+&lt;p>Umiri’s Orthorexia is explored through meticulous mise-en-scène: her apartment’s sterile whites and symmetrically arranged protein shakes contrast with her cluttered, colorful accessory collection. This visual dissonance mirrors her internal conflict—&lt;strong>control vs. desire&lt;/strong>. Her compulsive shopping, criticized as frivolous, is recontextualized as a cry for identity: &lt;em>“If I can’t control my body, I’ll control what adorns it.”&lt;/em>&lt;/p>
+&lt;p>&lt;strong>Twitter Insights&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>A fan theory posited that Umiri’s protein shakes are labeled in German, nodding to her perfectionist “engineering” of self.&lt;/li>
+&lt;li>The mind palace’s theater curtains, embroidered with Ave Mujica’s logo, suggest Mutsumi’s identity is inseparable from the band’s artifice .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="episodes-79-the-crescendo-of-conflict">&lt;strong>Episodes 7–9: The Crescendo of Conflict&lt;/strong>
+&lt;/h2>&lt;p>&lt;strong>In-Depth Analysis of Ave Mujica – The Die is Cast: Episodes 7–9&lt;/strong>
+&lt;em>Masks Shatter, Truths Emerge&lt;/em>&lt;/p>
+&lt;hr>
+&lt;h3 id="episode-7">&lt;strong>Episode 7: &lt;em>Ignis Aurum Probat&lt;/em> – Fire Tests Gold&lt;/strong>
+&lt;/h3>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/human_are_cruel.jpg"
+width="519"
+height="495"
+srcset="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/human_are_cruel_hu_239764c1d60aea92.jpg 480w, https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/human_are_cruel_hu_f1549a4760a07f88.jpg 1024w"
+loading="lazy"
+alt="Humans are cruel Jack!"
+class="gallery-image"
+data-flex-grow="104"
+data-flex-basis="251px"
+>&lt;/p>
+&lt;p>&lt;strong>Key Events&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The band tentatively reunites for a guerilla live performance, but Sakiko’s controlling behavior reignites tensions.&lt;/li>
+&lt;li>Mutsumi begins merging memories with Mortis, leading to erratic behavior during rehearsals.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Symbolism &amp;amp; Themes&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Fire as Alchemy&lt;/strong>:&lt;br>
+The episode title, a Latin proverb, frames conflict as a purifying force. Flames engulfing the rehearsal room (a hallucination triggered by Sakiko’s criticism) symbolize the &lt;strong>destructive potential of honesty&lt;/strong>. Mutsumi’s guitar strings catch fire during a solo, blending her self-destructive guilt with artistic passion—a metaphor for creation born from pain .&lt;/li>
+&lt;li>&lt;strong>The Guerilla Live as Rebellion&lt;/strong>:&lt;br>
+Performing unmasked in a public park, the band challenges Sakiko’s “dollhouse” ethos. The setting—a storm raging during their set—mirrors their internal chaos. Rain-soaked instruments and slipping masks literalize the futility of maintaining facades amidst turmoil .&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>Critical Beats&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Sakiko’s breakdown mid-performance (“&lt;em>I am NOT a doll!&lt;/em>”) marks her first step toward vulnerability, though she later retreats into denial.&lt;/li>
+&lt;li>Nyamu’s decision to livestream the performance without consent sparks debate: Is she exploiting trauma or democratizing art?&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="episode-8">&lt;strong>Episode 8: &lt;em>Lux in Tenebris&lt;/em> – Light in Darkness&lt;/strong>
+&lt;/h3>&lt;p>&lt;strong>Key Events&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Uika confronts Sakiko about her father’s influence, leading to a physical altercation.&lt;/li>
+&lt;li>Mortis temporarily “vanishes,” leaving Mutsumi catatonic and forcing the band to reckon with her absence.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Symbolism &amp;amp; Themes&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>The Lighthouse Motif&lt;/strong>:&lt;br>
+Uika drags Sakiko to a derelict lighthouse, a relic from their childhood. The structure, once a guiding light, now broken and dark, symbolizes &lt;strong>crushed idealism&lt;/strong>. The confrontation under its flickering beam—Uika slapping Sakiko—echoes the Latin title: light (truth) emerges only in darkness (crisis) .&lt;/li>
+&lt;li>&lt;strong>Mirrors and Fragmentation&lt;/strong>:&lt;br>
+Mortis’ disappearance is foreshadowed by shattered mirrors in Mutsumi’s apartment. Each shard reflects a different facet of her identity, questioning whether reintegration is possible—or desirable. The band’s search for Mutsumi mirrors their own fragmented selves .&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>Narrative Nuance&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The episode’s cold color palette (blues and grays) shifts to warm amber during the lighthouse scene, symbolizing painful yet necessary catharsis.&lt;/li>
+&lt;li>Umiri’s subplot—her failed attempt to cook a meal for the band—subtly parallels her fear of “imperfect” nurturing. Burnt food becomes a metaphor for her self-sabotage .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="episode-9">&lt;strong>Episode 9: &lt;em>Per Aspera ad Astra&lt;/em> – Through Hardships to the Stars&lt;/strong>
+&lt;/h3>&lt;p>&lt;strong>Key Events&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The band agrees to a high-stakes televised performance to salvage their reputation.&lt;/li>
+&lt;li>Mutsumi and Mortis reconcile in a hallucinatory duet, merging their personas temporarily.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Symbolism &amp;amp; Themes&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>The Cosmic Stage&lt;/strong>:&lt;br>
+The televised performance is staged as a celestial tableau—planets orbiting the band, Sakiko’s keyboard resembling a star map. This visual grandeur contrasts with the raw, intimate guerilla live, critiquing &lt;strong>art’s commodification&lt;/strong>. The “stars” they reach are not artistic fulfillment but corporate validation .&lt;/li>
+&lt;li>&lt;strong>The Merged Duet&lt;/strong>:&lt;br>
+Mutsumi and Mortis’ duet, &lt;em>Silent Noise&lt;/em>, layers their voices into harmony. The overlapping lyrics (“&lt;em>I am you / You are me&lt;/em>”) and shared guitar symbolize &lt;strong>tentative self-acceptance&lt;/strong>. However, the final shot—a single tear splitting into two as they bow—hints at the instability of this union .&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h3 id="synthesis-the-illusion-of-resolution">&lt;strong>Synthesis: The Illusion of Resolution&lt;/strong>
+&lt;/h3>&lt;p>Episodes 7–9 escalate the series’ interrogation of identity through fire, light, and cosmic imagery. The band’s televised “triumph” is revealed as another mask, albeit one they choose collectively. Mutsumi’s fragile harmony with Mortis offers hope but no easy answers, mirroring the audience’s discomfort with unresolved mental health narratives.&lt;/p>
+&lt;p>&lt;strong>Twitter Discourse&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Critics praised the lighthouse scene’s direction but lamented the rushed corporate subplot, arguing it diluted the psychological focus .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="episodes-1013-the-final-performance">&lt;strong>Episodes 10–13: The Final Performance&lt;/strong>
+&lt;/h2>&lt;p>&lt;strong>In-Depth Analysis of Ave Mujica – The Die is Cast: Episodes 10–13&lt;/strong>
+&lt;em>Identity, Obsession, and the Price of Art&lt;/em>&lt;/p>
+&lt;hr>
+&lt;h3 id="episodes-1011-the-unmasking-of-hatsune">&lt;strong>Episodes 10–11: The Unmasking of Hatsune&lt;/strong>
+&lt;/h3>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/uika.jpg"
+width="2048"
+height="1172"
+srcset="https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/uika_hu_e8ffdda91e5c465c.jpg 480w, https://blog.nishimiya.my.id/post/in-depth-dissection-of-ave-mujica/uika_hu_a9db6937ccbb336.jpg 1024w"
+loading="lazy"
+alt="Bonding with aunt"
+class="gallery-image"
+data-flex-grow="174"
+data-flex-basis="419px"
+>&lt;/p>
+&lt;p>&lt;strong>Key Events&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Episode 10&lt;/strong>: Ave Mujica reunites for a guerilla live performance, but tensions flare as Sakiko’s control clashes with Nyamu’s viral antics.&lt;/li>
+&lt;li>&lt;strong>Episode 11&lt;/strong>: A 20-minute soliloquy by Hatsune (Uika) reveals her true identity as Sakiko’s aunt and her theft of her sister’s persona.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Thematic Breakdown&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Hatsune’s Identity Theft and Familial Trauma&lt;/strong>:&lt;br>
+The bombshell of Episode 11 reframes the entire series: “Uika” is actually &lt;strong>Hatsune&lt;/strong>, the illegitimate daughter of Sakiko’s grandfather, Sadaharu Togawa. Born to a housekeeper and raised in secrecy on Shodoshima, Hatsune grew up estranged from her half-sister, the &lt;em>real&lt;/em> Uika, who shared a childhood bond with Sakiko. Forbidden from interacting with Sakiko, Hatsune’s envy culminated in a fateful moment when she impersonated her sister during Sakiko’s visit, igniting an obsession that defined her life .&lt;/p>
+&lt;p>Hatsune’s theft of Uika’s identity—adopting her name, pursuing her idol dream, and infiltrating Sakiko’s life—is a metaphor for &lt;strong>existential erasure&lt;/strong>. By living as Uika, Hatsune seeks validation as a “human” worthy of love, a desire rooted in her childhood alienation: &lt;em>“Sakiko turned a pitiful being like me into a human”&lt;/em> . This act of self-annihilation mirrors Mutsumi’s DID, but with a darker edge: Hatsune’s deception is both calculated and compulsive, driven by a need to rewrite her “defective” existence.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Coffee and Tea as Emotional Anchors&lt;/strong>:&lt;br>
+Hatsune’s ritual of preparing coffee for Sakiko—a beverage symbolizing harsh reality—contrasts with Sakiko’s preference for tea (fantasy). This dichotomy reflects their codependency: Hatsune forces Sakiko to confront their shared pain, while Sakiko retreats into denial. The act of brewing coffee becomes a twisted gesture of devotion, a way to tether Sakiko to the truth of their intertwined fates .&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>The Soliloquy as Psychological Horror&lt;/strong>:&lt;br>
+Episode 11’s monologue, staged in an empty theater, transforms Hatsune’s confession into a &lt;strong>Gothic play-within-a-play&lt;/strong>. The lack of audience underscores her isolation, while projections of her past (e.g., Sakiko’s father, Kiyotsugu’s downfall) blur reality and delusion . Critics debated the episode’s pacing—some praised its raw intensity, while others criticized its exposition-heavy structure .&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>Character Dynamics&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Sakiko’s Complicity&lt;/strong>: Sakiko’s muted reaction to Hatsune’s revelation—&lt;em>“Shall we pretend it never happened?”&lt;/em>—exposes her own guilt. Her willingness to perpetuate the lie mirrors her handling of CRYCHIC’s disbandment: both are acts of emotional self-preservation .&lt;/li>
+&lt;li>&lt;strong>Nyamu’s Role&lt;/strong>: Nyamu’s livestream of the guerilla live (Episode 10) forces the band into vulnerability, contrasting Hatsune’s curated lies. Her pragmatism (“&lt;em>Ave Mujica is all I have left&lt;/em>”) highlights the series’ tension between authenticity and performance .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="episode-12-the-fractured-family-reckoning">&lt;strong>Episode 12: The Fractured Family Reckoning&lt;/strong>
+&lt;/h3>&lt;p>&lt;strong>Key Events&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Hatsune returns to Shodoshima, confronting her mother and the ghost of her stolen identity.&lt;/li>
+&lt;li>Sakiko confronts her grandfather, Sadaharu, over his role in her father’s ruin.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Symbolism &amp;amp; Subtext&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>The Lighthouse Confrontation&lt;/strong>:&lt;br>
+Sakiko drags Hatsune to a derelict lighthouse—a relic of their childhood—where their argument under flickering light symbolizes &lt;strong>shattered idealism&lt;/strong>. Sakiko’s outburst (&lt;em>“Who decided that? Why do I have to do what you say?!”&lt;/em>) rejects familial determinism, challenging Hatsune’s self-imposed narrative as a “tragic heroine”.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>The Real Uika’s Absence&lt;/strong>:&lt;br>
+The real Uika’s fate remains ambiguous, but her spectral presence haunts the episode. Fan theories speculate she died or remains trapped on Shodoshima, a victim of Hatsune’s envy. This absence critiques the idol industry’s demand for replaceable personas—Hatsune’s theft reflects how artistry consumes individuality.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Orthorexia and Control&lt;/strong>:&lt;br>
+Umiri’s subplot—her failed attempt to cook for the band—parallels Hatsune’s disordered identity. Both characters regulate chaos through ritual (Umiri’s protein shakes, Hatsune’s lies), but Episode 12 forces them to confront their fragility.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>Critical Reception&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The episode polarized fans. Some lauded its emotional rawness, particularly Sakiko’s defiance, while others found the rushed corporate subplot (Sadaharu’s scheming) jarring .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="episode-13-the-final-performance--masks-laid-bare">&lt;strong>Episode 13: The Final Performance – Masks Laid Bare&lt;/strong>
+&lt;/h3>&lt;p>&lt;strong>Key Events&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Ave Mujica and MyGO!!!!! perform a joint concert, blending their contrasting philosophies.&lt;/li>
+&lt;li>The series ends with Hatsune and Sakiko’s relationship unresolved but tentatively accepting.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Thematic Synthesis&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Artifice as Catharsis&lt;/strong>:&lt;br>
+The finale’s staging—Ave Mujica as celestial bodies orbiting Sakiko’s keyboard—frames their music as both ephemeral and eternal. Their song &lt;em>Per Aspera ad Astra&lt;/em> (“Through hardships to the stars”) acknowledges pain as the price of artistry. The lyrics (&lt;em>“Even in pain, beauty is born”&lt;/em>) crystallize the series’ thesis: masks are not lies but survival tools .&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Moon and Sun Imagery&lt;/strong>:&lt;br>
+Uika’s crescent pendant, now fully lit, symbolizes her incomplete reconciliation with Sakiko. Their final duet, bathed in moonlight, rejects closure in favor of fleeting harmony—a nod to the series’ refusal to romanticize healing.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>The Horror of Authenticity&lt;/strong>:&lt;br>
+Nyamu’s viral fame backfires, exposing her “Amoris” persona as hollow. Her arc concludes with a quiet moment of self-doubt, contrasting her earlier bravado. Meanwhile, Mutsumi and Mortis’ merged performance (&lt;em>“I am you / You are me”&lt;/em>) offers fragile hope, but their tear splitting into two hints at enduring fracture .&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>Legacy and Critique&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The finale’s open-endedness divided audiences. While praised for its musical grandeur, critics noted unresolved threads (Umiri’s Orthorexia, Mortis’ stability). Yet this ambiguity aligns with the series’ Gothic ethos: &lt;em>“Even if we vanish, our music lingers”&lt;/em> .&lt;/li>
+&lt;li>The incestuous undertones of Hatsune’s obsession sparked debate. Some fans embraced its tragic complexity, while others criticized it as sensationalist. The series’ alignment with &lt;em>Evangelion&lt;/em>-esque psychological horror, however, justifies its unflinching approach .&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="conclusion-a-symphony-of-broken-dolls">&lt;strong>Conclusion: A Symphony of Broken Dolls&lt;/strong>
+&lt;/h2>&lt;p>&lt;em>Ave Mujica&lt;/em> concludes not with resolution but &lt;strong>metamorphosis&lt;/strong>. Hatsune’s stolen identity, Sakiko’s inherited trauma, and Mutsumi’s fractured psyche remain unresolved, yet the band’s final performance transforms their pain into collective artistry. The series’ brilliance lies in its refusal to sanitize mental health struggles, instead framing them as the raw material of creation.&lt;/p>
+&lt;p>As Hatsune whispers in Episode 13: &lt;em>“The stage eats us alive, but we choose to sing.”&lt;/em> In this act of defiance, &lt;em>Ave Mujica&lt;/em> cements itself as a Gothic masterpiece—a haunting ode to the masks we wear and the truths they obscure. 🌑🎭&lt;/p>
+&lt;p>&lt;strong>Final Rating&lt;/strong>: ★★★★★ (5/5) – An audacious exploration of identity, legacy, and the price of art.&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>Thumbnail Image Credit&lt;/strong>&lt;br>
+Official promotional art from &lt;a class="link" href="https://x.com/bang_dream_info/status/1905934207635058733" target="_blank" rel="noopener"
+>Ave Mujica Twitter Post&lt;/a>, used under fair use for critical analysis.&lt;/p></description></item><item><title>Happy New Year! And My Plan for 2025</title><link>https://blog.nishimiya.my.id/post/happy-new-year-and-my-plan-for-2025/</link><pubDate>Tue, 31 Dec 2024 15:35:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/happy-new-year-and-my-plan-for-2025/</guid><description>&lt;p>As we step into 2025, I find myself reflecting on the journey that brought
+me here. Looking back on 2024, it was a year filled with challenges and
+growth. Life wasn’t always easy—managing unpaid debt and juggling daily
+expenses made it tough—but it also had its moments of progress and
+gratitude.&lt;/p>
+&lt;p>One of the most pivotal experiences was starting an internship in August.
+At first, I didn’t expect to get paid, so when we were told midway through
+the month that salaries would be provided, it felt like a lifeline. While
+the income didn’t fully cover my college fee installments, it eased some
+of the pressure, and for that, I’m incredibly thankful. By the end of the
+three-and-a-half-month internship, we were given the option to continue
+working there or explore new opportunities. I decided to stay, knowing
+that even though the pay remained the same, it would help me chip away at
+my financial challenges.&lt;/p>
+&lt;p>Reflecting on this, I’m reminded of another tough but transformative year:
+2017. That year taught me the value of resilience and productivity. I was
+trying to adjust to balancing school and life, all while indulging in
+hobbies like tinkering with Linux and learning how to build websites. It
+was one of my most frustrating periods because I felt like I was being
+pulled in so many directions. But amid the chaos, I discovered the power
+of structured planning. Inspired by Thomas Frank, a YouTube creator and
+productivity expert, I started using a calendar to schedule my tasks. That
+simple habit helped me bring order to the chaos and achieve a level of
+productivity I hadn’t thought possible.&lt;/p>
+&lt;p>The lessons I learned in 2017 have stayed with me. I’ve realized that
+sometimes, the hardest years are the ones that push us to grow the most.
+Now, as I look to 2025, I want to carry forward that same spirit of
+resilience and productivity to tackle my goals head-on.&lt;/p>
+&lt;h2 id="my-plans-for-2025">My Plans for 2025
+&lt;/h2>&lt;p>In 2025, I want to focus on four main areas of my life:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Graduate from College with No Debt&lt;/strong>
+My top priority is to finish college on time and debt-free. Clearing my college
+dues is a big challenge, but I’m determined to make it happen by working hard,
+budgeting wisely, and staying disciplined.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Return to Calendar-Based Task Planning&lt;/strong>&lt;br>
+Just like I did in 2017, I want to bring back the habit of scheduling my tasks
+on a calendar. That year taught me how powerful structured planning can be. By
+organizing my time, I was able to balance school, hobbies, and personal
+projects—even during the toughest periods. I’m hoping to recreate that level of
+focus and discipline in 2025.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Pursue Tech Projects&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Get an Orange Pi Zero&lt;/strong>&lt;br>
+I’ve been dreaming about getting an Orange Pi Zero to set up a tiny MPD
+server or even experiment with Jellyfin (though I know it might be too
+demanding). My goal is to save enough to buy it by mid-2025. Until then,
+I’ll keep using my laptop to host my MPD radio station whenever it’s on.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Host My Own Website&lt;/strong>
+Hosting my own website has been a long-standing dream. I’ve explored
+platforms like Render.com and Netlify, but they come with their own hurdles.
+For now, I’ll stick to using GitHub Pages while I figure out how to overcome
+these challenges, like setting environment variables on Netlify or renewing
+my debit card for Render.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Build IoT Projects for My Home&lt;/strong>&lt;br>
+I’ve always wanted to create IoT projects to make life at home more
+efficient and fun. Budget permitting, I plan to dive into these projects in
+2025 and maybe even share my experiences in future blog posts.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Write My Thesis&lt;/strong>&lt;br>
+Starting in January, I’ll begin writing my thesis. It’s a daunting task, but
+I’m ready to approach it with determination and gratitude.&lt;/p>
+&lt;/li>
+&lt;/ol></description></item><item><title>PANDI Announces Price Adjustments for .my.id and .biz.id Domains</title><link>https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/</link><pubDate>Fri, 27 Dec 2024 16:37:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi.jpeg" alt="Featured image of post PANDI Announces Price Adjustments for .my.id and .biz.id Domains" />&lt;p>Recently, I received an email from my domain provider notifying me that PANDI
+will increase the prices for .my.id and .biz.id domains starting January 1,
+2025. However, this isn’t exactly breaking news. According to &lt;a class="link" href="https://ufal.my.id/2024/03/23/domain-myid-naik/" target="_blank" rel="noopener"
+>Ufal Salman’s
+blog post&lt;/a>, PANDI actually
+made the official announcement on Friday, March 15, 2024. What’s interesting is
+that the price adjustment will be rolled out in two phases. The first phase
+begins on July 1, 2024, followed by the second phase on January 1, 2025.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi1.png"
+width="985"
+height="1154"
+srcset="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi1_hu_ffa14ed598ee2469.png 480w, https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/pandi1_hu_2733a0ae244905ae.png 1024w"
+loading="lazy"
+alt="PANDI Announcement"
+class="gallery-image"
+data-flex-grow="85"
+data-flex-basis="204px"
+>&lt;/p>
+&lt;p>Starting July 1, 2024, the renewal price for .my.id domains will rise to
+Rp50,000, while .biz.id domains will cost Rp100,000. Then, on January 1, 2025,
+both registration and renewal fees will align with these new prices. This is
+a significant jump from the previous rates, which ranged between Rp10,000 and
+Rp12,000.&lt;/p>
+&lt;p>These domains have long been a favorite for many due to their affordability and
+availability through numerous local registrars. Whether for personal blogs or
+business websites, .my.id and .biz.id have been reliable and cost-effective
+choices. However, with the upcoming price increases, some may start exploring
+other options.&lt;/p>
+&lt;p>When compared to other domains, the new price of .my.id will be similar to
+.ac.id, .sch.id, .or.id, and .web.id, which are priced around Rp50,000.
+Meanwhile, .id domains remain at Rp220,000, and .co.id at Rp300,000. Despite
+the hike, .my.id and .biz.id are still relatively budget-friendly compared to
+some premium domains.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/tax.png"
+width="638"
+height="706"
+srcset="https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/tax_hu_7fee19752fe3bd39.png 480w, https://blog.nishimiya.my.id/post/pandi-announces-price-adjustment-for-domain-name/tax_hu_e2df080d025949cd.png 1024w"
+loading="lazy"
+alt="Tax (VAT) rate will increase by 12% starting January 1st 2025"
+class="gallery-image"
+data-flex-grow="90"
+data-flex-basis="216px"
+>&lt;/p>
+&lt;p>Adding to the recent polemic about tax increases starting January 1, 2025,
+my domain provider also shared an email regarding the upcoming changes.
+Based on Law No. 7 of 2021 on the Harmonization of Tax Regulations,
+specifically Chapter IV Article 7 Paragraph (1), the Value Added Tax (VAT)
+rate will increase to 12% starting January 1, 2025. This means that all
+transactions, including new purchases and service renewals, will be
+subject to the new VAT rate.&lt;/p>
+&lt;p>However, the provider clarified that there will be no increase in the base
+price of new services or renewals, except for the specific services
+previously communicated via email.&lt;/p>
+&lt;p>If you’re looking to avoid the higher costs, here’s a tip: consider renewing
+your domain now for multiple years, depending on what your registrar offers.
+This allows you to lock in the current rate of Rp12,000, even after the price
+increase. While it requires a larger upfront payment, it’s a smart way to save
+money in the long run. Think of it as an investment in your domain’s future!&lt;/p></description></item><item><title>Be the Landlord of the Web, Not a Peasant</title><link>https://blog.nishimiya.my.id/post/landlord-of-the-web/</link><pubDate>Sun, 01 Dec 2024 00:30:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/landlord-of-the-web/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/pepe.jpeg" alt="Featured image of post Be the Landlord of the Web, Not a Peasant" />&lt;p>The web isn’t what it used to be. Once a place for creativity,
+exploration, and discovery, it’s now a minefield of ads, trackers, and
+bloated interfaces designed to keep you scrolling instead of getting
+things done. But here’s the thing: you don’t have to be a passive consumer
+in this digital kingdom. You can take control. You can own your
+experience. You can be the landlord of the web instead of just another
+peasant.&lt;/p>
+&lt;p>This is my setup for browsing the web—not just through a browser but
+beyond it. It’s not perfect, but it works for me. And maybe it’ll get you
+thinking about how to reclaim the web for yourself.&lt;/p>
+&lt;h2 id="my-browser-setup">My Browser Setup
+&lt;/h2>&lt;p>Let’s start with the browser. I use &lt;strong>Brave&lt;/strong> now, but I was a Firefox
+user before. Why did I switch? That’s a story for another time. What
+matters here is that Brave supports &lt;strong>Manifest V2&lt;/strong>, something Google is
+actively trying to kill.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/manifest-v2.png"
+width="676"
+height="408"
+srcset="https://blog.nishimiya.my.id/post/landlord-of-the-web/manifest-v2_hu_655c3ebbe9e1ae61.png 480w, https://blog.nishimiya.my.id/post/landlord-of-the-web/manifest-v2_hu_920b7927700110c4.png 1024w"
+loading="lazy"
+alt="Brave support for Manivest V2 Extension"
+class="gallery-image"
+data-flex-grow="165"
+data-flex-basis="397px"
+>&lt;/p>
+&lt;p>Now, I’m not one for conspiracy theories, but it’s hard to ignore how
+convenient it is for Google that &lt;strong>Manifest V3&lt;/strong> cripples ad blockers.
+uBlock Origin? Gone from the Chrome Web Store. Why? Because blocking ads
+doesn’t exactly line up with Google’s business model. But Brave? Brave
+still lets you use those powerful extensions.&lt;/p>
+&lt;p>Here’s what I’ve got installed:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>uBlock Origin&lt;/strong> to block ads and trackers.&lt;/li>
+&lt;li>&lt;strong>SponsorBlock&lt;/strong> to skip sponsored segments on YouTube.&lt;/li>
+&lt;li>&lt;strong>Dark Reader&lt;/strong> because light mode is an assault on my eyes.&lt;/li>
+&lt;li>&lt;strong>Vimium&lt;/strong> for fast, keyboard-driven browsing.&lt;/li>
+&lt;li>&lt;strong>Proton Pass and VPN&lt;/strong> for security and password management.&lt;/li>
+&lt;/ul>
+&lt;p>To enable Manifest V2 extensions in Brave:&lt;/p>
+&lt;ol>
+&lt;li>Open Brave settings&lt;/li>
+&lt;li>Search for Manifest V2 extensions&lt;/li>
+&lt;li>Enable the extensions, such as uBlock Origin, NoScript, uMatrix, and AdGuard&lt;/li>
+&lt;/ol>
+&lt;p>With this setup, I don’t have to deal with ads, pop-ups, or other
+nonsense. If your browser isn’t giving you that level of control, you’re
+doing it wrong.&lt;/p>
+&lt;h2 id="youtube-without-the-junk">YouTube Without the Junk
+&lt;/h2>&lt;p>Let’s talk about YouTube. It’s a mess—ads everywhere, autoplaying
+recommendations, and more distractions than a toddler in a toy store.
+Watching a single video shouldn’t feel like navigating a minefield.&lt;/p>
+&lt;p>So, here’s what I do:&lt;/p>
+&lt;ol>
+&lt;li>I use &lt;strong>Invidious&lt;/strong>, an ad-free front-end for YouTube. This instance works
+for me: &lt;a class="link" href="https://inv.nadeko.net/" target="_blank" rel="noopener"
+>inv.nadeko.net&lt;/a>.&lt;/li>
+&lt;li>Export your subscriptions from YouTube.
+&lt;ul>
+&lt;li>Go to &lt;a class="link" href="https://takeout.google.com/" target="_blank" rel="noopener"
+>Google Takeout&lt;/a>, request your YouTube
+data, and download it.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Import those subscriptions into Invidious.
+&lt;ul>
+&lt;li>Once imported, click the &lt;strong>RSS icon&lt;/strong> in your subscriptions tab to
+generate a feed (using a token if needed).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Use &lt;strong>Newsboat&lt;/strong>, a command-line RSS reader, to manage subscriptions.&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/bsky-rss-bridge.png"
+width="553"
+height="344"
+srcset="https://blog.nishimiya.my.id/post/landlord-of-the-web/bsky-rss-bridge_hu_b7e8a15bf066e901.png 480w, https://blog.nishimiya.my.id/post/landlord-of-the-web/bsky-rss-bridge_hu_dcc61dcc0be84f26.png 1024w"
+loading="lazy"
+alt="Fetching bsky post for RSS bridge"
+class="gallery-image"
+data-flex-grow="160"
+data-flex-basis="385px"
+>&lt;/p>
+&lt;p>Here’s the cool part: I don’t even need a browser to watch YouTube. My
+&lt;strong>Newsboat&lt;/strong> config file lets me use &lt;strong>MPV&lt;/strong> to play videos:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">browser qutebrowser
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">macro , open-in-browser
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">macro v set browser &amp;#34;setsid -f mpv --really-quiet --no-terminal&amp;#34;; open-in-browser; set browser browser
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Now I just press &lt;code>,v&lt;/code> in Newsboat, and the video plays in MPV, bypassing
+YouTube’s bloated interface entirely.&lt;/p>
+&lt;h2 id="social-media-no-thanks">Social Media? No Thanks
+&lt;/h2>&lt;p>Social media platforms are time sinks. Endless scrolls, algorithm-driven
+feeds, and constant distractions. But you don’t have to quit entirely. You
+can still get updates from accounts or topics you care about without
+logging into the platforms.&lt;/p>
+&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/landlord-of-the-web/newsboat-rss.png"
+width="1041"
+height="609"
+srcset="https://blog.nishimiya.my.id/post/landlord-of-the-web/newsboat-rss_hu_53d476d0172107c1.png 480w, https://blog.nishimiya.my.id/post/landlord-of-the-web/newsboat-rss_hu_c3d0680bb63d7fe3.png 1024w"
+loading="lazy"
+alt="My bsky feed transformed into RSS feed"
+class="gallery-image"
+data-flex-grow="170"
+data-flex-basis="410px"
+>&lt;/p>
+&lt;p>I use &lt;strong>RSS-Bridge&lt;/strong>, a tool that turns social media accounts into RSS
+feeds. Here’s how:&lt;/p>
+&lt;ol>
+&lt;li>Visit a public RSS-Bridge instance, like &lt;a class="link" href="https://rss-bridge.org/" target="_blank" rel="noopener"
+>RSS-Bridge&lt;/a>.&lt;/li>
+&lt;li>Search for a service, such as Bluesky, and enter the user’s handle.&lt;/li>
+&lt;li>Customize filters if needed and generate the feed.&lt;/li>
+&lt;li>Copy the &lt;strong>MRSS&lt;/strong> or &lt;strong>Atom&lt;/strong> link and add it to your RSS reader.&lt;/li>
+&lt;/ol>
+&lt;p>For example, you can follow Bluesky accounts without ever opening Bluesky.
+Not all bridges are perfect, but they work well enough to cut the noise
+and give you only what you need.&lt;/p>
+&lt;hr>
+&lt;h2 id="so-whats-the-point">So What’s the Point?
+&lt;/h2>&lt;p>The big players of the internet—Google, Meta, YouTube—they’re not looking
+out for you. They want your data, your clicks, your time. They’ve turned
+the web into a space designed to exploit, distract, and monetize.&lt;/p>
+&lt;p>But you don’t have to play along. You can carve out a web experience that
+works for you. Use tools like Brave, Invidious, RSS-Bridge, and Newsboat
+to reclaim control. Cut the bloat, skip the noise, and focus on what
+matters to you.&lt;/p>
+&lt;p>It’s not about being perfect or even radically different. It’s about
+realizing you have a choice. You don’t have to be a passive consumer in
+someone else’s digital kingdom. You can be the landlord. You just have to
+take the first step.&lt;/p></description></item><item><title>Computers were faster when they were slower!</title><link>https://blog.nishimiya.my.id/post/computer-were-faster-when-they-were-slower/</link><pubDate>Sat, 30 Nov 2024 10:25:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/computer-were-faster-when-they-were-slower/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/computer-were-faster-when-they-were-slower/moore.jpeg" alt="Featured image of post Computers were faster when they were slower!" />&lt;p>There’s a paradox in modern computing: computers today are faster, more
+powerful, and sleeker than ever before, yet they often &lt;em>feel&lt;/em> slower when doing
+everyday tasks. How can this be true? The answer lies in a growing mismatch
+between hardware advancements and software development practices.&lt;/p>
+&lt;h2 id="the-promise-of-moores-law">The Promise of Moore&amp;rsquo;s Law
+&lt;/h2>&lt;p>You’ve probably heard of &lt;strong>Moore&amp;rsquo;s Law&lt;/strong>, the observation made by Gordon Moore
+in 1965 that the number of transistors in an integrated circuit doubles
+approximately every two years. This doubling translates to exponential growth in
+computing power. For decades, this trend held true, allowing computers to become
+faster and more capable at an astonishing rate.&lt;/p>
+&lt;p>But while hardware performance has skyrocketed, the way we write software has
+changed dramatically, and not always for the better.&lt;/p>
+&lt;h2 id="the-reality-of-modern-software">The Reality of Modern Software
+&lt;/h2>&lt;p>In the early days of computing, resources were scarce. Developers had to be
+highly efficient, squeezing every ounce of performance out of limited hardware.
+Programs were carefully written to minimize memory use and maximize speed. But
+today, those constraints are less pressing. Why? Because hardware is &amp;ldquo;fast
+enough&amp;rdquo; to accommodate less efficient software. Or at least, that’s the
+assumption.&lt;/p>
+&lt;p>Take modern applications: instead of being optimized for speed and efficiency,
+they’re often bloated with unnecessary features, redundant processes, and layers
+of abstraction. Think of a simple text editor. In the past, it might have been
+a few kilobytes in size, designed to launch instantly and use minimal system
+resources. Today’s equivalent might consume hundreds of megabytes, taking
+seconds to load, even though it fundamentally performs the same function.&lt;/p>
+&lt;h2 id="the-bandwidth-vs-processing-paradox">The Bandwidth vs. Processing Paradox
+&lt;/h2>&lt;p>While internet bandwidth and storage capacities have dramatically increased, the
+responsiveness of software hasn’t kept pace. Consider web applications. Are they
+twice as fast as they were two years ago? Probably not. The complexity of modern
+web technologies—frameworks, plugins, and bloated libraries—often offsets the
+benefits of faster internet and improved hardware.&lt;/p>
+&lt;h2 id="an-embarrassing-anecdote">An Embarrassing Anecdote
+&lt;/h2>&lt;p>Here’s a real-life example of the inefficiency problem. A developer needed to
+number the lines of a text file. Instead of using a built-in Unix utility like
+&lt;code>nl&lt;/code>, which does this instantly, they wrote a Python script that looped through
+the file line by line. The script was not only redundant but far slower than the
+existing tool.&lt;/p>
+&lt;p>Why did this happen? Likely because the developer wasn’t familiar with the
+utilities already available on their system. This lack of awareness is
+increasingly common. Instead of learning to use efficient, purpose-built tools,
+many programmers default to reinventing the wheel, often less effectively.&lt;/p>
+&lt;h2 id="the-layers-of-abstraction">The Layers of Abstraction
+&lt;/h2>&lt;p>Another culprit is the growing reliance on layers of abstraction. Modern
+software often sits atop frameworks, libraries, and APIs that insulate
+developers from the underlying hardware. While abstraction makes development
+faster and more accessible, it can also lead to inefficiencies. For example,
+a web application might load dozens of unnecessary libraries to perform a single
+task, consuming memory and processing power needlessly.&lt;/p>
+&lt;h2 id="the-snowball-effect-of-inefficiency">The Snowball Effect of Inefficiency
+&lt;/h2>&lt;p>When everyone writes inefficient code, the inefficiencies accumulate. The result? Computers that are orders of magnitude more powerful than their predecessors often feel just as slow—or slower—because they’re bogged down by bloated software.&lt;/p>
+&lt;p>This trend is particularly noticeable in areas like:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Web browsers&lt;/strong>, which consume gigabytes of RAM to load basic websites.&lt;/li>
+&lt;li>&lt;strong>Operating systems&lt;/strong>, which include countless background processes and telemetry features.&lt;/li>
+&lt;li>&lt;strong>Games&lt;/strong>, which rely on technologies like DLSS or FSR to compensate for inefficient rendering pipelines.&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-path-forward">The Path Forward
+&lt;/h2>&lt;p>The solution isn’t to stop using modern tools or frameworks—they’ve made
+incredible advancements possible. But we do need to strike a balance. Developers
+should:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Learn the Basics&lt;/strong>: Familiarize themselves with existing tools and
+utilities. Why write a script when a built-in command will do?&lt;/li>
+&lt;li>&lt;strong>Focus on Efficiency&lt;/strong>: Write code that’s not just functional but also
+optimized for performance.&lt;/li>
+&lt;li>&lt;strong>Avoid Unnecessary Complexity&lt;/strong>: Use only the features and libraries truly
+needed for the task at hand.&lt;/li>
+&lt;li>&lt;strong>Adopt a Minimalist Mindset&lt;/strong>: Sometimes, less is more.&lt;/li>
+&lt;/ol>
+&lt;h2 id="conclusion">Conclusion
+&lt;/h2>&lt;p>As computers continue to grow more powerful, it’s crucial that we don’t take
+this progress for granted. Moore’s Law may keep advancing hardware capabilities,
+but it’s up to us to ensure that software development keeps pace. Otherwise,
+we’ll be stuck in a world where faster computers only mean slower programs.&lt;/p></description></item><item><title>Bsky Redirect Trick Using Cloudflare</title><link>https://blog.nishimiya.my.id/post/bsky-redirect/</link><pubDate>Wed, 20 Nov 2024 02:55:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/bsky-redirect/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/bsky-redirect/hero-image.webp" alt="Featured image of post Bsky Redirect Trick Using Cloudflare" />&lt;p>Recently, I came across an interesting and creative trick shared by
+&lt;a class="link" href="https://bsky.app/profile/flamesoulis.com/post/3lb7br5kezc2y" target="_blank" rel="noopener"
+>flamesoulis&lt;/a>.
+The trick involves using Cloudflare to create a seamless and branded
+redirection for Bluesky profiles or posts. It&amp;rsquo;s a clever approach that can
+make your links look cleaner and more professional, and I thought it would
+be exciting to share how you can implement it yourself. Whether you’re
+looking to personalize your profile link or simplify sharing specific
+posts, this method is both practical and easy to set up.&lt;/p>
+&lt;h2 id="step-1-create-a-cname-record">Step 1: Create a CNAME Record
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/bsky-redirect/1.png"
+width="1249"
+height="375"
+srcset="https://blog.nishimiya.my.id/post/bsky-redirect/1_hu_96edfc6fdf4f3b7c.png 480w, https://blog.nishimiya.my.id/post/bsky-redirect/1_hu_ba3c1268994e2952.png 1024w"
+loading="lazy"
+alt="CNAME"
+class="gallery-image"
+data-flex-grow="333"
+data-flex-basis="799px"
+>&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Log in to your Cloudflare Dashboard.&lt;/strong>&lt;/li>
+&lt;li>Go to the &lt;strong>DNS&lt;/strong> section and add a new record:
+&lt;ul>
+&lt;li>&lt;strong>Type:&lt;/strong> CNAME&lt;/li>
+&lt;li>&lt;strong>Name:&lt;/strong> &lt;code>bsky&lt;/code>&lt;/li>
+&lt;li>&lt;strong>Target:&lt;/strong> &lt;code>bsky.app/profile/nishimiya.my.id&lt;/code>&lt;br>
+Replace &lt;code>nishimiya.my.id&lt;/code> with your Bluesky username.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Save the changes.&lt;/li>
+&lt;/ol>
+&lt;h2 id="step-2-set-up-a-redirect-rule">Step 2: Set Up a Redirect Rule
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/bsky-redirect/2.png"
+width="1126"
+height="775"
+srcset="https://blog.nishimiya.my.id/post/bsky-redirect/2_hu_1ac7fce671fb0656.png 480w, https://blog.nishimiya.my.id/post/bsky-redirect/2_hu_8a4625996f389cb5.png 1024w"
+loading="lazy"
+alt="Redirect Rule"
+class="gallery-image"
+data-flex-grow="145"
+data-flex-basis="348px"
+>&lt;/p>
+&lt;ol>
+&lt;li>Navigate to the &lt;strong>Rules&lt;/strong> section from the sidebar.&lt;/li>
+&lt;li>In the dropdown menu, select &lt;strong>Redirect Rules&lt;/strong> and click &lt;strong>Create Rule&lt;/strong>.&lt;/li>
+&lt;/ol>
+&lt;h3 id="rule-configuration">Rule Configuration:
+&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Name:&lt;/strong> &amp;ldquo;Redirect to Different Domain [bsky]&amp;rdquo;&lt;/li>
+&lt;li>&lt;strong>Filter Expression:&lt;/strong>
+&lt;ul>
+&lt;li>Choose &lt;strong>Custom filter expression&lt;/strong>.&lt;/li>
+&lt;li>Set &lt;strong>Hostname&lt;/strong> to &lt;code>equals&lt;/code>.&lt;/li>
+&lt;li>Value: &lt;code>bsky.nishimiya.my.id&lt;/code> (replace &lt;code>nishimiya.my.id&lt;/code> with your username).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="url-redirect">URL Redirect:
+&lt;/h3>&lt;ul>
+&lt;li>Under &lt;strong>Type&lt;/strong>, choose &lt;strong>Dynamic&lt;/strong>.&lt;/li>
+&lt;li>Use the following expression in the field:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">concat(&amp;#34;https://bsky.app/profile/nishimiya.my.id&amp;#34;, http.request.uri.path)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>Replace &lt;code>nishimiya.my.id&lt;/code> with your username.&lt;/li>
+&lt;li>Set the &lt;strong>Status Code&lt;/strong> to &lt;strong>301&lt;/strong>.&lt;/li>
+&lt;li>Choose &lt;strong>Place At: First&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;ol start="3">
+&lt;li>Hit &lt;strong>Save&lt;/strong>.&lt;/li>
+&lt;/ol>
+&lt;h2 id="step-3-test-your-redirection">Step 3: Test Your Redirection
+&lt;/h2>&lt;p>Now that everything is set up, you can test your custom URL. Open your browser and try:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>https://bsky.nishimiya.my.id&lt;/code> — Redirects to your Bluesky profile.&lt;/li>
+&lt;li>&lt;code>https://bsky.nishimiya.my.id/post/3lbcmwvuyyg2v&lt;/code> — Redirects to a specific post on Bluesky.&lt;/li>
+&lt;/ul>
+&lt;p>This setup uses a &lt;strong>dynamic redirect&lt;/strong>, so the path after your custom
+subdomain is appended to the Bluesky URL. While Bluesky’s share feature
+provides direct links, this trick is a great way to create cleaner,
+branded URLs for your profile and posts.&lt;/p></description></item><item><title>Bridging MPD Server-client to Libre.fm Using Mpdas</title><link>https://blog.nishimiya.my.id/post/mpd-bridge-librefm/</link><pubDate>Thu, 14 Nov 2024 18:05:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/mpd-bridge-librefm/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/Libre.fm_logo.svg" alt="Featured image of post Bridging MPD Server-client to Libre.fm Using Mpdas" />&lt;h2 id="why-use-mpdas-with-librefm">Why Use Mpdas with Libre.fm?
+&lt;/h2>&lt;p>&lt;strong>Mpdas&lt;/strong> (MPD Audio Scrobbler) is a lightweight, efficient tool that acts
+as a bridge between MPD servers and scrobbling platforms like Libre.fm.
+For anyone unfamiliar, MPD is a versatile, open-source music server
+popular among audiophiles and Linux users. It plays music from a local
+library, internet radio, or streaming services, and it integrates well
+with various lightweight clients like &lt;strong>ncmpcpp&lt;/strong>.&lt;/p>
+&lt;p>Libre.fm, meanwhile, offers a refreshing alternative to Last.fm by
+prioritizing user control and open-source principles. It’s
+a community-oriented service that allows users to &amp;ldquo;scrobble&amp;rdquo; (log) their
+played tracks without sacrificing their data privacy. With Mpdas and
+Libre.fm, you can track what you’re listening to, explore your listening
+history, and discover music—all without corporate oversight.&lt;/p>
+&lt;h2 id="my-take-on-security-configuration-it-uses-plain-text-passwords">My take on Security Configuration: It Uses Plain Text Passwords
+&lt;/h2>&lt;p>As of &lt;strong>Mpdas version 0.4.3&lt;/strong>, &lt;strong>Last.fm deprecated MD5 password
+hashing&lt;/strong>, requiring Mpdas to switch to plain-text passwords. In this
+version, passwords for scrobbling services must be stored as plaintext in
+the configuration file. Although this might raise a security concern, you
+can protect your data by restricting access to the configuration file.
+Placing it in a restricted-access directory or managing permissions can
+help ensure that your password is secure on your machine.&lt;/p>
+&lt;h2 id="step-by-step-guide-to-setting-up-mpdas">Step-by-Step Guide to Setting Up Mpdas
+&lt;/h2>&lt;p>Ready to connect your MPD server to Libre.fm? Follow these steps, and
+you’ll be scrobbling in no time.&lt;/p>
+&lt;h3 id="step-1-install-mpdas">Step 1: Install Mpdas
+&lt;/h3>&lt;p>Installing Mpdas is straightforward, thanks to its availability in most
+Linux distribution repositories. Here’s a quick installation guide for
+some popular Linux distros:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Arch Linux&lt;/strong>: Install Mpdas using the &lt;code>yay&lt;/code> package manager.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yay -S mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Debian/Ubuntu&lt;/strong>: Install via &lt;code>apt&lt;/code> if Mpdas is available in the repositories.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt install mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Fedora&lt;/strong>: Use &lt;code>dnf&lt;/code> to install Mpdas, if it’s available in your repositories.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo dnf install mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;p>If Mpdas isn’t available through your package manager, you may need to
+compile it from source. The &lt;a class="link" href="https://github.com/hrkfdn/mpdas" target="_blank" rel="noopener"
+>official Mpdas GitHub
+repository&lt;/a> has detailed instructions on
+how to do this.&lt;/p>
+&lt;h3 id="step-2-configure-mpdas">Step 2: Configure Mpdas
+&lt;/h3>&lt;p>Once installed, you’ll need to configure Mpdas so it can log into your
+Libre.fm account and scrobble your plays.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Open the Mpdas configuration file, typically found at &lt;code>/etc/mpdasrc&lt;/code>.
+Use your preferred text editor with root permissions: &lt;code>sudo vim /etc/mpdasrc &lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In this file, add the following configuration, replacing &lt;code>&amp;lt;username&amp;gt;&lt;/code>
+and &lt;code>&amp;lt;plain-text-password&amp;gt;&lt;/code> with your actual Libre.fm credentials:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">username = &amp;lt;username&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">password = &amp;lt;plain-text-password&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = 6600
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">runas = mpd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service = librefm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">debug = 1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>Type &lt;code>ZZ&lt;/code> to write then quit.&lt;/p>
+&lt;p>Here’s what each setting does:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>username&lt;/strong> and &lt;strong>password&lt;/strong>: Your Libre.fm login credentials.&lt;/li>
+&lt;li>&lt;strong>port&lt;/strong>: Sets the MPD server connection port. Default is &lt;code>6600&lt;/code>, so if
+you haven’t customized your MPD setup, this should work fine.&lt;/li>
+&lt;li>&lt;strong>runas&lt;/strong>: Defines the user under which Mpdas should run. Here, it’s set
+to &lt;code>mpd&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>service&lt;/strong>: Specifies the scrobbling service. Set this to &lt;code>librefm&lt;/code> to
+scrobble with Libre.fm. (Default last.fm)&lt;/li>
+&lt;li>&lt;strong>debug&lt;/strong>: Enables debugging if set to &lt;code>1&lt;/code>, which can help with
+troubleshooting if needed.&lt;/li>
+&lt;/ul>
+&lt;ol start="3">
+&lt;li>Save and close the configuration file.&lt;/li>
+&lt;/ol>
+&lt;h3 id="step-3-enable-and-start-mpdas-as-a-user-service">Step 3: Enable and Start Mpdas as a User Service
+&lt;/h3>&lt;p>After configuring Mpdas, start it as a user service to keep it running in
+the background. By enabling it as a user service, Mpdas will run each time
+you log in, making the setup hassle-free.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Run the following command to enable and start Mpdas as a user service:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now --user mpdas.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This command does two things: it starts Mpdas immediately and ensures
+that it will start automatically each time you log in.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Open your MPD music client (e.g., &lt;code>ncmpcpp&lt;/code>) and start playing some
+music. This step will let you confirm that the setup is working
+properly.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Go to your Libre.fm profile and check the &amp;ldquo;Now Playing&amp;rdquo; section. If
+everything is set up correctly, you’ll see the current track being
+scrobbled in real-time, reflecting the music playing in your MPD
+client.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="step-4-loving-and-unloving-tracks-on-librefm">Step 4: Loving and Unloving Tracks on Libre.fm
+&lt;/h3>&lt;p>With Mpdas, you can also mark your favorite tracks by “Loving” them, just
+like on Last.fm. This feature allows you to mark songs you particularly
+enjoy for easier recall later.&lt;/p>
+&lt;p>To love a track, use the following command:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpc sendmessage mpdas love
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>If you want to unlove (or revert) a track, simply use:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpc sendmessage mpdas unlove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="wrapping-up-enjoy-real-time-music-tracking-with-librefm">Wrapping Up: Enjoy Real-Time Music Tracking with Libre.fm
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm.png"
+width="784"
+height="893"
+srcset="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm_hu_fd55960d155dacfe.png 480w, https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm_hu_6bc0a22acc86d005.png 1024w"
+loading="lazy"
+alt="Nishimiya’s Profile on Libre.fm"
+class="gallery-image"
+data-flex-grow="87"
+data-flex-basis="210px"
+>&lt;/p>
+&lt;p>Congratulations! With Mpdas up and running, you now have a powerful,
+privacy-focused way to track your listening habits. This setup combines the
+flexibility of MPD, the simplicity of Mpdas, and the openness of Libre.fm,
+giving you a complete music experience that respects your data and privacy.&lt;/p>
+&lt;p>Now, your plays are seamlessly logged on Libre.fm. Whether you’re using
+&lt;strong>ncmpcpp&lt;/strong>, &lt;strong>Cantata&lt;/strong>, or any other MPD client, you’ll be able to track and
+analyze your music tastes effortlessly. So sit back, press play, and enjoy your
+music journey!&lt;/p></description></item><item><title>Building a BlueSky Bot that Shares Your Current Song with MPD</title><link>https://blog.nishimiya.my.id/post/bsky-music-bot/</link><pubDate>Sun, 10 Nov 2024 18:55:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/bsky-music-bot/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/bsky-music-bot/github.jpg" alt="Featured image of post Building a BlueSky Bot that Shares Your Current Song with MPD" />&lt;p>My journey with Bluesky started with a spark of curiosity. After exploring
+the platform, I found myself diving deeper into how their system works,
+eventually leading me to a fun and practical project: building a bot that
+shares your current song with Bluesky using MPD (Music Player Daemon).
+This project has been a great opportunity to get hands-on experience with
+Bluesky’s API and automate something useful for myself.&lt;/p>
+&lt;p>While the initial goal was simply to create a basic bot template that
+posts something to Bluesky, I decided to focus specifically on building
+a bot that automatically shares your current song—if you’re using Linux
+and MPD. But I don’t want to stop here. I plan to further improve it with
+Last.fm scrobbling, and maybe even integrate with YouTube music streaming.
+However, those ideas are still a work in progress, and I need to figure
+out how best to implement them.&lt;/p>
+&lt;p>In this post, I&amp;rsquo;ll break down what this bot does, step by step, and
+provide code snippets along the way to show how each piece works.&lt;/p>
+&lt;h2 id="breaking-down-the-bot-from-concept-to-execution">Breaking Down the Bot: From Concept to Execution
+&lt;/h2>&lt;h3 id="1-getting-started-with-bluesky">1. Getting Started with Bluesky
+&lt;/h3>&lt;p>Before diving into the code, we need to interact with the Bluesky
+platform. Bluesky offers a simple API, which we can use to post updates.
+To do this, I used the &lt;code>@atproto/api&lt;/code> package to interact with the Bluesky
+API.&lt;/p>
+&lt;p>&lt;strong>What we’re doing&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Logging into Bluesky&lt;/strong> using your username and password (stored
+securely with &lt;code>dotenv&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Posting a text update&lt;/strong> to Bluesky, which will be our song info.&lt;/li>
+&lt;/ul>
+&lt;p>Here&amp;rsquo;s how we log in and post to Bluesky:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">api&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;@atproto/api&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">dotenv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;dotenv&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">dotenv&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">agent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BskyAgent&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">service&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;https://bsky.social&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Login to Bluesky with credentials stored in the environment variables
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">login&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">identifier&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_USERNAME&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">password&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_PASSWORD&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// The bot will post this text (current song info)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">songText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Post the song info as a status update on Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">post&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">text&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">songText&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Successfully posted to Bluesky:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;Error posting to Bluesky:&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="2-getting-current-song-information-from-mpd">2. Getting Current Song Information from MPD
+&lt;/h3>&lt;p>Next, we need to interact with MPD (Music Player Daemon), which is
+a server-side application that controls music playback. We’ll use the
+&lt;code>mpd-api&lt;/code> library to fetch the currently playing song from MPD.&lt;/p>
+&lt;p>Here’s a simple function to retrieve the current song&amp;rsquo;s title, artist, and
+album:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">mpdapi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;mpd-api&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">config&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">host&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;127.0.0.1&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">port&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">6600&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Default MPD port
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Connect to MPD and get the status
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">client&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">mpdapi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">status&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">get&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">currentSong&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">currentsong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// If a song is playing, return its info; otherwise, return a default message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">state&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s1">&amp;#39;play&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sb">`Now playing: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">title&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> by &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">artist&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> from the album &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">album&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;No song currently playing.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;Error fetching song info:&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Error retrieving song info.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>In this code:&lt;/p>
+&lt;ul>
+&lt;li>We connect to MPD (running locally on &lt;code>127.0.0.1&lt;/code> at port &lt;code>6600&lt;/code>).&lt;/li>
+&lt;li>We fetch the current song details if MPD is playing, and we return
+a string with the song title, artist, and album.&lt;/li>
+&lt;li>If no song is playing, we return a message saying so.&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-putting-it-all-together">3. Putting It All Together
+&lt;/h3>&lt;p>Now that we have the logic to retrieve the song info from MPD and post to
+Bluesky, it’s time to combine them into a full working bot.&lt;/p>
+&lt;p>Here’s what happens:&lt;/p>
+&lt;ul>
+&lt;li>The bot first logs in to Bluesky using your credentials.&lt;/li>
+&lt;li>It then gets the current song from MPD.&lt;/li>
+&lt;li>Finally, it posts the song details to Bluesky as a status update.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Here’s the full code for the bot&lt;/strong>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;span class="lnt">79
+&lt;/span>&lt;span class="lnt">80
+&lt;/span>&lt;span class="lnt">81
+&lt;/span>&lt;span class="lnt">82
+&lt;/span>&lt;span class="lnt">83
+&lt;/span>&lt;span class="lnt">84
+&lt;/span>&lt;span class="lnt">85
+&lt;/span>&lt;span class="lnt">86
+&lt;/span>&lt;span class="lnt">87
+&lt;/span>&lt;span class="lnt">88
+&lt;/span>&lt;span class="lnt">89
+&lt;/span>&lt;span class="lnt">90
+&lt;/span>&lt;span class="lnt">91
+&lt;/span>&lt;span class="lnt">92
+&lt;/span>&lt;span class="lnt">93
+&lt;/span>&lt;span class="lnt">94
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="s2">&amp;#34;use strict&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">var&lt;/span> &lt;span class="nx">__createBinding&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__createBinding&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">create&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">k2&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="kc">undefined&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nx">k2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">var&lt;/span> &lt;span class="nx">desc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">getOwnPropertyDescriptor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nx">desc&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;get&amp;#34;&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="nx">desc&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="o">!&lt;/span>&lt;span class="nx">m&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__esModule&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="nx">desc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">writable&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="nx">desc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">configurable&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">desc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">enumerable&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">get&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kd">function&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">k&lt;/span>&lt;span class="p">];&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">defineProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">desc&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">})&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k2&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">k2&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="kc">undefined&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nx">k2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">o&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">k2&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">m&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">k&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">var&lt;/span> &lt;span class="nx">__setModuleDefault&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__setModuleDefault&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">create&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">defineProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">enumerable&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">value&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">v&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">})&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="kd">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">o&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">v&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">o&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">v&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">var&lt;/span> &lt;span class="nx">__importStar&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__importStar&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">__esModule&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">var&lt;/span> &lt;span class="nx">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">var&lt;/span> &lt;span class="nx">k&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">k&lt;/span> &lt;span class="o">!==&lt;/span> &lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">prototype&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">hasOwnProperty&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">call&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">mod&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="nx">__createBinding&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">result&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">k&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">__setModuleDefault&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">result&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">mod&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">Object&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">defineProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">exports&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;__esModule&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">value&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">api_1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;@atproto/api&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">dotenv&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">__importStar&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;dotenv&amp;#34;&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">mpdapi&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">__importStar&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">require&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;mpd-api&amp;#34;&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Load environment variables
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nx">dotenv&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Create a Bluesky Agent
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">agent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">api_1&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BskyAgent&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">service&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;https://bsky.social&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Function to connect to MPD and log the current song
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Define connection configuration
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">config&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">host&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;127.0.0.1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// MPD server host
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">port&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">6600&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// MPD server port
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// password: &amp;#39;yourpassword&amp;#39;, // Uncomment if MPD requires a password
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Connect to MPD using the config object
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">client&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">mpdapi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Connected to MPD&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Get the playback state and currently playing song
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">status&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">get&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">currentSong&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">api&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">currentsong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Check if MPD is currently playing something
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">state&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s2">&amp;#34;play&amp;#34;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">songInfo&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">title&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">title&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;Unknown Title&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">artist&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">artist&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;Unknown Artist&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">album&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSong&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">album&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;Unknown Album&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">songText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sb">`Now playing: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">songInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">title&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> by &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">songInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">artist&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> from the album &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">songInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">album&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">songText&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">songText&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;No song currently playing.&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;No song currently playing.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Disconnect from MPD
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">client&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">disconnect&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Error connecting to MPD or retrieving song information:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Error retrieving song info.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Function to post current song info to Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">async&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Login to Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">login&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">identifier&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_USERNAME&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Explicitly cast to string
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">password&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">BLUESKY_PASSWORD&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// Explicitly cast to string
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Get the current song info
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">currentSongText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">logCurrentSong&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Post the current song info to Bluesky
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">agent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">post&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">text&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">currentSongText&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Successfully posted to Bluesky:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Error posting to Bluesky:&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Run the Bluesky post function
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nx">postToBluesky&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="running-the-bot-locally">&lt;strong>Running the Bot Locally&lt;/strong>
+&lt;/h2>&lt;p>To run the bot locally:&lt;/p>
+&lt;ol>
+&lt;li>Install the necessary dependencies with &lt;code>npm install&lt;/code>.&lt;/li>
+&lt;li>Create a &lt;code>.env&lt;/code> file to store your Bluesky credentials:
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">BLUESKY_USERNAME=your_username
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BLUESKY_PASSWORD=your_password
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>Run the bot using &lt;code>node index.js&lt;/code>.&lt;/li>
+&lt;/ol>
+&lt;p>When you run the bot, it will:&lt;/p>
+&lt;ul>
+&lt;li>Log into Bluesky.&lt;/li>
+&lt;li>Retrieve the current song from MPD.&lt;/li>
+&lt;li>Post the song info to Bluesky as a status update.&lt;/li>
+&lt;/ul>
+&lt;p>You should see the current song in your Bluesky feed!&lt;/p>
+&lt;h2 id="next-steps-expanding-the-bot">Next Steps: Expanding the Bot
+&lt;/h2>&lt;p>This bot is a great starting point, but there’s a lot of room for improvement:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Last.fm Scrobbling&lt;/strong>: Integrate Last.fm API to scrobble the songs you listen to.&lt;/li>
+&lt;li>&lt;strong>YouTube Integration&lt;/strong>: If you want to share music from YouTube, you’ll need to figure out how to extract the currently playing video or song.&lt;/li>
+&lt;li>&lt;strong>Scheduled Posts&lt;/strong>: You could set up a scheduled task to post updates periodically instead of only when triggered manually.&lt;/li>
+&lt;/ul>
+&lt;h3 id="check-out-the-full-code-on-github">Check Out the Full Code on GitHub
+&lt;/h3>&lt;p>If you want to explore the full project, check out the repository on GitHub:
+&lt;a class="link" href="https://github.com/nishimi-ya/mpd-bsky-bot" target="_blank" rel="noopener"
+>https://github.com/nishimi-ya/mpd-bsky-bot&lt;/a>&lt;/p></description></item><item><title>Social Media as a Tool of Social Control</title><link>https://blog.nishimiya.my.id/post/social-media-control/</link><pubDate>Thu, 07 Nov 2024 02:20:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/social-media-control/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/social-media-control/hero-image.jpg" alt="Featured image of post Social Media as a Tool of Social Control" />&lt;p>An American psychologist, B.F. Skinner (1904-1990), became famous for his
+invention, the “Skinner Box,” which he used to study behavioral
+conditioning in animals. In his experiments, Skinner placed rats inside
+a box equipped with mechanisms such as lights and levers. He programmed
+the box so that when a rat stood on a lever or pressed it at a certain
+time, the rat would receive either a reward in the form of a food pellet
+or, in other cases, a mild electric shock. The main purpose of these
+experiments was to understand behavior patterns, with implications for
+human behavior.&lt;/p>
+&lt;p>Skinner wrote a book titled &lt;em>Beyond Freedom and Dignity&lt;/em>, where he
+detailed his worldview. His vision was to create a &amp;ldquo;behavioral utopia&amp;rdquo; in
+which all human actions are conditioned responses to certain stimuli,
+similar to the Skinner Box. For example, humans might do socially
+acceptable things to receive positive reinforcement and, conversely, would
+be punished if they violated norms.&lt;/p>
+&lt;p>According to Skinner, concepts like freedom and dignity are mere
+abstractions; they are metaphysical and not essential to social progress.
+He argued that “social engineers” could design a society that shapes
+people to behave as expected. This thought is relevant to us today
+because, consciously or not, we live in a world that resembles
+a modern-day “Skinner Box”—social media.&lt;/p>
+&lt;h2 id="social-media-as-a-means-of-social-control">Social Media as a Means of Social Control
+&lt;/h2>&lt;p>Social media is essentially a tool for social control. Every major
+platform—whether Facebook, Twitter, or Reddit—can be viewed as a giant
+“Skinner Box.” Initially, when these platforms were created, they offered
+an open, decentralized space where users could freely share almost
+anything. However, over time, the administrators of these platforms
+realized that they could play the role of social engineers, guiding user
+behavior.&lt;/p>
+&lt;p>On social media, controlling behavior actually requires minimal effort.
+The system tends to be self-regulating, and platforms can even make users
+influence each other in ways that reinforce desired behaviors. At a basic
+level, for instance, there is the feature of “banning” users. Not everyone
+has to be banned, just enough to create a chilling effect, causing others
+to avoid engaging in undesirable behavior.&lt;/p>
+&lt;p>The biggest privacy issue is not about the exposure of personal
+information but rather about the behavior data collected as metadata.
+Although those who collect this data might not know your specific
+identity, this metadata is still used to train artificial intelligence
+(AI), which can then be applied to influence cognition. With this data,
+platforms can find new ways to spread messages or trigger specific
+hashtags, or provide recommendations that direct our interactions.&lt;/p>
+&lt;h2 id="the-impact-on-focus-and-deep-thinking">The Impact on Focus and Deep Thinking
+&lt;/h2>&lt;p>With all the information available at our fingertips, it has become
+increasingly difficult to “single-task” or focus solely on one activity.
+Tasks that require attention and deep contemplation are often disrupted by
+the urge to stay “connected.” A student, for example, might ask a friend
+to hide their phone or deactivate their Facebook account to concentrate on
+completing an assignment.&lt;/p>
+&lt;p>Sharing on social media has become the norm, and this is not inherently
+wrong. However, the problem is that the content shared tends to be shallow
+and distracts from more substantial, meaningful thought.&lt;/p>
+&lt;p>As social media and technology become more pervasive in society,
+especially among younger generations, this issue will only grow. Social
+norms that were once strict now become more relaxed, while the drive for
+contemplative thinking fades into the background.&lt;/p>
+&lt;h2 id="a-technological-revolution-unlike-social-revolutions-of-the-past">A Technological Revolution Unlike Social Revolutions of the Past
+&lt;/h2>&lt;p>While society often sees social media as a new tool for social change,
+those with deeper insight may understand that this technological
+revolution is not like past social revolutions. Personally, I enjoy social
+media for its ability to connect us with others quickly and easily, which
+fulfills the human need for companionship and understanding.&lt;/p>
+&lt;p>However, we must ask ourselves: How can the time we spend on social media
+translate into real-life impact? Why is this information available to me?
+What is the purpose of this image, story, or tweet that I come across?&lt;/p>
+&lt;p>Rather than merely using social media as an answer to every question that
+arises in daily interactions, it would be beneficial to treat it as a tool
+for reflecting on larger issues. Don’t let social media bury you under
+this newfound wealth of information without purpose. Critically question
+everything you see and don’t settle for limited knowledge; strive to
+explore the deeper meaning behind the surface-level interactions.&lt;/p>
+&lt;p>&lt;strong>Note: Reposting old article from 08th August 2021&lt;/strong>&lt;/p></description></item><item><title>Changing the Social Media Paradigm</title><link>https://blog.nishimiya.my.id/post/social-media-paradigm/</link><pubDate>Thu, 07 Nov 2024 01:40:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/social-media-paradigm/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/social-media-paradigm/hero-image.webp" alt="Featured image of post Changing the Social Media Paradigm" />&lt;p>Social media has revolutionized how we communicate, but the dynamics of major
+platforms like Twitter have grown increasingly problematic. Despite its mass
+appeal, Twitter’s model centers on engagement maximization, frequently elevating
+divisive or controversial content that keeps users hooked and engaged for
+profit. However, a wave of decentralized platforms, such as Mastodon, Bluesky,
+and others on the Fediverse, offer an alternative approach that challenges
+Twitter&amp;rsquo;s engagement-driven model. Understanding the differences between these
+platforms reveals why a shift in our approach to social media could benefit
+society as a whole.&lt;/p>
+&lt;h2 id="the-twitter-model-engagement-at-all-costs">The Twitter Model: Engagement at All Costs
+&lt;/h2>&lt;p>Twitter&amp;rsquo;s design has always prioritized engagement. Upon logging in, users are
+bombarded with tweets that the platform’s algorithm considers likely to elicit
+strong reactions. It’s no secret that highly engaging content often means
+divisive, controversial, or sensational material. Posts from political extremes
+or inflammatory &amp;ldquo;hot takes&amp;rdquo; are algorithmically favored because they drive
+comments, shares, and responses, ultimately resulting in more time spent on the
+platform.&lt;/p>
+&lt;p>Under Elon Musk&amp;rsquo;s leadership, Twitter added a new revenue-driven dimension to
+this engagement model. The introduction of subscription-based blue and gold
+checkmarks exemplifies this shift, allowing users to boost their visibility for
+a fee. The model incentivizes “pay-to-play” dynamics that reinforce Twitter’s
+corporate-driven focus: maximizing attention and profit at the expense of
+balanced, organic user engagement.&lt;/p>
+&lt;p>Additionally, Twitter’s centralized structure means that a single corporate
+entity controls the algorithms, user data, and rules of engagement, shaping
+content visibility according to business interests. In contrast, the rise of
+decentralized social networks like Bluesky and the Fediverse offers a fresh
+perspective on how social media could function more equitably.&lt;/p>
+&lt;h2 id="decentralized-platforms-a-new-social-media-paradigm">Decentralized Platforms: A New Social Media Paradigm
+&lt;/h2>&lt;p>Unlike Twitter, platforms like Mastodon, Bluesky, and other Fediverse-based
+networks operate on decentralized principles. This shift fundamentally changes
+how users interact, curate content, and govern their social media experience.&lt;/p>
+&lt;p>Bluesky, for instance, resembles Twitter’s interface, but it breaks away from
+the engagement-first approach by using the “AT Protocol,” which decentralizes
+social media hosting and management. Instead of an algorithmically driven feed
+that maximizes engagement, Bluesky puts content control in users’ hands,
+offering options like &amp;ldquo;More Posts Like This&amp;rdquo; or &amp;ldquo;Less Posts Like This.&amp;rdquo; This
+simple preference mechanism gives users greater agency in tailoring their feeds
+without relying on corporate algorithms.&lt;/p>
+&lt;p>The AT Protocol also introduces a decentralized identity structure, often
+abbreviated as DID (Decentralized Identifier). This protocol empowers users to
+manage their online identity across different platforms without being tied to
+a single corporate entity. A DID is a unique identifier that’s authenticated via
+blockchain-like protocols, allowing users to move across compatible networks
+while retaining their identity and data.&lt;/p>
+&lt;p>Moreover, Bluesky’s system allows users to register domain names as
+usernames—something that costs as little as $1. This affordable, user-centric
+identity structure contrasts with Twitter&amp;rsquo;s blue-checkmark model, which offers
+verification and engagement boosts at a premium. In essence, Bluesky values
+accessibility and user autonomy over profit, opening a door for more equitable
+social media practices.&lt;/p>
+&lt;h2 id="the-fediverse-a-decentralized-network-of-social-platforms">The Fediverse: A Decentralized Network of Social Platforms
+&lt;/h2>&lt;p>In addition to Bluesky, the Fediverse is a collection of decentralized social
+networks, each hosting independent communities while allowing cross-platform
+interaction. Platforms like Mastodon operate on open-source protocols that
+anyone can use to create their own social space, making it inherently
+community-driven. Unlike Twitter’s top-down approach, the Fediverse enables
+a bottom-up structure where individual servers (or “instances”) are
+independently managed, giving power to the community rather than to a corporate
+overseer.&lt;/p>
+&lt;p>This decentralized structure means that each community has its own moderation
+rules and culture, reducing the influence of profit-driven algorithms and
+allowing users to escape the echo chambers often exacerbated by mainstream
+social media. The Fediverse encourages organic, interest-based networking, free
+from engagement-manipulating algorithms, ultimately offering a healthier, more
+intentional social media experience.&lt;/p>
+&lt;h2 id="why-this-shift-matters">Why This Shift Matters
+&lt;/h2>&lt;p>As digital citizens, we must consider the impact of algorithm-driven engagement
+on our online behavior and mental health. Twitter&amp;rsquo;s centralized and
+profit-oriented model fosters divisiveness and “doomscrolling,” but
+decentralized platforms encourage users to make more intentional choices.
+Decentralized social networks like Bluesky, Mastodon, and others in the
+Fediverse are designed to prioritize user control, community governance, and
+genuine interaction over sensationalism and profit.&lt;/p>
+&lt;p>This shift requires a collective change in mindset. Embracing decentralized
+platforms means choosing a more user-centered approach to social media, one that
+values authentic interaction over the “likes” and “shares” race. It’s a paradigm
+shift that prioritizes our well-being and fosters healthier online communities.&lt;/p>
+&lt;p>While Twitter may still hold a prominent place in the social media landscape,
+its centralized, profit-driven model doesn’t have to be the default.
+Decentralized networks like Bluesky and the Fediverse offer a new way forward,
+one that we should seriously consider as we continue to navigate the complex
+world of online communication.&lt;/p></description></item><item><title>Echoes of Emptiness</title><link>https://blog.nishimiya.my.id/post/echoes-of-emptiness/</link><pubDate>Mon, 04 Nov 2024 03:27:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/echoes-of-emptiness/</guid><description>&lt;p>In the heart of a civilization that had once stood as a beacon of progress and
+enlightenment, there now lay a landscape of desolation and despair. The once-
+thriving cities, with their towering spires and intricate networks of
+transportation, were now reduced to skeletal remains, their structures
+crumbling under the weight of time and conflict. The air, once filled with the
+hum of industry and the laughter of children, was now thick with the acrid
+scent of smoke and the distant echoes of gunfire.&lt;/p>
+&lt;p>This was a world on the brink of emptiness, a civilization teetering on the
+edge of annihilation. The people, who had once been the architects of their own
+destiny, now found themselves adrift in a sea of uncertainty, their hopes and
+dreams shattered by the relentless march of war. The streets, once bustling
+with life, were now deserted, their inhabitants either dead or driven into
+hiding, seeking refuge in the shadows of a world that had turned against them.&lt;/p>
+&lt;p>In this desolate landscape, there existed a girl, a lone survivor of a once-
+great society. Her name was lost to time, her past a blur of memories that had
+been washed away by the tides of conflict. She wandered through the ruins of
+her former life, her footsteps echoing in the silence that had settled over the
+land. Her eyes, once filled with the spark of curiosity and wonder, were now
+hollow, reflecting the emptiness that had consumed her world.&lt;/p>
+&lt;p>She had seen the best and the worst of humanity, had witnessed the rise and fall
+of empires, and had borne witness to the destruction that had been wrought in
+the name of power and control. And yet, despite the horrors she had endured, she
+continued to walk, her resolve unshaken by the desolation that surrounded her.
+She was a symbol of hope in a world that had lost its way, a reminder that even
+in the darkest of times, there existed the potential for renewal and rebirth.&lt;/p>
+&lt;p>As she moved through the ruins, she encountered others like herself, survivors
+who had managed to cling to life in the face of overwhelming odds. They were a
+motley crew, each with their own stories of loss and suffering, but united by a
+common purpose: to find a way to rebuild, to create a new world from the ashes
+of the old. Together, they formed a fragile community, a small spark of light in
+the vast darkness that had engulfed their civilization.&lt;/p>
+&lt;p>But even as they worked to rebuild, the specter of war loomed large over their
+efforts. The scars of conflict ran deep, and the memories of the violence and
+destruction that had torn their world apart were never far from their minds.
+They knew that the road ahead would be long and fraught with danger, that the
+path to a new beginning would be paved with sacrifice and hardship.&lt;/p>
+&lt;p>And yet, in the face of such adversity, they refused to give in to despair. They
+clung to the belief that, despite the emptiness that had consumed their world,
+there still existed the possibility of a brighter future. They were the last
+hope of a civilization on the brink of extinction, and they would not rest until
+they had reclaimed their place in the world, until they had forged a new path
+forward, one that would lead them out of the darkness and into the light.&lt;/p>
+&lt;p>In the end, it was not the strength of their numbers or the power of their
+technology that would determine their fate, but the resilience of their spirit,
+the unwavering determination to survive and to thrive in a world that had been
+ravaged by war. And so, with hope in their hearts and determination in their
+souls, they set forth on their journey, ready to face whatever challenges lay
+ahead, ready to carve out a new future from the ruins of the past.&lt;/p></description></item><item><title>Now Support RSS Feed!</title><link>https://blog.nishimiya.my.id/post/rss-support/</link><pubDate>Sun, 03 Nov 2024 20:50:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/rss-support/</guid><description>&lt;p>I am thrilled to announce that this blog has taken a small step forward in enhancing
+your reading experience. Introducing RSS (Really Simple Syndication) feeds. This feature
+allows you stay updated with the latest post from my blog effortlessly.&lt;/p>
+&lt;h2 id="what-is-rss">What is RSS?
+&lt;/h2>&lt;p>For those who may not be familiar with RSS or not knowing at all, it stands for Really Simple
+Syndication. It is a web feed that allows users to easily access updates to online content in a
+standardized, computer-readable format. You can receive new update whenever new content is published
+on a website, without having to visit the site directly.&lt;/p>
+&lt;h2 id="how-to-access-my-rss-feed">How to Access My RSS Feed
+&lt;/h2>&lt;p>Accessing RSS feed is incredibly simple. All you need to do is add the following URL to your
+RSS reader:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://nishimiya.my.id/index.xml" target="_blank" rel="noopener"
+>https://nishimiya.my.id/index.xml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h1 id="how-to-use-an-rss-reader">How to Use an RSS Reader
+&lt;/h1>&lt;p>If you are new to RSS, here&amp;rsquo;s a quick guide on how to get started:&lt;/p>
+&lt;ol>
+&lt;li>Choose an RSS Reader: There are many RSS reader available, both free and paid.
+Some popular options include Feedly for Android app, newsboat the CLI-based RSS reader
+for Linux, or &lt;a class="link" href="https://github.com/yang991178/fluent-reader" target="_blank" rel="noopener"
+>Fluent Reader&lt;/a> that support Android, Linux, Windows.&lt;/li>
+&lt;li>Add Feed: Once you have your RSS reader set up, simply copy paste the URL
+&lt;a class="link" href="https://nishimiya.my.id/index.xml" target="_blank" rel="noopener"
+>https://nishimiya.my.id/index.xml&lt;/a> into the &amp;ldquo;Add Feed&amp;rdquo; or &amp;ldquo;Subscribe&amp;rdquo; section of your reader (May vary).&lt;/li>
+&lt;li>Drink Coffee and Enjoy: Sit back and enjoy the convenience of having my latest blog posts delivered
+directly to your RSS reader.&lt;/li>
+&lt;/ol></description></item><item><title>Hello World! Who am I?</title><link>https://blog.nishimiya.my.id/post/hello-world/</link><pubDate>Sat, 02 Nov 2024 18:30:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/hello-world/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/hello-world/1.jpg" alt="Featured image of post Hello World! Who am I?" />&lt;p>いらっしゃいませ!&lt;/p>
+&lt;h2 id="hello-everyone-">Hello Everyone 🎉
+&lt;/h2>&lt;p>I&amp;rsquo;m Nishimiya and i&amp;rsquo;m excited to announce my very first blog page! I&amp;rsquo;m a casual weeb and recently taken an interest toward Idolm@ster!
+In this website blog i will yap about software technologies, tech philosophies, electronic hardware, and sometimes talk about inexpensive world about keyboard.&lt;/p>
+&lt;h2 id="my-vision">My Vision
+&lt;/h2>&lt;p>My goal is to create a space full of tech nerds, knowledge sharing, and creativity to aspire others by sharing what I learned over the years.
+I hope you can feel right at home.&lt;/p>
+&lt;h2 id="what-to-expect">What to Expect
+&lt;/h2>&lt;p>Here&amp;rsquo;s a glimpse of thoughts of what i&amp;rsquo;m going to write about:&lt;/p>
+&lt;ol>
+&lt;li>Ergonomic Split Keyboard: Why You Should Give It a Try and Safeguard Your Future Health.&lt;/li>
+&lt;li>Linux Tools: My Small Compilation of Tools That Reduce Repetitive Workflow.&lt;/li>
+&lt;li>Make Your Home Smart: I Will Write How Internet of Things Can Ease (Or Not) Your Life Even For Small Things.&lt;/li>
+&lt;li>Software Tips: Tips That Could Be Useful For You.&lt;/li>
+&lt;li>Knowledge Sharing: I Will Provide Useful Tips or Knowledge I Learnt Over The Years With References.&lt;/li>
+&lt;/ol>
+&lt;h2 id="how-to-reach-me">How to Reach Me?
+&lt;/h2>&lt;p>I&amp;rsquo;d love to hear your thoughts whether it&amp;rsquo;s feedback, suggestion, or just a quick hello, feel free to contact me via E-Mail or DM me with Bsky.
+I speaks both English and Indonesia.&lt;/p>
+&lt;ul>
+&lt;li>Email: &lt;a class="link" href="mailto:contact@nishimiya.my.id" >contact@nishimiya.my.id&lt;/a>&lt;/li>
+&lt;li>Bsky: &lt;a class="link" href="https://bsky.nishimiya.my.id" target="_blank" rel="noopener"
+>@nishimiya.my.id&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Switching To Hugo!</title><link>https://blog.nishimiya.my.id/post/switch-hugo/</link><pubDate>Sat, 02 Nov 2024 05:00:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/switch-hugo/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/switch-hugo/1.jpg" alt="Featured image of post Switching To Hugo!" />&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/M_DPRIoaqyI"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;p>As of Saturday, November 2, 2024, I have officially embraced Hugo as my
+go-to static website generator. My journey with Hugo all started after
+catching one of Cyan Nyan&amp;rsquo;s streams, where they introduced this powerful
+tool in such a way that I knew I had to try it myself.&lt;/p>
+&lt;p>Previously, I built my websites by hand, using vanilla HTML and CSS. It
+was a rewarding process, but it often became tedious when trying to add
+new content or make updates consistently. Hugo simplifies this with
+a streamlined setup that includes templating, modular design, and built-in
+site management tools, making it an ideal choice for a faster, more
+scalable website-building process.&lt;/p>
+&lt;p>One of the game-changers for me was discovering the &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack-starter" target="_blank" rel="noopener"
+>CaiJimmy Hugo Theme
+Starter&lt;/a>. This theme
+provides a well-structured, customizable foundation that not only speeds
+up the setup process but also allows me to personalize the site with SCSS
+and shortcodes. Shortcodes are especially useful—they allow you to embed
+interactive content like YouTube videos effortlessly (like the one above),
+as well as easily create more complex layouts within Markdown files. This
+feature alone takes a lot of the heavy lifting off the development side,
+making Hugo an enjoyable tool to work with.&lt;/p>
+&lt;h2 id="why-hugo">Why Hugo?
+&lt;/h2>&lt;p>After working with HTML/CSS directly, transitioning to Hugo felt like
+a leap forward in productivity. Here’s what stood out about Hugo that made
+it a perfect fit for my needs:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Speed&lt;/strong>: Hugo is known for being incredibly fast at generating static
+sites. Its speed is particularly helpful for managing multiple pages
+without the lag you’d experience with other generators.&lt;/li>
+&lt;li>&lt;strong>Flexibility&lt;/strong>: The support for SCSS and custom themes means I can
+tweak every detail to fit my style and functional needs. The CaiJimmy
+starter theme, in particular, includes various customization options,
+so I can still enjoy designing without reinventing the wheel.&lt;/li>
+&lt;li>&lt;strong>Content Management&lt;/strong>: Hugo organizes content through a structured
+file system, making it easier to add, update, and organize posts and
+pages. Unlike raw HTML/CSS, Hugo’s templating system and front matter
+allow me to focus on content creation without duplicating the structure
+of every new page.&lt;/li>
+&lt;li>&lt;strong>Shortcodes and Markdown Integration&lt;/strong>: Writing in Markdown allows for
+faster content production, while Hugo’s shortcodes let me add rich
+media, like videos and images, with a single line of code. It’s the
+best of both worlds: simplicity for content creation and versatility
+for interactivity.&lt;/li>
+&lt;/ol>
+&lt;h2 id="moving-forward-with-hugo">Moving Forward with Hugo
+&lt;/h2>&lt;p>Using Hugo has not only simplified my workflow but also introduced me to
+new design possibilities. The Hugo community is vibrant and full of
+resources, making it easy to find additional themes, tips, and tricks. I’m
+excited to see how this tool can continue to support and evolve my
+projects. Plus, now that I have this foundation, scaling the site will be
+simpler, whether I want to add new sections, experiment with layouts, or
+incorporate more interactive elements.&lt;/p>
+&lt;p>For anyone on the fence about static site generators, especially if you’re
+used to coding each element by hand, I can’t recommend Hugo enough. It
+gives you all the customization of a hand-coded site without the
+repetitive work. With the power of themes like CaiJimmy’s Hugo Theme
+Starter, building and maintaining a website becomes less of a chore and
+more of an enjoyable, creative process.&lt;/p></description></item><item><title>Archives</title><link>https://blog.nishimiya.my.id/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://blog.nishimiya.my.id/archives/</guid><description/></item><item><title>About me</title><link>https://blog.nishimiya.my.id/about-me/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.nishimiya.my.id/about-me/</guid><description>&lt;h1 class="center-title">
+&lt;marquee>
+&lt;span style="color:#F08484">M&lt;/span>&lt;span style="color:#F0AD84">e&lt;/span>&lt;span style="color:#F0D584">e&lt;/span>&lt;span style="color:#E2F084">t&lt;/span> &lt;span style="color:#BAF084">t&lt;/span>&lt;span style="color:#92F084">h&lt;/span>&lt;span style="color:#84F09F">e&lt;/span> &lt;span style="color:#84F0C8">w&lt;/span>&lt;span style="color:#84F0F0">e&lt;/span>&lt;span style="color:#84C8F0">e&lt;/span>&lt;span style="color:#849FF0">b&lt;/span>
+&lt;/marquee>
+&lt;/h1>
+&lt;div class="profiles">
+&lt;div class="profile">
+&lt;img src="nishi.png" style="border-radius: 50%; display: block; margin: 0 auto; width: 150px;" alt="Nishimiya Profile Image">
+&lt;h1>Nishimiya&lt;/h1>
+&lt;div> Nishimiya is a hobbyist developer who spends his time learning on
+creating vanilla websites but mostly writing arduino code for developing IoT
+project. &lt;br>&lt;br> In his spare time, he likes building keyboard and doom
+scrolling bluesky.
+&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>Search</title><link>https://blog.nishimiya.my.id/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.nishimiya.my.id/search/</guid><description/></item></channel></rss>

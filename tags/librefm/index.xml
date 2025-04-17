@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Librefm on Nishimiya</title><link>https://blog.nishimiya.my.id/tags/librefm/</link><description>Recent content in Librefm on Nishimiya</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 24 Nov 2024 06:47:37 +0700</lastBuildDate><atom:link href="https://blog.nishimiya.my.id/tags/librefm/index.xml" rel="self" type="application/rss+xml"/><item><title>Bridging MPD Server-client to Libre.fm Using Mpdas</title><link>https://blog.nishimiya.my.id/post/mpd-bridge-librefm/</link><pubDate>Thu, 14 Nov 2024 18:05:00 +0700</pubDate><guid>https://blog.nishimiya.my.id/post/mpd-bridge-librefm/</guid><description>&lt;img src="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/Libre.fm_logo.svg" alt="Featured image of post Bridging MPD Server-client to Libre.fm Using Mpdas" />&lt;h2 id="why-use-mpdas-with-librefm">Why Use Mpdas with Libre.fm?
+&lt;/h2>&lt;p>&lt;strong>Mpdas&lt;/strong> (MPD Audio Scrobbler) is a lightweight, efficient tool that acts
+as a bridge between MPD servers and scrobbling platforms like Libre.fm.
+For anyone unfamiliar, MPD is a versatile, open-source music server
+popular among audiophiles and Linux users. It plays music from a local
+library, internet radio, or streaming services, and it integrates well
+with various lightweight clients like &lt;strong>ncmpcpp&lt;/strong>.&lt;/p>
+&lt;p>Libre.fm, meanwhile, offers a refreshing alternative to Last.fm by
+prioritizing user control and open-source principles. It’s
+a community-oriented service that allows users to &amp;ldquo;scrobble&amp;rdquo; (log) their
+played tracks without sacrificing their data privacy. With Mpdas and
+Libre.fm, you can track what you’re listening to, explore your listening
+history, and discover music—all without corporate oversight.&lt;/p>
+&lt;h2 id="my-take-on-security-configuration-it-uses-plain-text-passwords">My take on Security Configuration: It Uses Plain Text Passwords
+&lt;/h2>&lt;p>As of &lt;strong>Mpdas version 0.4.3&lt;/strong>, &lt;strong>Last.fm deprecated MD5 password
+hashing&lt;/strong>, requiring Mpdas to switch to plain-text passwords. In this
+version, passwords for scrobbling services must be stored as plaintext in
+the configuration file. Although this might raise a security concern, you
+can protect your data by restricting access to the configuration file.
+Placing it in a restricted-access directory or managing permissions can
+help ensure that your password is secure on your machine.&lt;/p>
+&lt;h2 id="step-by-step-guide-to-setting-up-mpdas">Step-by-Step Guide to Setting Up Mpdas
+&lt;/h2>&lt;p>Ready to connect your MPD server to Libre.fm? Follow these steps, and
+you’ll be scrobbling in no time.&lt;/p>
+&lt;h3 id="step-1-install-mpdas">Step 1: Install Mpdas
+&lt;/h3>&lt;p>Installing Mpdas is straightforward, thanks to its availability in most
+Linux distribution repositories. Here’s a quick installation guide for
+some popular Linux distros:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Arch Linux&lt;/strong>: Install Mpdas using the &lt;code>yay&lt;/code> package manager.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yay -S mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Debian/Ubuntu&lt;/strong>: Install via &lt;code>apt&lt;/code> if Mpdas is available in the repositories.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt install mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Fedora&lt;/strong>: Use &lt;code>dnf&lt;/code> to install Mpdas, if it’s available in your repositories.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo dnf install mpdas
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;p>If Mpdas isn’t available through your package manager, you may need to
+compile it from source. The &lt;a class="link" href="https://github.com/hrkfdn/mpdas" target="_blank" rel="noopener"
+>official Mpdas GitHub
+repository&lt;/a> has detailed instructions on
+how to do this.&lt;/p>
+&lt;h3 id="step-2-configure-mpdas">Step 2: Configure Mpdas
+&lt;/h3>&lt;p>Once installed, you’ll need to configure Mpdas so it can log into your
+Libre.fm account and scrobble your plays.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Open the Mpdas configuration file, typically found at &lt;code>/etc/mpdasrc&lt;/code>.
+Use your preferred text editor with root permissions: &lt;code>sudo vim /etc/mpdasrc &lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In this file, add the following configuration, replacing &lt;code>&amp;lt;username&amp;gt;&lt;/code>
+and &lt;code>&amp;lt;plain-text-password&amp;gt;&lt;/code> with your actual Libre.fm credentials:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span class="line">&lt;span class="cl">username = &amp;lt;username&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">password = &amp;lt;plain-text-password&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port = 6600
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">runas = mpd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service = librefm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">debug = 1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>Type &lt;code>ZZ&lt;/code> to write then quit.&lt;/p>
+&lt;p>Here’s what each setting does:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>username&lt;/strong> and &lt;strong>password&lt;/strong>: Your Libre.fm login credentials.&lt;/li>
+&lt;li>&lt;strong>port&lt;/strong>: Sets the MPD server connection port. Default is &lt;code>6600&lt;/code>, so if
+you haven’t customized your MPD setup, this should work fine.&lt;/li>
+&lt;li>&lt;strong>runas&lt;/strong>: Defines the user under which Mpdas should run. Here, it’s set
+to &lt;code>mpd&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>service&lt;/strong>: Specifies the scrobbling service. Set this to &lt;code>librefm&lt;/code> to
+scrobble with Libre.fm. (Default last.fm)&lt;/li>
+&lt;li>&lt;strong>debug&lt;/strong>: Enables debugging if set to &lt;code>1&lt;/code>, which can help with
+troubleshooting if needed.&lt;/li>
+&lt;/ul>
+&lt;ol start="3">
+&lt;li>Save and close the configuration file.&lt;/li>
+&lt;/ol>
+&lt;h3 id="step-3-enable-and-start-mpdas-as-a-user-service">Step 3: Enable and Start Mpdas as a User Service
+&lt;/h3>&lt;p>After configuring Mpdas, start it as a user service to keep it running in
+the background. By enabling it as a user service, Mpdas will run each time
+you log in, making the setup hassle-free.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Run the following command to enable and start Mpdas as a user service:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl &lt;span class="nb">enable&lt;/span> --now --user mpdas.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This command does two things: it starts Mpdas immediately and ensures
+that it will start automatically each time you log in.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Open your MPD music client (e.g., &lt;code>ncmpcpp&lt;/code>) and start playing some
+music. This step will let you confirm that the setup is working
+properly.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Go to your Libre.fm profile and check the &amp;ldquo;Now Playing&amp;rdquo; section. If
+everything is set up correctly, you’ll see the current track being
+scrobbled in real-time, reflecting the music playing in your MPD
+client.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="step-4-loving-and-unloving-tracks-on-librefm">Step 4: Loving and Unloving Tracks on Libre.fm
+&lt;/h3>&lt;p>With Mpdas, you can also mark your favorite tracks by “Loving” them, just
+like on Last.fm. This feature allows you to mark songs you particularly
+enjoy for easier recall later.&lt;/p>
+&lt;p>To love a track, use the following command:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpc sendmessage mpdas love
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>If you want to unlove (or revert) a track, simply use:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mpc sendmessage mpdas unlove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="wrapping-up-enjoy-real-time-music-tracking-with-librefm">Wrapping Up: Enjoy Real-Time Music Tracking with Libre.fm
+&lt;/h2>&lt;p>&lt;img src="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm.png"
+width="784"
+height="893"
+srcset="https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm_hu_fd55960d155dacfe.png 480w, https://blog.nishimiya.my.id/post/mpd-bridge-librefm/nishimiya_librefm_hu_6bc0a22acc86d005.png 1024w"
+loading="lazy"
+alt="Nishimiya’s Profile on Libre.fm"
+class="gallery-image"
+data-flex-grow="87"
+data-flex-basis="210px"
+>&lt;/p>
+&lt;p>Congratulations! With Mpdas up and running, you now have a powerful,
+privacy-focused way to track your listening habits. This setup combines the
+flexibility of MPD, the simplicity of Mpdas, and the openness of Libre.fm,
+giving you a complete music experience that respects your data and privacy.&lt;/p>
+&lt;p>Now, your plays are seamlessly logged on Libre.fm. Whether you’re using
+&lt;strong>ncmpcpp&lt;/strong>, &lt;strong>Cantata&lt;/strong>, or any other MPD client, you’ll be able to track and
+analyze your music tastes effortlessly. So sit back, press play, and enjoy your
+music journey!&lt;/p></description></item></channel></rss>
